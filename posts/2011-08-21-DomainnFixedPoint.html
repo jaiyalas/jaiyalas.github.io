@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Jaiyalas' Note - Domain and Fixed Point</title>
+    <!--
+    <link rel="stylesheet" type="text/css"
+      href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    -->
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../css/side-menu.css" />
+    
+  </head>
+  <body>
+
+    <div id="layout">
+      <!-- Menu toggle -->
+      <a href="#menu" id="menuLink" class="menu-link">
+	<!-- Hamburger icon -->
+	<span></span>
+      </a>
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="#">Y.Y.-C.</a>
+          <ul class="pure-menu-list">
+	    <li class="pure-menu-item"><a href="../index.html" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item"><a href="../tags.html" class="pure-menu-link">Tags</a></li>
+            <li class="pure-menu-item"><a href="../archive.html" class="pure-menu-link">Archive</a></li>
+            <li class="pure-menu-item"><a href="../about.html" class="pure-menu-link">About</a></li>
+          </ul>
+        </div>
+      </div> <!-- end menu -->
+      <div id="main">
+	<div class="content">
+	  <div class="content">
+  <!-- A wrapper for all the blog posts -->
+  <div class="posts">
+    <h1 class="content-subhead">Pinned Post</h1>
+    <!-- A single blog post -->
+    <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Domain and Fixed Point</h2>
+	<p class="post-meta">
+	  
+	  By <a href="#" class="post-author">Yun-Yan Chi</a>
+	  
+	  under
+	  <a class="post-category post-category-design" href="#">CSS</a>
+	  <a class="post-category post-category-pure" href="#">Pure</a>
+	</p>
+	<p>
+	  <small>Posted on August 21, 2011<a href="../posts/2011-08-21-DomainnFixedPoint.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
+	</p>
+      </header>
+      <div class="post-description">
+	<p><p>此篇大量參考 FLOLAC 08’ 的 Denotational Semantics 講義。</p>
+<p>A <strong>poset</strong>(partially ordered set) is a set D with a binary relation ⊑ s.t. the following properties hold:</p>
+<pre><code>reflexive: x ⊑ x 
+anti-symmetric: x ⊑ y and y ⊑ x -&gt; x ≡ y 
+transitive: x ⊑ y and y ⊑ z -&gt; x ⊑ z </code></pre>
+<p>For a poset D, a set X ⊆ D is <em>directed</em> if:</p>
+<pre><code>X ≠ { } 
+∀ x,y ∈ X, ∃ z ∈ X s.t. x ⊑ z and y ⊑ z </code></pre>
+<p>For a poset D, D is a <strong>cpo</strong>(complete partial order) if:</p>
+<pre><code>∃ ⊥ ∈ D s.t. ∀ x ∈ X, ⊥ ⊑ x
+Every directed set X ⊆ D has a least upper bound denoted as ⨆X</code></pre>
+<p>A cpo D is called <strong>domain</strong> as well.</p>
+<hr />
+<p>Let D be a poset with ⊑ and f be a total function from D to D.</p>
+<pre><code>x ∈ D is a **fixed point** of f iff f x = x
+x ∈ D is a **least fixed point** of f iff x is a fixed point of f and for every fixed point y of f, x ⊑ y.</code></pre>
+<h3 id="the-least-fixed-point-theorem">The Least Fixed Point Theorem</h3>
+<p>Let D be a domain.</p>
+<pre><code>∀ f : D -&gt; D, ∃ a least fixed point 
+∃ fix : (D -&gt; D) -&gt; D, s.t. ∀ f : D -&gt; D, fix f is the least fixed point of f.</code></pre>
+<p>For a function f : (D -&gt; D), we can define a directed set Xf ⊆ D by</p>
+<pre><code>Xf = {⊥,f ⊥,ff ⊥,fff ⊥,...}.</code></pre>
+<p>By the continuity of f,</p>
+<pre><code>f ⨆Xf
+
+= f ⨆{⊥, f ⊥, ff ⊥, fff ⊥, ...}
+
+= ⨆f{Xf}
+
+= ⨆f{⊥, f ⊥, ff ⊥, fff ⊥, ...}
+
+= ⨆{⊥, f ⊥, ff ⊥, fff ⊥, ...}
+
+= ⨆Xf.</code></pre>
+<p>Thus, for any function f : D -&gt; D, there exist a fixed point ⨆Xf of f. For least, we can support x is a fixed point as well. Then</p>
+<pre><code>⊥ ⊑ x,
+
+f ⊥ ⊑ f x,
+
+ff ⊥ ⊑ ff x,
+
+...
+
+fn ⊥ ⊑ fn x, (we write fn for applying f n times)
+
+...</code></pre>
+<p>Because x is a fixed point of f, fd x will be x obviously. Collecting both sides as set we will obtain</p>
+<pre><code>{⊥,f ⊥,ff ⊥,fff ⊥,...} and {x},</code></pre>
+<p>then taking least upper bound of both set,</p>
+<pre><code>⨆Xf ⊑ x</code></pre>
+<p>Thus, <em>for any function f : D -&gt; D, there exist a <strong>least fixed point</strong> ⨆Xf of f</em>. Finally, we can define fix by</p>
+<pre><code>fix f = ⨆Xf</code></pre>
+<p>for any function f : D -&gt; D.</p>
+<hr />
+<p>Relevance to (denotational) semantics:</p>
+<p>The semantics of program <strong>g</strong> is a function g. For example, a program can be defined as follow:</p>
+<pre><code>g args = h (g args') : A -&gt; B</code></pre>
+<p>This is not a simple case that we can find a corresponding g easily. However we can define another program/function <strong>f</strong>/f that can help us to define g. For example, we define</p>
+<pre><code>f : (A -&gt; B) -&gt; (A -&gt; B),
+f g = \args -&gt; h (g args') = g.</code></pre>
+<p>Obviously, g is the least fixed point of f and the ⨆Xf as well. In this case, the domain D = (A -&gt; B).</p></p>
+	<p>[Tags: <a href="../tags/math.html">math</a>, <a href="../tags/notes.html">notes</a>]</p>
+      </div>
+    </section>
+  </div> <!-- end posts -->
+            
+
+
+
+
+	  <div class="footer">
+	    Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	  </div> <!-- end footer-->
+	</div> <!-- end content -->
+      </div> <!-- end main -->
+    </div> <!-- end layout -->
+    
+    <script src="../resources/ui.js"></script>
+  </body>
+</html>

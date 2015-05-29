@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/side-menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />    
+  </head>
+  <body>
+    <div id="layout">
+      <a href="#menu" id="menuLink" class="menu-link"><span></span></a>
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="../../index.html">
+	    <i class="fa fa-home fa-lg fa-fw"></i> Home</a>
+	  <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+		<i class="fa fa-tag fa-lg fa-fw"></i> Tags</a></li>
+            <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">
+		<i class="fa fa-book fa-lg fa-fw"></i> Archive</a></li>
+            <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+		<i class="fa fa-male fa-lg fa-fw"></i> About</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="main">
+	<div class="content">
+	    <div class="posts">
+    <h1 class="content-subhead">Jaiyalas'</h1>
+    <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">For old time's sake.</h2>
+	<p class="post-meta">
+	  By <a href="#" class="post-author">Jaiyalas</a>.
+	  
+	  <small>Posted on 29 May 2015.<a href="../../content/posts/2015-05-29-old-time.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
+	</p>
+      </header>
+      <div class="post-description">
+	<p>Today we will have a short overview of old data-/time-related packages listed as follows:</p>
+<ul>
+<li><a href="https://hackage.haskell.org/package/old-time">old-time</a></li>
+<li><a href="http://hackage.haskell.org/package/time-compat">time-compat</a></li>
+<li><a href="https://hackage.haskell.org/package/old-locale">old-locale</a></li>
+<li><a href="http://hackage.haskell.org/package/time-locale-compat">time-locale-compat</a> <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+</ul>
+<p>Those modules are very easily to use but have some shortcomings. The <strong>old-time</strong>(<code>System.Time</code>) has poor supporting on locale and formating and lack functions to manipulate times. And the <code>TimeDiff</code> is not very sueful. The <strong>old-locale</strong>(<code>System.Locale</code>)</p>
+<h3 id="old-locale">old-locale</h3>
+<p>The <strong>old-locale</strong> package provides module <code>System.Locale</code> allowing to adapt to local conventions. There is just one single structure defined.</p>
+<h4 id="the-timelocale">The <code>TimeLocale</code></h4>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TimeLocale</span> <span class="fu">=</span> <span class="dt">TimeLocale</span> {
+<span class="ot">        wDays  ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
+<span class="ot">        months ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
+<span class="ot">        intervals ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
+<span class="ot">        amPm   ::</span> (<span class="dt">String</span>, <span class="dt">String</span>),
+        dateTimeFmt, dateFmt,
+        timeFmt,<span class="ot"> time12Fmt ::</span> <span class="dt">String</span>
+        } <span class="fu">...</span></code></pre></div>
+<p>The difference bewteen <code>Data.Time.Format.TimeLocale</code> and <code>System.Locale.TimeLocale</code> is very ignorable. The most significant one is that the has <code>knownTimeZones :: [TimeZone]</code> instead of <code>intervals :: [(String, String)]</code>.</p>
+<h4 id="extra">Extra</h4>
+<p>The package <a href="http://hackage.haskell.org/package/time-locale-compat">time-locale-compat</a> is a interface for importing different versions of <code>TimeLocale</code>. If the version of <strong>time</strong> is greater then <strong>1.5.0</strong>, it will import <code>Data.Time.Format</code> and import <code>System.Locale</code> for otherwise.</p>
+<h3 id="old-time">old-time</h3>
+<p>The <strong>old-time</strong> package provide the <code>System.Time</code> module that contains three distinct structures for representing times:</p>
+<h4 id="the-clocktime">The <code>ClockTime</code></h4>
+<p>The first one is used to represent raw system time in two integers.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">ClockTime</span> <span class="fu">=</span> <span class="dt">TOD</span> <span class="dt">Integer</span> <span class="dt">Integer</span></code></pre></div>
+<p>One can extract system clock time by using</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">getClockTime ::</span> <span class="dt">IO</span> <span class="dt">ClockTime</span></code></pre></div>
+<p>Besides <code>ClockTime</code> there is also a structure for recording differenct between two clock times</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TimeDiff</span>
+ <span class="fu">=</span> <span class="dt">TimeDiff</span>	{
+<span class="ot">       tdYear    ::</span> <span class="dt">Int</span>
+     ,<span class="ot"> tdMonth   ::</span> <span class="dt">Int</span>
+     ,<span class="ot"> tdDay     ::</span> <span class="dt">Int</span> 
+     , <span class="fu">...</span>
+ }</code></pre></div>
+<h4 id="the-calendartime">The <code>CalendarTime</code></h4>
+<p>The second structure in this module is <code>CalendarTime</code> which will store time in a human-friendly structure:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">CalendarTime</span>
+ <span class="fu">=</span> <span class="dt">CalendarTime</span>  {
+<span class="ot">       ctYear    ::</span> <span class="dt">Int</span>
+     ,<span class="ot"> ctMonth   ::</span> <span class="dt">Month</span>
+     ,<span class="ot"> ctDay     ::</span> <span class="dt">Int</span> 
+     , <span class="fu">...</span>
+ }</code></pre></div>
+<p>Also, this module defines several converting function between <code>CalendarTime</code>, <code>ClockTime</code> and <code>String</code>. Read <a href="https://hackage.haskell.org/package/old-time">old-time</a> for more details.</p>
+<h4 id="extra-1">Extra</h4>
+<p>There is a tiny package, <a href="http://hackage.haskell.org/package/time-compat">time-compat</a>, providing single typeclass <code>ToUTCTime</code> that define a function <code>toUTCTime</code> to convert an old-time structure to a <code>Data.Time.UTCTime</code>.</p>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>It’s an simple example for <code>{-# LANGUAGE CPP #-}</code>.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+      </div>
+	<div class="post-footnote">
+	  <small>Last modified on 29 May 2015 (17:11)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/packages.html">packages</a>, <a href="../../tags/time.html">time</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+
+
+
+
+
+	  <div class="footer">Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a></div>
+	</div>
+      </div>
+    </div>
+    <script src="../../resources/ui.js"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

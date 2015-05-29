@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/side-menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />    
+  </head>
+  <body>
+    <div id="layout">
+      <a href="#menu" id="menuLink" class="menu-link"><span></span></a>
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="../../index.html">
+	    <i class="fa fa-home fa-lg fa-fw"></i> Home</a>
+	  <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+		<i class="fa fa-tag fa-lg fa-fw"></i> Tags</a></li>
+            <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">
+		<i class="fa fa-book fa-lg fa-fw"></i> Archive</a></li>
+            <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+		<i class="fa fa-male fa-lg fa-fw"></i> About</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="main">
+	<div class="content">
+	    <div class="posts">
+    <h1 class="content-subhead">Jaiyalas'</h1>
+    <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Localization with Data.Time.Format.Locale.</h2>
+	<p class="post-meta">
+	  By <a href="#" class="post-author">Jaiyalas</a>.
+	  
+	  <small>Posted on 29 May 2015.<a href="../../content/posts/2015-05-29-Locale.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
+	</p>
+      </header>
+      <div class="post-description">
+	<p>In haskell, locale is defined as a set of <em>how to present date and time nicely</em>. Here we only discuss <code>Data.Time.Format.TimeLocale</code> not <code>Ststem.Locale</code>.</p>
+<p>Module <code>Data.Time.Format</code> provides</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TimeLocale</span> <span class="fu">=</span> <span class="dt">TimeLocale</span> {
+<span class="ot">        wDays  ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
+<span class="ot">        months ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
+<span class="ot">        amPm   ::</span> (<span class="dt">String</span>, <span class="dt">String</span>),
+        dateTimeFmt, dateFmt,
+        timeFmt,<span class="ot"> time12Fmt ::</span> <span class="dt">String</span>,
+<span class="ot">        knownTimeZones ::</span> [<span class="dt">TimeZone</span>]
+        } <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Ord</span>, <span class="dt">Show</span>)</code></pre></div>
+<p>to allow programmer to define a presenting format for date and time. As well as, it also defines a default locale for the commonest American style.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">defaultTimeLocale ::</span> <span class="dt">TimeLocale</span>
+defaultTimeLocale <span class="fu">=</span>  <span class="dt">TimeLocale</span> {
+        wDays  <span class="fu">=</span> [(<span class="st">&quot;Sunday&quot;</span>,   <span class="st">&quot;Sun&quot;</span>),  (<span class="st">&quot;Monday&quot;</span>,    <span class="st">&quot;Mon&quot;</span>),
+                  (<span class="st">&quot;Tuesday&quot;</span>,  <span class="st">&quot;Tue&quot;</span>),  (<span class="st">&quot;Wednesday&quot;</span>, <span class="st">&quot;Wed&quot;</span>),
+                  (<span class="st">&quot;Thursday&quot;</span>, <span class="st">&quot;Thu&quot;</span>),  (<span class="st">&quot;Friday&quot;</span>,    <span class="st">&quot;Fri&quot;</span>),
+                  (<span class="st">&quot;Saturday&quot;</span>, <span class="st">&quot;Sat&quot;</span>)],
+        months <span class="fu">=</span> [(<span class="st">&quot;January&quot;</span>,   <span class="st">&quot;Jan&quot;</span>), (<span class="st">&quot;February&quot;</span>,  <span class="st">&quot;Feb&quot;</span>),
+                  (<span class="st">&quot;March&quot;</span>,     <span class="st">&quot;Mar&quot;</span>), (<span class="st">&quot;April&quot;</span>,     <span class="st">&quot;Apr&quot;</span>),
+                  (<span class="st">&quot;May&quot;</span>,       <span class="st">&quot;May&quot;</span>), (<span class="st">&quot;June&quot;</span>,      <span class="st">&quot;Jun&quot;</span>),
+                  (<span class="st">&quot;July&quot;</span>,      <span class="st">&quot;Jul&quot;</span>), (<span class="st">&quot;August&quot;</span>,    <span class="st">&quot;Aug&quot;</span>),
+                  (<span class="st">&quot;September&quot;</span>, <span class="st">&quot;Sep&quot;</span>), (<span class="st">&quot;October&quot;</span>,   <span class="st">&quot;Oct&quot;</span>),
+                  (<span class="st">&quot;November&quot;</span>,  <span class="st">&quot;Nov&quot;</span>), (<span class="st">&quot;December&quot;</span>,  <span class="st">&quot;Dec&quot;</span>)],
+        amPm <span class="fu">=</span> (<span class="st">&quot;AM&quot;</span>, <span class="st">&quot;PM&quot;</span>),
+        dateTimeFmt <span class="fu">=</span> <span class="st">&quot;%a %b %e %H:%M:%S %Z %Y&quot;</span>,
+        dateFmt <span class="fu">=</span> <span class="st">&quot;%m/%d/%y&quot;</span>,
+        timeFmt <span class="fu">=</span> <span class="st">&quot;%H:%M:%S&quot;</span>,
+        time12Fmt <span class="fu">=</span> <span class="st">&quot;%I:%M:%S %p&quot;</span>,
+        knownTimeZones <span class="fu">=</span>
+            [
+            <span class="dt">TimeZone</span> <span class="dv">0</span> <span class="dt">False</span> <span class="st">&quot;UT&quot;</span>,
+            <span class="dt">TimeZone</span> <span class="dv">0</span> <span class="dt">False</span> <span class="st">&quot;GMT&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">5</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">False</span> <span class="st">&quot;EST&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">4</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">True</span> <span class="st">&quot;EDT&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">6</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">False</span> <span class="st">&quot;CST&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">5</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">True</span> <span class="st">&quot;CDT&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">7</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">False</span> <span class="st">&quot;MST&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">6</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">True</span> <span class="st">&quot;MDT&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">8</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">False</span> <span class="st">&quot;PST&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="fu">-</span><span class="dv">7</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">True</span> <span class="st">&quot;PDT&quot;</span>
+            ]
+        }</code></pre></div>
+<p>It’s not hard to figure out how it works. We can also custom our own TimeLocale for Taiwan. :)</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">taiwanTimeLocale <span class="fu">=</span>  <span class="dt">TimeLocale</span> {
+        wDays  <span class="fu">=</span> [(<span class="st">&quot;星期日&quot;</span>, <span class="st">&quot;周日&quot;</span>),
+                  (<span class="st">&quot;星期一&quot;</span>, <span class="st">&quot;周一&quot;</span>),
+                  (<span class="st">&quot;星期二&quot;</span>, <span class="st">&quot;周二&quot;</span>),
+                  (<span class="st">&quot;星期三&quot;</span>, <span class="st">&quot;周三&quot;</span>),
+                  (<span class="st">&quot;星期四&quot;</span>, <span class="st">&quot;周四&quot;</span>),
+                  (<span class="st">&quot;星期五&quot;</span>, <span class="st">&quot;周五&quot;</span>),
+                  (<span class="st">&quot;星期六&quot;</span>, <span class="st">&quot;周六&quot;</span>)],
+        months <span class="fu">=</span> [(<span class="st">&quot;一月&quot;</span>, <span class="st">&quot;一月&quot;</span>),
+                  (<span class="st">&quot;二月&quot;</span>, <span class="st">&quot;二月&quot;</span>),
+                  (<span class="st">&quot;三月&quot;</span>, <span class="st">&quot;三月&quot;</span>),
+                  (<span class="st">&quot;四月&quot;</span>, <span class="st">&quot;四月&quot;</span>),
+                  (<span class="st">&quot;五月&quot;</span>, <span class="st">&quot;五月&quot;</span>),
+                  (<span class="st">&quot;六月&quot;</span>, <span class="st">&quot;六月&quot;</span>),
+                  (<span class="st">&quot;七月&quot;</span>, <span class="st">&quot;七月&quot;</span>),
+                  (<span class="st">&quot;八月&quot;</span>, <span class="st">&quot;八月&quot;</span>),
+                  (<span class="st">&quot;九月&quot;</span>, <span class="st">&quot;九月&quot;</span>),
+                  (<span class="st">&quot;十月&quot;</span>, <span class="st">&quot;十月&quot;</span>),
+                  (<span class="st">&quot;十一月&quot;</span>,<span class="st">&quot;十一月&quot;</span>),
+                  (<span class="st">&quot;十二月&quot;</span>,<span class="st">&quot;十二月&quot;</span>)],
+        amPm <span class="fu">=</span> (<span class="st">&quot;晝&quot;</span>, <span class="st">&quot;夜&quot;</span>),
+        dateTimeFmt <span class="fu">=</span> <span class="st">&quot;%a %b %e %H:%M:%S %Z %Y&quot;</span>,
+        dateFmt <span class="fu">=</span> <span class="st">&quot;%m/%d/%y&quot;</span>,
+        timeFmt <span class="fu">=</span> <span class="st">&quot;%H:%M:%S&quot;</span>,
+        time12Fmt <span class="fu">=</span> <span class="st">&quot;%I:%M:%S %p&quot;</span>,
+        knownTimeZones <span class="fu">=</span>
+            [
+            <span class="dt">TimeZone</span> <span class="dv">0</span> <span class="dt">False</span> <span class="st">&quot;UT&quot;</span>,
+            <span class="dt">TimeZone</span> <span class="dv">0</span> <span class="dt">False</span> <span class="st">&quot;GMT&quot;</span>,
+            <span class="dt">TimeZone</span> (<span class="dv">8</span> <span class="fu">*</span> <span class="dv">60</span>) <span class="dt">False</span> <span class="st">&quot;TWT&quot;</span> <span class="co">-- Taiwan Standard Time</span>
+            ]
+        }</code></pre></div>
+      </div>
+	<div class="post-footnote">
+	  <small>Last modified on 29 May 2015 (17:12)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/packages.html">packages</a>, <a href="../../tags/time.html">time</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+
+
+
+
+
+	  <div class="footer">Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a></div>
+	</div>
+      </div>
+    </div>
+    <script src="../../resources/ui.js"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

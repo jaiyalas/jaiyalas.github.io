@@ -4,27 +4,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Jaiyalas' Blog - How to sample an element from varied structures.</title>
-    <!--
-    <link rel="stylesheet" type="text/css" href="/css/default.css" />
-    -->
+    <title>Post</title>
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
     <link rel="stylesheet" type="text/css" href="../../css/side-menu.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />    
   </head>
   <body>
-
     <div id="layout">
-      <!-- Menu toggle -->
-      <a href="#menu" id="menuLink" class="menu-link">
-	<!-- Hamburger icon -->
-	<span></span>
-      </a>
+      <a href="#menu" id="menuLink" class="menu-link"><span></span></a>
       <div id="menu">
         <div class="pure-menu">
           <a class="pure-menu-heading" href="../../index.html">
@@ -38,32 +28,22 @@
 		<i class="fa fa-male fa-lg fa-fw"></i> About</a></li>
           </ul>
         </div>
-      </div> <!-- end menu -->
+      </div>
       <div id="main">
 	<div class="content">
-	  
-  <!-- A wrapper for all the blog posts -->
-  <div class="posts">
-    <h1 class="content-subhead">Jaiyalas' Blog</h1>
-    <!-- A single blog post -->
+	    <div class="posts">
+    <h1 class="content-subhead">Jaiyalas'</h1>
     <section class="post">
       <header class="post-header">
 	<h2 class="post-title">How to sample an element from varied structures.</h2>
 	<p class="post-meta">
-	  
 	  By <a href="#" class="post-author">Jaiyalas</a>.
 	  
-	  <small>
-	    Posted on 27 May 2015.<a href="../../content/posts/2015-05-27-sampling-element.html"><i class="fa fa-link fa-lg fa-fw"></i></a>
-	  </small>	  
-	  <!--
-	      <a class="post-category post-category-design" href="#">CSS</a>
-	      <a class="post-category post-category-pure" href="#">Pure</a>
-	  -->
+	  <small>Posted on 27 May 2015.<a href="../../content/posts/2015-05-27-sampling-element.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
 	</p>
       </header>
       <div class="post-description">
-	<p><h2 id="motivation">Motivation</h2>
+	<h2 id="motivation">Motivation</h2>
 <p>Assume that function <code>sample</code> can pick a element from a massive structure. To define such <code>sample</code> for different structures, one would naturally try to define a typeclass:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Samplible</span> a <span class="kw">where</span>
 <span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div>
@@ -110,43 +90,36 @@
 <p>Using associated type synonym is great, but it also have a shortcut. Comparing with function dependency one can easily find out that we lost a typeclass parameter, <code>b</code>. To expose that parameter, we introduce some equality contraints as follows</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> (<span class="dt">Elem</span> a <span class="fu">~</span> b) <span class="ot">=&gt;</span> <span class="dt">Samplible</span> a b <span class="kw">where</span>
   <span class="kw">type</span> <span class="dt">Elem</span><span class="ot"> a ::</span> <span class="fu">*</span>
-<span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div></p>
+<span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div>
       </div>
 	<div class="post-footnote">
-	  <small>
-	    Last modified on 28 May 2015 (03:04)
-	    [Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/associated%20type.html">associated type</a>, <a href="../../tags/functional%20dependency.html">functional dependency</a>, <a href="../../tags/typeclass.html">typeclass</a>]
-	  </small>
+	  <small>Last modified on 28 May 2015 (03:04)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/associated%20type.html">associated type</a>, <a href="../../tags/functional%20dependency.html">functional dependency</a>, <a href="../../tags/typeclass.html">typeclass</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
 	</div>
-	<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>	
     </section>
-  </div> <!-- end posts -->
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = 'jaiyalasio';
-    
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+  </div>
+
+
+
+
+
+
+	  <div class="footer">Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a></div>
+	</div>
+      </div>
+    </div>
+    <script src="../../resources/ui.js"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-
-
-
-	  <div class="footer">
-	    Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
-	  </div> <!-- end footer-->
-	</div> <!-- end content -->
-      </div> <!-- end main -->
-    </div> <!-- end layout -->
-    
-    <script src="../../resources/ui.js"></script>
-    
   </body>
 </html>

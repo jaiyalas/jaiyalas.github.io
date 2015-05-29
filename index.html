@@ -4,27 +4,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Jaiyalas' Blog - Home</title>
-    <!--
-    <link rel="stylesheet" type="text/css" href="/css/default.css" />
-    -->
+    <title>Home</title>
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="./css/blog.css" />
     <link rel="stylesheet" type="text/css" href="./css/side-menu.css" />
-    <link rel="stylesheet" type="text/css" href="./css/other.css" />
-    
+    <link rel="stylesheet" type="text/css" href="./css/other.css" />    
   </head>
   <body>
-
     <div id="layout">
-      <!-- Menu toggle -->
-      <a href="#menu" id="menuLink" class="menu-link">
-	<!-- Hamburger icon -->
-	<span></span>
-      </a>
+      <a href="#menu" id="menuLink" class="menu-link"><span></span></a>
       <div id="menu">
         <div class="pure-menu">
           <a class="pure-menu-heading" href="./index.html">
@@ -38,55 +28,204 @@
 		<i class="fa fa-male fa-lg fa-fw"></i> About</a></li>
           </ul>
         </div>
-      </div> <!-- end menu -->
+      </div>
       <div id="main">
 	<div class="content">
-	    <div class="posts">
-    <h1 class="content-subhead">Jaiyalas' Blog</h1>
-    <section class="post">
-      <header class="post-header">
-	<h2 class="post-title">Recent Posts</h2>
-      </header>
-      <div class="post-description">
-	<p></p>
-	<div class="post-list">
-<!-- A single blog post -->
-  
-  <div class="post-list-item">
-    <!-- <i class="fa fa-check-square-o"></i> -->
-    <i class="fa fa-book fa-2x"></i>
-    <a href="./content/posts/2015-05-27-Polym-TypeFamilies.html" id="title">Type Families and Associated Types.</a>  28 May 2015 (03:09)
+	  <div class="posts">
+<h1 class="content-subhead">Recently Updated Posts</h1>
+
+<section class="post">
+  <header class="post-header">
+    
+    	
+    <h2 class="post-title">Type Families and Associated Types.</h2>
+    
+    	
+    <p class="post-meta">
+      
+      	  By 
+      <a href="#" class="post-author">Jaiyalas</a>
+      .
+      	  
+      	  
+      <small>
+        Posted on 27 May 2015.
+        <a href="../../content/posts/2015-05-27-Polym-TypeFamilies.html">
+          <i class="fa fa-link fa-lg fa-fw"></i>
+        </a>
+      </small>
+      
+      	
+    </p>
+    
+          
+  </header>
+  <div class="post-description">
+    <p class="warn">
+      
+      
+      <i class="fa fa-exclamation-triangle fa-1x"></i>
+       This is an unfinished Post 
+      <i class="fa fa-exclamation-triangle fa-1x "></i>
+      
+      
+    </p>
+    <h2 id="necessary-pragmas">Necessary Pragmas</h2>
+    <h3 id="type-classes-with-multiple-parameters">Type Classes with Multiple Parameters</h3>
+    <div class="sourceCode">
+      <pre class="sourceCode haskell">
+        <code class="sourceCode haskell">
+          <span class="ot">{-# LANGUAGE MultiParamTypeClasses #-}</span>
+        </code>
+      </pre>
+    </div>
+    <p>The typeclass restrict itself single parameter only. MultiParamTypeClasses can release such limitation.</p>
+    <pre>
+      <code>class TC a b where
+  foo :: a -&gt; b -&gt; a</code>
+    </pre>
+    <h3 id="repeated-type-variables-in-type-instances">Repeated Type Variables in Type Instances</h3>
+    <div class="sourceCode">
+      <pre class="sourceCode haskell">
+        <code class="sourceCode haskell">
+          <span class="ot">{-# LANGUAGE FlexibleInstances #-}</span>
+        </code>
+      </pre>
+    </div>
+    <p>
+      For any instance of typeclass, haskell assume that each type variable appears at most once in the instance by default. This restriction can be released by simply using 
+      <code>FlexibleInstances</code>
+      .
+    </p>
+    <pre>
+      <code>class TC a b where
+  foo a -&gt; b -&gt; a 
+instance TC a a where
+  foo _ = id</code>
+    </pre>
   </div>
-  
-  <div class="post-list-item">
-    <!-- <i class="fa fa-check-square-o"></i> -->
-    <i class="fa fa-book fa-2x"></i>
-    <a href="./content/posts/2015-05-27-TryJuiyPixels.html" id="title">Basic Image Processing with JuicyPixels in Haskell</a>  28 May 2015 (03:01)
+</section>
+
+<section class="post">
+  <header class="post-header">
+    
+    	
+    <h2 class="post-title">Basic Image Processing with JuicyPixels in Haskell</h2>
+    
+    	
+    <p class="post-meta">
+      
+      	  By 
+      <a href="#" class="post-author">Jaiyalas</a>
+      .
+      	  
+      	  
+      <small>
+        Posted on 27 May 2015.
+        <a href="../../content/posts/2015-05-27-TryJuiyPixels.html">
+          <i class="fa fa-link fa-lg fa-fw"></i>
+        </a>
+      </small>
+      
+      	
+    </p>
+    
+          
+  </header>
+  <div class="post-description">
+    <p class="warn">
+      
+      
+      <i class="fa fa-exclamation-triangle fa-1x"></i>
+       This is an unfinished Post 
+      <i class="fa fa-exclamation-triangle fa-1x "></i>
+      
+      
+    </p>
+    <h2 id="pixel">Pixel!</h2>
+    <h3 id="byte-level-manipulation-in-haskell">Byte-level Manipulation in Haskell</h3>
+    <p>
+      In haskell, usually we use 
+      <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString.html">
+        <code>Data.ByteString</code>
+      </a>
+       or 
+      <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString-Lazy.html">
+        <code>Data.ByteString.Lazy</code>
+      </a>
+       as a container of raw data. Which means we will use some thing like 
+      <a href="http://hackage.haskell.org/package/base-4.8.0.0/docs/Data-Word.html#t:Word8">
+        <code>Word8</code>
+      </a>
+       to present one byte and thus manipulate data byte by byte.
+    </p>
+    <p>
+      Additionally, since 
+      <code>Word8</code>
+       are an instance of type class 
+      <code>Num</code>
+       and 
+      <code>Integral</code>
+      , one could simply use
+    </p>
+    <div class="sourceCode">
+      <pre class="sourceCode haskell">
+        <code class="sourceCode haskell">
+          fromInteger
+          <span class="ot"> ::</span>
+           
+          <span class="dt">Integer</span>
+           
+          <span class="ot">-&gt;</span>
+           
+          <span class="dt">Word8</span>
+            
+          toInteger
+          <span class="ot"> ::</span>
+           
+          <span class="dt">Word8</span>
+           
+          <span class="ot">-&gt;</span>
+           
+          <span class="dt">Integer</span>
+            
+        </code>
+      </pre>
+    </div>
+    <p>
+      to handle bytes as integers. The module 
+      <code>Data.ByteString</code>
+       and 
+      <code>Data.ByteString.Lazy</code>
+       are both provide some functions to convert between 
+      <code>ByteString</code>
+       and 
+      <code>[Word8]</code>
+      .
+    </p>
+    <h3 id="present-pixels-in-juicypixels">Present Pixels in JuicyPixels</h3>
+    <p>Pixel 是一個 type class 內涵一些 operation 和一個 associated type synonym - PixelBaseComponent</p>
+    <p>Firstly JuicyPixels provides several basic pixel types,</p>
   </div>
-  
-  <div class="post-list-item">
-    <!-- <i class="fa fa-check-square-o"></i> -->
-    <i class="fa fa-book fa-2x"></i>
-    <a href="./content/posts/2015-05-27-sampling-element.html" id="title">How to sample an element from varied structures.</a>  28 May 2015 (03:04)
-  </div>
-  
+</section>
+
 </div>
 
+	  <div class="footer">Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a></div>
+	</div>
       </div>
-    </section>
-  </div>
-
-
-
-
-	  <div class="footer">
-	    Powered by <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
-	  </div> <!-- end footer-->
-	</div> <!-- end content -->
-      </div> <!-- end main -->
-    </div> <!-- end layout -->
-    
+    </div>
     <script src="./resources/ui.js"></script>
-    
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
   </body>
 </html>

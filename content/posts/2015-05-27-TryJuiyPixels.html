@@ -35,7 +35,7 @@
     <h1 class="content-subhead">Jaiyalas'</h1>
     <section class="post">
       <header class="post-header">
-	<h2 class="post-title">Basic Image Processing with JuicyPixels in Haskell</h2>
+	<h2 class="post-title">Basic image processing with JuicyPixels in Haskell</h2>
 	<p class="post-meta">
 	  By <a href="#" class="post-author">Jaiyalas</a>.
 	  
@@ -46,6 +46,7 @@
 	<p class="warn">
 <i class="fa fa-exclamation-triangle fa-1x"></i> This is an unfinished Post <i class="fa fa-exclamation-triangle fa-1x "></i>
 </p>
+<p>I will introduce some basic ways to read/write/manipulate image file with JuicyPixels.</p>
 <h2 id="pixel">Pixel!</h2>
 <h3 id="byte-level-manipulation-in-haskell">Byte-level Manipulation in Haskell</h3>
 <p>In haskell, usually we use <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString.html"><code>Data.ByteString</code></a> or <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString-Lazy.html"><code>Data.ByteString.Lazy</code></a> as a container of raw data. Which means we will use some thing like <a href="http://hackage.haskell.org/package/base-4.8.0.0/docs/Data-Word.html#t:Word8"><code>Word8</code></a> to present one byte and thus manipulate data byte by byte.</p>
@@ -86,7 +87,7 @@ toInteger<span class="ot"> ::</span> <span class="dt">Word8</span> <span class="
                   <span class="fu">|</span> <span class="dt">ImageCMYK8</span> (<span class="dt">Image</span> <span class="dt">PixelCMYK8</span>)</code></pre></div>
       </div>
 	<div class="post-footnote">
-	  <small>Last modified on 28 May 2015 (03:01)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/JuicyPixels.html">JuicyPixels</a>, <a href="../../tags/image%20process.html">image process</a>]</small>
+	  <small>Last modified on 29 May 2015 (17:04)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/JuicyPixels.html">JuicyPixels</a>, <a href="../../tags/image%20process.html">image process</a>]</small>
 	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
 	  <div id="disqus_thread"></div>
 	</div>

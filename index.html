@@ -38,7 +38,7 @@
   <header class="post-header">
     
     	
-    <h2 class="post-title">Type Families and Associated Types.</h2>
+    <h2 class="post-title">For old time's sake.</h2>
     
     	
     <p class="post-meta">
@@ -49,8 +49,8 @@
       	  
       	  
       <small>
-        Posted on 27 May 2015.
-        <a href="../../content/posts/2015-05-27-Polym-TypeFamilies.html">
+        Posted on 29 May 2015.
+        <a href="../../content/posts/2015-05-29-old-time.html">
           <i class="fa fa-link fa-lg fa-fw"></i>
         </a>
       </small>
@@ -61,56 +61,57 @@
           
   </header>
   <div class="post-description">
-    <p class="warn">
+    <p>Today we will have a short overview of old data-/time-related packages listed as follows:</p>
+    <ul>
       
       
-      <i class="fa fa-exclamation-triangle fa-1x"></i>
-       This is an unfinished Post 
-      <i class="fa fa-exclamation-triangle fa-1x "></i>
+      <li>
+        <a href="https://hackage.haskell.org/package/old-time">old-time</a>
+      </li>
       
       
-    </p>
-    <h2 id="necessary-pragmas">Necessary Pragmas</h2>
-    <h3 id="type-classes-with-multiple-parameters">Type Classes with Multiple Parameters</h3>
-    <div class="sourceCode">
-      <pre class="sourceCode haskell">
-        <code class="sourceCode haskell">
-          <span class="ot">{-# LANGUAGE MultiParamTypeClasses #-}</span>
-        </code>
-      </pre>
-    </div>
-    <p>The typeclass restrict itself single parameter only. MultiParamTypeClasses can release such limitation.</p>
-    <pre>
-      <code>class TC a b where
-  foo :: a -&gt; b -&gt; a</code>
-    </pre>
-    <h3 id="repeated-type-variables-in-type-instances">Repeated Type Variables in Type Instances</h3>
-    <div class="sourceCode">
-      <pre class="sourceCode haskell">
-        <code class="sourceCode haskell">
-          <span class="ot">{-# LANGUAGE FlexibleInstances #-}</span>
-        </code>
-      </pre>
-    </div>
+      <li>
+        <a href="http://hackage.haskell.org/package/time-compat">time-compat</a>
+      </li>
+      
+      
+      <li>
+        <a href="https://hackage.haskell.org/package/old-locale">old-locale</a>
+      </li>
+      
+      
+      <li>
+        <a href="http://hackage.haskell.org/package/time-locale-compat">time-locale-compat</a>
+         
+        <a href="#fn1" class="footnoteRef" id="fnref1">
+          <sup>1</sup>
+        </a>
+      </li>
+      
+      
+    </ul>
     <p>
-      For any instance of typeclass, haskell assume that each type variable appears at most once in the instance by default. This restriction can be released by simply using 
-      <code>FlexibleInstances</code>
-      .
+      Those modules are very easily to use but have some shortcomings. The 
+      <strong>old-time</strong>
+      (
+      <code>System.Time</code>
+      ) has poor supporting on locale and formating and lack functions to manipulate times. And the 
+      <code>TimeDiff</code>
+       is not very sueful. The 
+      <strong>old-locale</strong>
+      (
+      <code>System.Locale</code>
+      )
     </p>
-    <pre>
-      <code>class TC a b where
-  foo a -&gt; b -&gt; a 
-instance TC a a where
-  foo _ = id</code>
-    </pre>
   </div>
 </section>
+<a href="#">read more... </a>
 
 <section class="post">
   <header class="post-header">
     
     	
-    <h2 class="post-title">Basic Image Processing with JuicyPixels in Haskell</h2>
+    <h2 class="post-title">Localization with Data.Time.Format.Locale.</h2>
     
     	
     <p class="post-meta">
@@ -121,8 +122,8 @@ instance TC a a where
       	  
       	  
       <small>
-        Posted on 27 May 2015.
-        <a href="../../content/posts/2015-05-27-TryJuiyPixels.html">
+        Posted on 29 May 2015.
+        <a href="../../content/posts/2015-05-29-Locale.html">
           <i class="fa fa-link fa-lg fa-fw"></i>
         </a>
       </small>
@@ -133,81 +134,78 @@ instance TC a a where
           
   </header>
   <div class="post-description">
-    <p class="warn">
-      
-      
-      <i class="fa fa-exclamation-triangle fa-1x"></i>
-       This is an unfinished Post 
-      <i class="fa fa-exclamation-triangle fa-1x "></i>
-      
-      
-    </p>
-    <h2 id="pixel">Pixel!</h2>
-    <h3 id="byte-level-manipulation-in-haskell">Byte-level Manipulation in Haskell</h3>
     <p>
-      In haskell, usually we use 
-      <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString.html">
-        <code>Data.ByteString</code>
-      </a>
-       or 
-      <a href="http://hackage.haskell.org/package/bytestring-0.10.6.0/docs/Data-ByteString-Lazy.html">
-        <code>Data.ByteString.Lazy</code>
-      </a>
-       as a container of raw data. Which means we will use some thing like 
-      <a href="http://hackage.haskell.org/package/base-4.8.0.0/docs/Data-Word.html#t:Word8">
-        <code>Word8</code>
-      </a>
-       to present one byte and thus manipulate data byte by byte.
+      In haskell, locale is defined as a set of 
+      <em>how to present date and time nicely</em>
+      . Here we only discuss 
+      <code>Data.Time.Format.TimeLocale</code>
+       not 
+      <code>Ststem.Locale</code>
+      .
     </p>
     <p>
-      Additionally, since 
-      <code>Word8</code>
-       are an instance of type class 
-      <code>Num</code>
-       and 
-      <code>Integral</code>
-      , one could simply use
+      Module 
+      <code>Data.Time.Format</code>
+       provides
     </p>
     <div class="sourceCode">
       <pre class="sourceCode haskell">
         <code class="sourceCode haskell">
-          fromInteger
-          <span class="ot"> ::</span>
+          <span class="kw">data</span>
            
-          <span class="dt">Integer</span>
+          <span class="dt">TimeLocale</span>
            
-          <span class="ot">-&gt;</span>
+          <span class="fu">=</span>
            
-          <span class="dt">Word8</span>
-            
-          toInteger
-          <span class="ot"> ::</span>
+          <span class="dt">TimeLocale</span>
+           {
+          
+          <span class="ot">        wDays  ::</span>
+           [(
+          <span class="dt">String</span>
+          , 
+          <span class="dt">String</span>
+          )],
+          
+          <span class="ot">        months ::</span>
+           [(
+          <span class="dt">String</span>
+          , 
+          <span class="dt">String</span>
+          )],
+          
+          <span class="ot">        amPm   ::</span>
+           (
+          <span class="dt">String</span>
+          , 
+          <span class="dt">String</span>
+          ),
+                  dateTimeFmt, dateFmt,
+                  timeFmt,
+          <span class="ot"> time12Fmt ::</span>
            
-          <span class="dt">Word8</span>
-           
-          <span class="ot">-&gt;</span>
-           
-          <span class="dt">Integer</span>
-            
+          <span class="dt">String</span>
+          ,
+          
+          <span class="ot">        knownTimeZones ::</span>
+           [
+          <span class="dt">TimeZone</span>
+          ]
+                  } 
+          <span class="kw">deriving</span>
+           (
+          <span class="dt">Eq</span>
+          , 
+          <span class="dt">Ord</span>
+          , 
+          <span class="dt">Show</span>
+          )
         </code>
       </pre>
     </div>
-    <p>
-      to handle bytes as integers. The module 
-      <code>Data.ByteString</code>
-       and 
-      <code>Data.ByteString.Lazy</code>
-       are both provide some functions to convert between 
-      <code>ByteString</code>
-       and 
-      <code>[Word8]</code>
-      .
-    </p>
-    <h3 id="present-pixels-in-juicypixels">Present Pixels in JuicyPixels</h3>
-    <p>Pixel 是一個 type class 內涵一些 operation 和一個 associated type synonym - PixelBaseComponent</p>
-    <p>Firstly JuicyPixels provides several basic pixel types,</p>
   </div>
 </section>
+<a href="#">read more... </a>
 
 </div>
 

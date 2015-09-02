@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
     <link rel="stylesheet" type="text/css" href="../../css/side-menu.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/other.css" />    
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />   
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
   <body>
     <div id="layout">
@@ -39,13 +40,15 @@
 	<p class="post-meta">
 	  By <a href="#" class="post-author">Jaiyalas</a>.
 	  
-	  <small>Posted on 27 May 2015.<a href="../../content/posts/2015-05-27-sampling-element.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
+        <small>Posted on 27 May 2015.<a href="../../content/posts/2015-05-27-sampling-element.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 30 May 2015 (21:55)</small>
 	</p>
       </header>
       <div class="post-description">
 	<p>Assume that function <code>sample</code> can pick a element from a massive structure. To define such <code>sample</code> for different structures, one would naturally try to define a typeclass:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Samplible</span> a <span class="kw">where</span>
 <span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div>
+<!--more-->
 <p>This typeclass, however, is too generalized to use. The following instance is illegal since ghc cannot match <code>head :: forall a.[a] -&gt; a</code> with <code>sample :: forall a b. a -&gt; b</code>.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Samplible</span> [a] <span class="kw">where</span>
   sample <span class="fu">=</span> head <span class="co">-- ERROR</span></code></pre></div>
@@ -92,7 +95,7 @@
 <span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div>
       </div>
 	<div class="post-footnote">
-	  <small>Last modified on 29 May 2015 (17:03)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/associated%20type.html">associated type</a>, <a href="../../tags/functional%20dependency.html">functional dependency</a>, <a href="../../tags/typeclass.html">typeclass</a>]</small>
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/associated%20type.html">associated type</a>, <a href="../../tags/functional%20dependency.html">functional dependency</a>, <a href="../../tags/typeclass.html">typeclass</a>]</small>
 	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
 	  <div id="disqus_thread"></div>
 	</div>

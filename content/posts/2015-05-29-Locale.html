@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
     <link rel="stylesheet" type="text/css" href="../../css/side-menu.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/other.css" />    
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   </head>
   <body>
     <div id="layout">
@@ -32,18 +33,21 @@
       <div id="main">
 	<div class="content">
 	    <div class="posts">
-    <h1 class="content-subhead">Jaiyalas'</h1>
-    <section class="post">
+    <h1 class="content-subhead">Jaiyalas' Notes on Computing Science</h1>
+      <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Localization with Data.Time.Format.Locale.</h2>
 	<p class="post-meta">
-	  By <a href="#" class="post-author">Jaiyalas</a>.
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>.
 	  
-	  <small>Posted on 29 May 2015.<a href="../../content/posts/2015-05-29-Locale.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small>
+        <small>Posted on 29 May 2015.
+            <a href="../../content/posts/2015-05-29-Locale.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 02 Sep 2015 (17:31)</small>
 	</p>
       </header>
       <div class="post-description">
 	<p>In haskell, locale is defined as a set of <em>how to present date and time nicely</em>. Here we only discuss <code>Data.Time.Format.TimeLocale</code> not <code>Ststem.Locale</code>.</p>
+<!--more-->
 <p>Module <code>Data.Time.Format</code> provides</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TimeLocale</span> <span class="fu">=</span> <span class="dt">TimeLocale</span> {
 <span class="ot">        wDays  ::</span> [(<span class="dt">String</span>, <span class="dt">String</span>)],
@@ -120,7 +124,7 @@ defaultTimeLocale <span class="fu">=</span>  <span class="dt">TimeLocale</span> 
         }</code></pre></div>
       </div>
 	<div class="post-footnote">
-	  <small>Last modified on 29 May 2015 (17:12)[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/packages.html">packages</a>, <a href="../../tags/time.html">time</a>]</small>
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/packages.html">packages</a>, <a href="../../tags/time.html">time</a>]</small>
 	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
 	  <div id="disqus_thread"></div>
 	</div>
@@ -136,6 +140,7 @@ defaultTimeLocale <span class="fu">=</span>  <span class="dt">TimeLocale</span> 
 	</div>
       </div>
     </div>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../../resources/ui.js"></script>
     <script type="text/javascript">
       /* * * CONFIGURATION VARIABLES * * */

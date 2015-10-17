@@ -42,17 +42,17 @@
 	  
         <small>Posted on 03 Aug 2015.
             <a href="../../content/posts/2015-08-03-Contravariance.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 17 Oct 2015 (00:00)</small>
+        <small>Last modified on 17 Oct 2015 (00:11)</small>
 	</p>
       </header>
       <div class="post-description">
 	<p>In category, a contravariant functor is not thing but a functor with reversed output. For example, given type <code>a</code>, <code>b</code> in category <code>C</code> and a morphism <code>f :: a -&gt; b</code>, a functor <code>CF</code> is a contravariant functor if <code>CF f</code> has type as <code>CF b -&gt; CF a</code></p>
+<!--more-->
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Data.Functor.Contravariant</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Contravariant</span> f <span class="kw">where</span>
 <span class="ot">  contramap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f b <span class="ot">-&gt;</span> f a
 <span class="ot">  (&gt;$) ::</span> b <span class="ot">-&gt;</span> f b <span class="ot">-&gt;</span> f a
   (<span class="fu">&gt;$</span>) <span class="fu">=</span> contramap <span class="fu">.</span> const</code></pre></div>
-<!--more-->
       </div>
 	<div class="post-footnote">
 	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/typeclass.html">typeclass</a>]</small>

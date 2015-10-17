@@ -42,23 +42,25 @@
 	  
         <small>Posted on 17 Oct 2015.
             <a href="../../content/posts/2015-10-17-hackage.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 16 Oct 2015 (23:57)</small>
+        <small>Last modified on 17 Oct 2015 (00:11)</small>
 	</p>
       </header>
       <div class="post-description">
 	<p>一個 haskell package 的版本號是有明確意義而不是隨便亂取的數字開心就好的。 到底這些數字個別有什麼意思？不同的數字間又代表了什麼差異？接下來我們會簡單介紹一下， 希望對於有心開發 hackage 的人會有幫助。</p>
 <p>此外，我們說一個 <code>instance C T</code> 是一個孤兒 (<em>orphan instance</em>) 是指這個 instance 既不是和 <code>data T</code> 一起被定義在同一個 module 中，也不是和 <code>class C</code> 一起被定義在同一個 module 中。這樣的 instance 會產生一些 importing 上面的問題，也因此這個議題對於開發 hackage 的人來說是值得了解的。</p>
 <!--more-->
-<h2 id="關於版本號">關於版本號</h2>
+<h2 id="版本號">版本號</h2>
 <p>一個 haskell package 的版本號基本上都具有 <strong>A.B.C</strong> 的形式。其中 <strong>A.B</strong> 被稱為是<strong>主要版本號</strong> (<em>major</em> version number)，而 <strong>C</strong> 則是<strong>次要版本號</strong> (<em>minor</em> version number)。除了 <strong>A.B.C</strong> 以外，目前還允許更多的數字當做是輔助的版本號，例如說 <code>1.2.1.1</code>。 原則上版本號會根據下列 policy 來做變更：</p>
+<p>[如果出現下列變更，增加主要版本號 <strong>A.B</strong>]</p>
 <ul>
-<li>如果出現下列變更，增加主要版本號 <strong>A.B</strong></li>
 <li>刪除<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> entities<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
 <li>刪除 instances</li>
 <li>更改 entities 的型別 (type)</li>
 <li>更改 datatype 或 classes 的定義更改</li>
 <li>新增 orphan instances (<a href="#orphan">更多細節</a>)</li>
-<li>如果出現下列變更，<strong>A.B</strong> 不變，但是增加 <strong>C</strong>：</li>
+</ul>
+<p>[如果出現下列變更，<strong>A.B</strong> 不變，但是增加 <strong>C</strong>]</p>
+<ul>
 <li>新增 bindings (即 funcions 或 variables) 或 types 或 classes</li>
 <li>新增 non-orphan instances</li>
 <li>新增 modules (<a href="#addmodule">更多細節</a>)</li>
@@ -75,13 +77,13 @@
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">ABC.Tree</span>
 <span class="kw">import </span><span class="dt">Another.Tree</span> <span class="kw">hiding</span> (yoo, loo)</code></pre></div>
 <p>第一種方法可以有效地避免兩個 modules 之間的內容物撞名問題。所以兩個 modules 不管怎麼新增東西都還是不會有撞名的問題， 因此我們可以設定比較寬鬆的 dependency 如</p>
-<pre><code>abc     &gt;= 2.1.2 &amp;&amp; &lt; 2.2
-another &gt;= 1.1.1 &amp;&amp; &lt; 1.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.2</span>
+another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.2</span></code></pre></div>
 <p>第二種 importing 方法就沒那麼好了。第一個問題是，假設兩個 modules 同時都新增了一個叫做 <code>xoo</code> 的 function， 那麼很容易我們可以發現這會有撞名問題。為了在更新這兩個 packages 時避免這種撞名問題，我們被迫只能設定比較嚴格的 dependency 如</p>
-<pre><code>abc     &gt;= 2.1.2 &amp;&amp; &lt; 2.1.3
-another &gt;= 1.1.1 &amp;&amp; &lt; 1.1.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">3</span>
+another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">2</span></code></pre></div>
 <p>此外，第二種 importing 還有一個問題：因為宣告 <em>DEPRECATED</em> 和實際刪除程式碼都視為是刪除(所以需要改主要版本號)，所以我們沒法從主要版本號上面去區別這兩種情況。 用上面的例子來說明：假設 yoo 被宣告成 <em>DEPRECATED</em>，那麼第二種方法會在 yoo 真的被刪除時出現 importing 錯誤。</p>
-<h2 id="orphan">關於孤兒 (<em>orphan instance</em>)</h2>
+<h2 id="orphan">孤兒 (<em>orphan instance</em>)</h2>
 <p>誠如一開始所介紹的，一個 <code>instance C T</code> 是一個孤兒 (<em>orphan instance</em>) 是指這個 instance 既不是和 <code>data T</code> 一起被定義在同一個 module 中，也不是和 <code>class C</code> 一起被定義在同一個 module 中。</p>
 <p>這會造成什麼問題呢？主要的問題是來自於：「instance 本身是沒有辦法在定義 module 時被暴露 (expose) 的」，實際上這會造成：「我們沒有辦法選擇要或是不要 import 某個或某些 instances」。例如說給定下面兩個 modules</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">TM</span> (<span class="dt">T</span>(<span class="fu">..</span>)) <span class="kw">where</span>

@@ -38,6 +38,30 @@
 
 <section class="post">
   <header class="post-header">
+	<h2 class="post-title">Define and Use Hackage</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>.
+	  
+        <small>Posted on 17 Oct 2015.
+            <a href="./content/posts/2015-10-17-hackage.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 16 Oct 2015 (23:57)</small>
+	</p>
+      </header>
+      <div class="post-description">
+  
+    <p>一個 haskell package 的版本號是有明確意義而不是隨便亂取的數字開心就好的。 到底這些數字個別有什麼意思？不同的數字間又代表了什麼差異？接下來我們會簡單介紹一下， 希望對於有心開發 hackage 的人會有幫助。</p>
+<p>此外，我們說一個 <code>instance C T</code> 是一個孤兒 (<em>orphan instance</em>) 是指這個 instance 既不是和 <code>data T</code> 一起被定義在同一個 module 中，也不是和 <code>class C</code> 一起被定義在同一個 module 中。這樣的 instance 會產生一些 importing 上面的問題，也因此這個議題對於開發 hackage 的人來說是值得了解的。</p>
+
+    <p>... <a href="./content/posts/2015-10-17-hackage.html" id="title">read more</a></p>
+  
+      </div>
+	<div class="post-footnote">
+      <small>[Tags: haskell, hackage]</small>
+	</div>
+    </section>
+
+<section class="post">
+  <header class="post-header">
 	<h2 class="post-title">For old time's sake.</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>.
@@ -86,31 +110,6 @@
       </div>
 	<div class="post-footnote">
       <small>[Tags: haskell, packages, time]</small>
-	</div>
-    </section>
-
-<section class="post">
-  <header class="post-header">
-	<h2 class="post-title">How to sample an element from varied structures.</h2>
-	<p class="post-meta">
-	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>.
-	  
-        <small>Posted on 27 May 2015.
-            <a href="./content/posts/2015-05-27-sampling-element.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 30 May 2015 (21:55)</small>
-	</p>
-      </header>
-      <div class="post-description">
-  
-    <p>Assume that function <code>sample</code> can pick a element from a massive structure. To define such <code>sample</code> for different structures, one would naturally try to define a typeclass:</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Samplible</span> a <span class="kw">where</span>
-<span class="ot">  sample ::</span> a <span class="ot">-&gt;</span> b</code></pre></div>
-
-    <p>... <a href="./content/posts/2015-05-27-sampling-element.html" id="title">read more</a></p>
-  
-      </div>
-	<div class="post-footnote">
-      <small>[Tags: haskell, associated type, functional dependency, typeclass]</small>
 	</div>
     </section>
 

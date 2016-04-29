@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>在 SDL2 中貼圖</title>
+<meta name="description" content="在 SDL2 中貼圖">
+<meta name="author" content="jaiyalas" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!--  REMOTE CSS/JS ROUTE -->
+<link rel="stylesheet" href="../js/reveal.js/css/reveal.css" />
+    <link rel="stylesheet" href="../js/reveal.js/css/theme/moon.css" id="theme" />
+    <link rel="stylesheet" href="../css/custom.css" />
+<link rel="stylesheet" href="../css/syntaxH.css" />
+
+
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+  if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = '/js/reveal.js/css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  }
+</script>
+<!--[if lt IE 9]>
+<script src="/js/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<section>
+    <h1 class="title">在 SDL2 中貼圖</h1>
+    <h2 class="author">jaiyalas</h2>
+    <h3 class="date">Mar/16/2016</h3>
+</section>
+
+<section><section id="前言" class="titleslide slide level1"><h1>前言</h1></section><section id="simple-directmedia-layer" class="slide level2" data-background="img/img01.png">
+<h1>Simple DirectMedia Layer</h1>
+<p>SDL, is a library designed to provide <em>low level</em> access to <em>audio</em>, <em>keyboard</em>, <em>mouse</em>, joystick, and <em>graphics hardware</em> via <em>OpenGL</em> and Direct3D.</p>
+</section><section id="section" class="slide level2">
+<h1></h1>
+<ul>
+<li><p><strong>Surface</strong></p>
+<ul>
+<li><p>is used in <em>software</em> rendering</p></li>
+<li><p>using regular <strong>RAM</strong> to store image data</p></li>
+<li><p>using <em>CPU</em></p></li>
+</ul></li>
+<li><p><strong>Texture</strong></p>
+<ul>
+<li><p>is used in <em>hardware</em> rendering</p></li>
+<li><p>using regular <strong>VRAM</strong> to store image data</p></li>
+<li><p>using <em>GPU</em> (internally, using OpenGL)</p></li>
+</ul></li>
+</ul>
+</section><section id="section-1" class="slide level2">
+<h1></h1>
+<p>有兩套 haskell bindings to SDL 2 library,</p>
+<ul>
+<li><a href="https://hackage.haskell.org/package/SDL">SDL</a>
+<ul>
+<li>Francesco Ariis</li>
+<li>Downloads: 9165 total</li>
+</ul></li>
+<li><a href="https://hackage.haskell.org/package/sdl2">sdl2</a>
+<ul>
+<li>Gabríel Arthúr Pétursson and Oliver Charles</li>
+<li>Downloads: 5520 total</li>
+</ul></li>
+</ul>
+</section><section id="section-2" class="slide level2">
+<h1></h1>
+<p>關於讀圖， sdl2 只提供了</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">SDL_Surface* SDL_LoadBMP(<span class="dt">const</span> <span class="dt">char</span>* file)</code></pre></div>
+<p>也就是說，我們基本上只有</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">loadBMP ::</span> <span class="dt">MonadIO</span> m <span class="ot">=&gt;</span> FilePath <span class="ot">-&gt;</span> m <span class="dt">Surface</span></code></pre></div>
+</section><section id="我的問題" class="slide level2">
+<h1>我的問題</h1>
+<ul>
+<li>我不想要(只能)用 <em>BMP</em> 呀!</li>
+<li>我不想要(只能)用 <em>Surface</em> 呀!</li>
+</ul>
+</section><section id="我的計畫" class="slide level2">
+<h1>我的計畫</h1>
+<ul>
+<li>Plan A 找人家寫好的 Library</li>
+<li>Plan B 自己讀圖, 自己畫</li>
+</ul>
+</section><section id="a-計畫" class="slide level2">
+<h1>A 計畫</h1>
+<ol type="1">
+<li><p><strong>SDL_image</strong> 2.0 (<strong>C</strong> library)</p>
+<ul>
+<li><p><a href="https://hackage.haskell.org/package/SDL-image">SDL-image</a> (Haskell package)</p>
+<ul>
+<li>depends on that <em>SDL</em></li>
+</ul></li>
+</ul></li>
+<li><p><a href="http://hackage.haskell.org/package/JuicyPixels">JuixyPixel</a> (<strong>Haskell</strong> package)</p>
+<ul>
+<li><p>自己的格式: <code class="sourceCode haskell"><span class="dt">Image</span></code></p></li>
+<li><p>沒人寫過 <em>JuixyPixel -&gt; sdl2</em> (至少我沒找到過)</p></li>
+</ul></li>
+</ol>
+</section><section id="放棄" class="slide level2">
+<h1>放棄!!</h1>
+</section><section id="b-計畫" class="slide level2">
+<h1>B 計畫</h1>
+<ul>
+<li><p><a href="https://hackage.haskell.org/package/sdl2-cairo-image"><strong>sdl2-cairo-image</strong></a></p>
+<ul>
+<li><p><em>JiuscyPixel</em>, <em>sdl2</em>, <em>cairo</em> 和 <em>sdl2-cairo</em></p></li>
+<li><p>ill-designed and ill-implemented (buggy + slow)</p></li>
+</ul></li>
+<li><p><strong>sdl2-image</strong></p>
+<ul>
+<li><p>low/high-level binding to SDL_image (C library)</p></li>
+<li><p><a href="https://github.com/jaiyalas/sdl2-image" class="uri">https://github.com/jaiyalas/sdl2-image</a></p></li>
+</ul></li>
+</ul>
+</section></section>
+<section><section id="今天第一個題目" class="titleslide slide level1"><h1>今天第一個題目</h1></section><section id="section-3" class="slide level2" data-background="img/arr.jpg">
+<h1></h1>
+<h2>
+使用 sdl2, sdl2-cairo, cairo 和 JuicyPixels
+</h2>
+<h3>
+來讀/繪圖的崩潰歷程
+</h3>
+</section><section id="section-4" class="slide level2">
+<h1></h1>
+<p>先來整理一下各套件是怎麼儲存圖片的..</p>
+</section><section id="juicypixels" class="slide level2">
+<h1>JuicyPixels</h1>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import qualified</span> <span class="dt">Data.Vector.Storable</span> <span class="kw">as</span> <span class="dt">V</span>
+
+<span class="kw">data</span> <span class="dt">Image</span> a <span class="fu">=</span> <span class="dt">Image</span>
+  {<span class="ot"> imageWidth  ::</span> <span class="ot">{-# UNPACK #-}</span> <span class="fu">!</span><span class="dt">Int</span>
+  ,<span class="ot"> imageHeight ::</span> <span class="ot">{-# UNPACK #-}</span> <span class="fu">!</span><span class="dt">Int</span>
+  ,<span class="ot"> imageData   ::</span> <span class="dt">V.Vector</span> (<span class="dt">PixelBaseComponent</span> a)}</code></pre></div>
+<p>e.g. <code class="sourceCode haskell"><span class="dt">V.Vector</span> <span class="dt">PixelRGBA8</span></code> or <code class="sourceCode haskell"><span class="dt">V.Vector</span> <span class="dt">PixelCMYK16</span></code></p>
+</section><section id="section-5" class="slide level2">
+<h1></h1>
+<h2>
+SDL2 (Texture)
+</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">Texture</span> <span class="fu">=</span>
+    <span class="dt">Texture</span> <span class="dt">Raw.Texture</span> <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Typeable</span>)
+
+<span class="kw">type</span> <span class="dt">Texture</span> <span class="fu">=</span> <span class="dt">Ptr</span> ()</code></pre></div>
+<p>.....(默)</p>
+</section><section id="section-6" class="slide level2">
+<h1></h1>
+<h2>
+SDL2 (Surface)
+</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import qualified</span> <span class="dt">Data.Vector.Storable.Mutable</span> <span class="kw">as</span> <span class="dt">MSV</span>
+
+<span class="kw">data</span> <span class="dt">Surface</span> <span class="fu">=</span> <span class="dt">Surface</span>
+    (<span class="dt">Ptr</span> <span class="dt">Raw.Surface</span>) (<span class="dt">Maybe</span> (<span class="dt">MSV.IOVector</span> <span class="dt">Word8</span>))
+
+<span class="kw">data</span> <span class="dt">Surface</span> <span class="fu">=</span> <span class="dt">Surface</span>
+  { <span class="fu">...</span>
+  ,<span class="ot"> surfacePixels ::</span> <span class="fu">!</span>(<span class="dt">Ptr</span> ())
+  , <span class="fu">...</span>} <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Show</span>, <span class="dt">Typeable</span>)</code></pre></div>
+<ul>
+<li><code class="sourceCode haskell"><span class="dt">MSV.IOVector</span> <span class="dt">Word8</span></code> ?</li>
+<li><code class="sourceCode haskell"><span class="ot">surfacePixels ::</span> <span class="fu">!</span>(<span class="dt">Ptr</span> ())</code> ?</li>
+</ul>
+</section><section id="section-7" class="slide level2">
+<h1></h1>
+<h3>
+放棄 Vector-to-Vector 暴力硬塞法
+</h3>
+<h3>
+我自己一個像素一個像素畫總行了吧?! (ㄋ羞)
+</h3>
+</section><section id="section-8" class="slide level2">
+<h1></h1>
+<p>
+在 sdl2 裡面繪圖要用 <code class="sourceCode haskell"><span class="dt">Renderer</span></code>
+</p>
+<p class="fragment">
+搞不清楚 <code class="sourceCode haskell"><span class="dt">Renderer</span></code>, <code class="sourceCode haskell"><span class="dt">Surface</span></code>, <code class="sourceCode haskell"><span class="dt">Texture</span></code> 仨之間的關係
+</p>
+<p class="fragment">
+聽說 SDL.Cairo.<strong>Canvas</strong> 比較方便繪圖<br />
+改用 <a href="https://hackage.haskell.org/package/sdl2-cairo">sdl2-cairo</a>
+</p>
+<aside class="notes">
+<a href="http://stackoverflow.com/questions/21007329/what-is-a-sdl-renderer">post</a> on stackoverflow explaining <code>Renderer</code>.
+</aside>
+</section><section id="section-9" class="slide level2">
+<h1></h1>
+<p>Canvas 可以...</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Canvas</span> a <span class="fu">=</span> <span class="fu">...</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Instances</span>
+    <span class="dt">Functor</span> <span class="dt">Canvas</span>
+    <span class="dt">Applicative</span> <span class="dt">Canvas</span>
+    <span class="dt">Monad</span> <span class="dt">Canvas</span>
+    <span class="dt">MonadIO</span> <span class="dt">Canvas</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">...</span> <span class="fu">=</span> <span class="kw">do</span>
+  background <span class="fu">$</span> gray <span class="dv">102</span>
+  fill <span class="fu">$</span> red <span class="dv">255</span> <span class="fu">!@</span> <span class="dv">128</span>
+  noStroke
+  rect <span class="fu">$</span> <span class="dt">D</span> <span class="dv">200</span> <span class="dv">200</span> <span class="dv">100</span> <span class="dv">100</span>
+  <span class="fu">...</span></code></pre></div>
+</section><section id="section-10" class="slide level2">
+<h1></h1>
+<p>但是</p>
+<blockquote>
+<p>wrapper around the Cairo <code class="sourceCode haskell"><span class="dt">Render</span></code> monad, providing a Processing-style API.</p>
+</blockquote>
+<p class="fragment">
+那我何必呢? 直接用 Cairo 的 <code class="sourceCode haskell"><span class="dt">Render</span></code> 就好啦~ orz
+</p>
+</section><section id="section-11" class="slide level2">
+<h1></h1>
+<p>乾脆兩種都做：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Pixel</span> px <span class="ot">=&gt;</span> <span class="dt">RenderablePixel</span> px <span class="kw">where</span>
+<span class="ot">    drawPx ::</span> (<span class="dt">V2</span> <span class="dt">Int</span>, px) <span class="ot">-&gt;</span> <span class="dt">Canvas</span> ()
+
+<span class="kw">class</span> <span class="dt">Pixel</span> px <span class="ot">=&gt;</span> <span class="dt">RenderablePixelC</span> px <span class="kw">where</span>
+<span class="ot">    renderPx ::</span> (<span class="dt">V2</span> <span class="dt">Int</span>, px) <span class="ot">-&gt;</span> <span class="dt">Render</span> ()</code></pre></div>
+<p>連結： <a href="https://hackage.haskell.org/package/sdl2-cairo-image">sdl2-cairo-image</a>, <a href="https://github.com/jaiyalas/sdl2-cairo-image/blob/master/src/SDL/Cairo/Image/Render.hs">Render.hs</a></p>
+</section><section id="then.." class="slide level2">
+<h1>Then..</h1>
+<ul>
+<li>lots of bug..</li>
+<li>Vector-to-Vector</li>
+<li>rendering with <code>Renderer</code></li>
+</ul>
+</section></section>
+<section><section id="今天第二個題目" class="titleslide slide level1"><h1>今天第二個題目</h1></section><section id="section-12" class="slide level2">
+<h1></h1>
+沒有 depends on <em>sdl2</em> 的 <strong>SDL_image</strong> binding 是吧?!
+<h2 class="fragment">
+我自己寫！
+</h2>
+</section><section id="section-13" class="slide level2">
+<h1></h1>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">+---</span> Image.hs
+<span class="kw">|---</span> Image
+     <span class="kw">+---</span> General.hs
+     <span class="kw">|---</span> Info.hs
+     <span class="kw">|---</span> Loading.hs
+     <span class="kw">|---</span> Raw.hs
+     <span class="kw">|---</span> Raw
+          <span class="kw">+---</span> General.hs
+          <span class="kw">|---</span> Info.hs
+          <span class="kw">|---</span> Loading.hs
+          <span class="kw">|---</span> Enum.hsc</code></pre></div>
+</section><section id="step-1" class="slide level2">
+<h1>Step 1</h1>
+<p>設定 cabal (以 sdl2-image 為例)</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">includes<span class="fu">:</span>
+  SDL_image.h
+extra<span class="fu">-</span>libraries<span class="fu">:</span>
+  <span class="dt">SDL2_image</span>
+pkgconfig<span class="fu">-</span>depends<span class="fu">:</span>
+  <span class="dt">SDL2_image</span> <span class="fu">&gt;=</span> <span class="fl">2.0</span><span class="fu">.</span><span class="dv">0</span></code></pre></div>
+</section><section id="step-2" class="slide level2">
+<h1>Step 2</h1>
+<ul>
+<li>建立 <strong>.hsc</strong> 檔案來描述 Haskell 對 C 介面</li>
+<li>.hsc 裡面支援很多指令來直接和 C 做溝通
+<ul>
+<li><code>#include</code></li>
+<li><code>#const</code></li>
+<li><code>#type</code></li>
+</ul></li>
+<li>可以都用來描述 <strong>常數</strong> 和 <strong>結構</strong> 等等</li>
+<li>通常塞在檔案結構的很裡面(<code>.../Raw/</code> 下面)</li>
+</ul>
+<aside class="notes">
+更多指令請參考<a href="https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/hsc2hs.html">hsc2hs</a>。
+</aside>
+</section><section id="section-14" class="slide level2">
+<h1></h1>
+<h3 id="範例-常數">範例: 常數</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SDL.Image.Raw.Enum</span> <span class="kw">where</span>
+<span class="fu">--</span>
+<span class="st">#include &quot;SDL_image.h&quot;</span>
+<span class="fu">--</span>
+pattern <span class="dt">IMG_INIT_JPG</span> <span class="fu">=</span> (<span class="fu">#</span>const <span class="dt">IMG_INIT_JPG</span>)<span class="ot"> ::</span> <span class="dt">CInt</span>
+pattern <span class="dt">IMG_INIT_PNG</span> <span class="fu">=</span> (<span class="fu">#</span>const <span class="dt">IMG_INIT_PNG</span>)<span class="ot"> ::</span> <span class="dt">CInt</span>
+pattern <span class="dt">IMG_INIT_TIF</span> <span class="fu">=</span> (<span class="fu">#</span>const <span class="dt">IMG_INIT_TIF</span>)<span class="ot"> ::</span> <span class="dt">CInt</span></code></pre></div>
+</section><section id="section-15" class="slide level2">
+<h1></h1>
+<h3 id="範例-常數-compiled">範例: 常數 (compiled)</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SDL.Image.Raw.Enum</span> <span class="kw">where</span>
+<span class="fu">--</span>
+<span class="ot">{-# LINE 13 &quot;src/SDL/Image/Raw/Enum.hsc&quot; #-}</span>
+<span class="fu">--</span>
+pattern <span class="dt">IMG_INIT_JPG</span> <span class="fu">=</span> (<span class="dv">1</span>)<span class="ot"> ::</span> <span class="dt">CInt</span>
+<span class="ot">{-# LINE 19 &quot;src/SDL/Image/Raw/Enum.hsc&quot; #-}</span>
+pattern <span class="dt">IMG_INIT_PNG</span> <span class="fu">=</span> (<span class="dv">2</span>)<span class="ot"> ::</span> <span class="dt">CInt</span>
+<span class="ot">{-# LINE 20 &quot;src/SDL/Image/Raw/Enum.hsc&quot; #-}</span>
+pattern <span class="dt">IMG_INIT_TIF</span> <span class="fu">=</span> (<span class="dv">4</span>)<span class="ot"> ::</span> <span class="dt">CInt</span>
+<span class="ot">{-# LINE 21 &quot;src/SDL/Image/Raw/Enum.hsc&quot; #-}</span></code></pre></div>
+</section><section id="section-16" class="slide level2">
+<h1></h1>
+<h3 id="範例-簡單結構">範例: 簡單結構</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Texture</span> <span class="fu">=</span> <span class="dt">Ptr</span> ()
+<span class="kw">type</span> <span class="dt">InitFlag</span> <span class="fu">=</span> <span class="dt">Word32</span>
+<span class="kw">type</span> <span class="dt">Keycode</span> <span class="fu">=</span> (<span class="fu">#</span>type <span class="dt">SDL_Keycode</span>)</code></pre></div>
+</section><section id="section-17" class="slide level2">
+<h1></h1>
+<h3 id="範例-複雜結構">範例: 複雜結構</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Color</span> <span class="fu">=</span> <span class="dt">Color</span> <span class="fu">!</span><span class="dt">Word8</span> <span class="fu">!</span><span class="dt">Word8</span> <span class="fu">!</span><span class="dt">Word8</span> <span class="fu">!</span><span class="dt">Word8</span>
+           <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Show</span>, <span class="dt">Typeable</span>)
+
+<span class="kw">instance</span> <span class="dt">Storable</span> <span class="dt">Color</span> <span class="kw">where</span>
+  sizeOf _ <span class="fu">=</span> (<span class="fu">#</span>size <span class="dt">SDL_Color</span>)
+  peek ptr <span class="fu">=</span> <span class="kw">do</span>
+    r <span class="ot">&lt;-</span> (<span class="fu">#</span>peek <span class="dt">SDL_Color</span>, r) ptr
+    g <span class="ot">&lt;-</span> (<span class="fu">#</span>peek <span class="dt">SDL_Color</span>, g) ptr
+    b <span class="ot">&lt;-</span> (<span class="fu">#</span>peek <span class="dt">SDL_Color</span>, b) ptr
+    a <span class="ot">&lt;-</span> (<span class="fu">#</span>peek <span class="dt">SDL_Color</span>, a) ptr
+    return <span class="fu">$!</span> <span class="dt">Color</span> r g b a</code></pre></div>
+</section><section id="step-3" class="slide level2">
+<h1>Step 3</h1>
+<ul>
+<li>把 C 的 module 變成 <code>../Raw/xxx.hs</code></li>
+</ul>
+<figure>
+<img src="img/sdlimg.png" alt />
+</figure>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"> <span class="kw">|---</span> Raw
+      <span class="kw">+---</span> General.hs
+      <span class="kw">|---</span> Info.hs
+      <span class="kw">|---</span> Loading.hs
+      <span class="kw">|---</span> Enum.hsc</code></pre></div>
+</section><section id="section-18" class="slide level2">
+<h1></h1>
+<h3 id="low-level-binding">low-level binding</h3>
+<ul>
+<li><p><code class="sourceCode haskell">foreign <span class="kw">import </span>ccall</code></p></li>
+<li><p>注意 function <em>type</em>!</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">SDL_Surface *IMG_LoadTyped_RW( SDL_RWops *src
+                             , <span class="dt">int</span> freesrc
+                             , <span class="dt">char</span> *type)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">foreign <span class="kw">import </span>ccall &quot;SDL_image.h <span class="dt">IMG_LoadTyped_RW</span>&quot;
+<span class="ot">   imgLoadRWTyped_FFI ::</span> <span class="dt">Ptr</span> <span class="dt">RowType.RWops</span>
+                      <span class="ot">-&gt;</span> <span class="dt">CInt</span>
+                      <span class="ot">-&gt;</span> <span class="dt">CString</span>
+                      <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">Ptr</span> <span class="dt">RowType.Surface</span>)</code></pre></div>
+</section><section id="section-19" class="slide level2">
+<h1></h1>
+<h3 id="less-low-level-binding"><strong>less</strong>-low-level binding</h3>
+<ul>
+<li><p>可以根據情況再稍微多包一點點</p></li>
+<li><p>讓 type 更有意義一點</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">imgLoadRWTyped ::</span> <span class="dt">MonadIO</span> m <span class="ot">=&gt;</span> <span class="dt">Ptr</span> <span class="dt">RowType.RWops</span>
+               <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+               <span class="ot">-&gt;</span> <span class="dt">CString</span>
+               <span class="ot">-&gt;</span> m (<span class="dt">Ptr</span> <span class="dt">RowType.Surface</span>)
+imgLoadRWTyped p autoFree typeStr <span class="fu">=</span> liftIO <span class="fu">$</span>
+   imgLoadRWTyped_FFI p (fromBool autoFree) typeStr
+<span class="ot">{-# INLINE imgLoadRWTyped #-}</span></code></pre></div>
+</section><section id="step-4" class="slide level2">
+<h1>Step 4</h1>
+<ul>
+<li>設計好用的 <em>data structures</em> 和 <em>type-classes</em></li>
+<li>low-level to <strong>high</strong>-level, e.g.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">imgLoadRWTyped ::</span> <span class="dt">MonadIO</span> m <span class="ot">=&gt;</span> <span class="dt">Ptr</span> <span class="dt">SDL.Row.RWops</span>
+               <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+               <span class="ot">-&gt;</span> <span class="dt">CString</span>
+               <span class="ot">-&gt;</span> m (<span class="dt">Ptr</span> <span class="dt">SDL.Row.Surface</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">surfaceFromImgT ::</span> <span class="dt">MonadIO</span> m <span class="ot">=&gt;</span> <span class="dt">ImageType</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="ot">-&gt;</span> m <span class="dt">SDL.Surface</span></code></pre></div>
+</section><section id="then..-1" class="slide level2">
+<h1>Then..</h1>
+<ul>
+<li>so far so good</li>
+<li>效能不明</li>
+<li>還沒上到 hackage</li>
+<li>連結 <a href="https://github.com/jaiyalas/sdl2-image">sdl2-image(github)</a></li>
+<li>參考連結 <a href="https://github.com/haskell-game/sdl2/">sdl2</a></li>
+</ul>
+</section></section>
+</div>
+</div>
+
+<script src="../js/reveal.js/lib/js/head.min.js"></script>
+<script src="../js/reveal.js/js/reveal.js"></script>
+
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    slideNumber: true,
+    fragments: true,
+  // available themes are in /css/theme
+      theme: Reveal.getQueryHash().theme || 'moon',
+        transition: Reveal.getQueryHash().theme || 'concave',
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+  });
+
+</script>
+</body>
+</html>

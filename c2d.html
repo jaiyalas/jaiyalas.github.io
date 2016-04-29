@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>From Cloud to Dirt</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="./css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="./css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="./css/other.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+  </head>
+  <body>
+    <div class="custom-menu-wrapper">
+        <div class="pure-menu custom-menu custom-menu-top">
+            <a href="./index.html" class="pure-menu-heading custom-menu-brand">Jaiyalas</a>
+        </div>
+        <div class="pure-menu custom-menu pure-menu-horizontal pure-menu-scrollable">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">
+                    From Cloud to Dirt</a></li>
+                <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
+                    Tags</a></li>
+                <li class="pure-menu-item"><a href="./archive.html" class="pure-menu-link">
+                    Archive</a></li>
+                <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">
+                    Slides</a></li>
+                <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">
+                    About</a></li>
+            </ul>
+        </div>
+    </div>
+
+  <div class="mainarea">
+	<div class="content">
+	  <div class="posts">
+    <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">From Cloud to Dirt</h2>
+      </header>
+      <div class="post-description">
+	<p>「從雲端到泥土」(from cloud to dirt, c2d)是一系列關於 Haskell 的教學/筆記文章。這一系列的文章試圖從高階的抽象理論開始一路往低階的 STG machine 去解釋一些名詞和觀念。最終目標是進一步說明與理解 Haskell 的運行與操作方法。追本朔源，這系列的文章始於一個基本的問題「什麼是資料型別(datatype)？」，這個問題又可以進一步分成「Haskell 中的資料型別」、「數學模型中的資料型別」、「實作細節中的資料型別」這三個微略不同的層次。因此，根據抽象的程度，這個系列的文章大略會被切割成三個主題：</p>
+<ul>
+<li>數學模型與指稱語意</li>
+<li>Haskell 中的資料結構與計算</li>
+<li>GHC 與 STG Machine 中的底層表示</li>
+</ul>
+<p>此系列文章仍然是散在此 blog 中，而本篇文章則是此系列文的目錄文章。</p>
+<h2 id="數學模型與指稱語意">數學模型與指稱語意</h2>
+<p>algebraic datatype (inductive data structure?) 這邊的代數指的是乘法和加法 所以 algebraic datatype 是指用 product 和 sum 這兩種 constructions 所產生的資料結構。</p>
+<h2 id="haskell-中的資料結構與計算">Haskell 中的資料結構與計算</h2>
+<ul>
+<li>type theory</li>
+<li>set theory</li>
+<li>domain theory</li>
+<li>denotational semantics</li>
+<li>category theory</li>
+</ul>
+<h2 id="ghc-與-stg-machine-中的底層表示">GHC 與 STG Machine 中的底層表示</h2>
+      </div>
+      <div class="post-footnote">
+  	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+  	  <div id="disqus_thread"></div>
+  	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

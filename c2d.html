@@ -42,24 +42,128 @@
 	<h2 class="post-title">From Cloud to Dirt</h2>
       </header>
       <div class="post-description">
-	<p>「從雲端到泥土」(from cloud to dirt, c2d)是一系列關於 Haskell 的教學/筆記文章。這一系列的文章試圖從高階的抽象理論開始一路往低階的 STG machine 去解釋一些名詞和觀念。最終目標是進一步說明與理解 Haskell 的運行與操作方法。追本朔源，這系列的文章始於一個基本的問題「什麼是資料型別(datatype)？」，這個問題又可以進一步分成「Haskell 中的資料型別」、「數學模型中的資料型別」、「實作細節中的資料型別」這三個微略不同的層次。因此，根據抽象的程度，這個系列的文章大略會被切割成三個主題：</p>
+	<h1 id="緣起">緣起</h1>
+<p>「雲泥之間」是一系列關於 Haskell 的教學/筆記文章。</p>
+<p>最初的目的只是希望釐清幾個常見但是容易混淆的詞彙諸如 boxed 和 lifted 等等， 但是，隨著深入這些詞彙背後的情境，問題漸漸的形成了一個共同的問題： 「<strong>我們怎麼</strong>(在 Haskell 中)<strong>描述資訊</strong>(information<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>)<strong>？</strong>」。 為了進一步地理解這個問題，便產生了這個系列文章。 也許最終沒有辦法有個結論或是答案，但是至少這系列的文章可以留下一些線索， 讓我們可以朝著答案前進。</p>
+<h1 id="系列結構與列表">系列結構與列表</h1>
+<p>我們更進一步地把問題粗略地分成三個不同的層次：</p>
+<ol style="list-style-type: decimal">
+<li>要怎麼在計算世界裡面表示資訊？</li>
+<li>在 Haskell 的世界中資訊被怎麼表示？</li>
+<li>Haskell 怎麼表示資訊？</li>
+</ol>
+<p>兒這三個不同的問題有著各自專屬的理論領域以及著重的重點。 接著，我們根據這三個層次來將此系列文章分成三個子系列： 因為我們探討的是如何在程式(或計算)中表示資訊， 所以第一個子系列，「Denotational Semantics, Domain and Cat」， 將試著整理程式語意以及相關的數學背景。 一旦對於抽象資料建構有一定程度的理解了， 我們接著會在第二個子系列「Constructions on Datatype in Haskell」 試著歸納出 Haskell 中怎麼建構或是表示資訊的方法。 以及這些方法是怎麼對應到數學理論上面的。 最後，最終的子系列「Haskell, GHC and STG Machine」 則是嘗試理解 Haskell 底層怎麼提供 Haskell 能力去讓他可以如是表示資訊。 或者說，試圖去理解 Haskell 底層是怎麼實踐那些抽象的資訊表示方法的。</p>
+<h2 id="denotational-semantics-domain-and-cat">Denotational Semantics, Domain and Cat</h2>
 <ul>
-<li>數學模型與指稱語意</li>
-<li>Haskell 中的資料結構與計算</li>
-<li>GHC 與 STG Machine 中的底層表示</li>
+<li><a href="./content/posts/2016-04-13-liftpoint.html">Pointed? Lifted!</a></li>
 </ul>
-<p>此系列文章仍然是散在此 blog 中，而本篇文章則是此系列文的目錄文章。</p>
-<h2 id="數學模型與指稱語意">數學模型與指稱語意</h2>
 <p>algebraic datatype (inductive data structure?) 這邊的代數指的是乘法和加法 所以 algebraic datatype 是指用 product 和 sum 這兩種 constructions 所產生的資料結構。</p>
-<h2 id="haskell-中的資料結構與計算">Haskell 中的資料結構與計算</h2>
+<p>In language, Composite data type = structure = type composited by primitive type.</p>
+<ul>
+<li>primitive VS composited</li>
+<li>pointed/lifting/lifted/unlifted</li>
+</ul>
+<h2 id="constructions-on-datatype-in-haskell">Constructions on Datatype in Haskell</h2>
 <ul>
 <li>type theory</li>
 <li>set theory</li>
 <li>domain theory</li>
 <li>denotational semantics</li>
 <li>category theory</li>
+<li>kinds, <code>#</code> and <code>*</code></li>
 </ul>
-<h2 id="ghc-與-stg-machine-中的底層表示">GHC 與 STG Machine 中的底層表示</h2>
+<h2 id="haskell-ghc-and-stg-machine">Haskell, GHC and STG Machine</h2>
+<ul>
+<li>something you must know about STG Machine</li>
+<li>Heap objects in STG Machine</li>
+<li>boxed/unboxed</li>
+<li>pack/unpack</li>
+<li>closure/thunk</li>
+</ul>
+<h1 id="參考資料">參考資料</h1>
+<h2 id="stage-i">Stage I</h2>
+<ul>
+<li>Denotational Semantics
+<ul>
+<li>Hutton’s <a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Introduction to Domain Theory</a></li>
+<li>Horwitz’s <a href="http://pages.cs.wisc.edu/~horwitz/CS704-NOTES/8.DOMAIN-THEORY.html">Domain Theory</a></li>
+<li>Haskell Wikibook [Denotational semantics]https://en.wikibooks.org/wiki/Haskell/Denotational_semantics#Algebraic_Data_Types</li>
+</ul></li>
+<li>Layzeness
+<ul>
+<li>Yang’s <a href="http://blog.ezyang.com/2010/12/how-i-learned-to-stop-worrying-and-love-the-bottom/">How I Learned to Stop Worrying and Love the ⊥</a></li>
+<li>Yang’s<a href="http://blog.ezyang.com/2010/12/hussling-haskell-types-into-hasse-diagrams/">Hussling Haskell types into Hasse diagrams</a></li>
+<li>Yang’s <a href="http://blog.ezyang.com/2010/12/gin-and-monotonic/">Gin and monotonic</a> (<a href="http://blog.ezyang.com/2010/12/errata-for-gin-and-monotonic/">Errata</a>)</li>
+<li>Yang’s <a href="http://blog.ezyang.com/2010/12/omega-i-m-lubbin-it/">ω: I’m lubbin’ it</a> – a great way to modularize laziness</li>
+<li>Harper’s <a href="https://existentialtype.wordpress.com/2011/04/24/the-real-point-of-laziness/">The Point of Laziness</a></li>
+</ul></li>
+<li>ADT
+<ul>
+<li>Wikipedia <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">Algebraic data type</a></li>
+<li>Wikipedia <a href="https://en.wikipedia.org/wiki/Generalized_algebraic_data_type">Generalized algebraic data type</a></li>
+<li>Haskell wiki <a href="https://wiki.haskell.org/Algebraic_data_type">Algebraic data type</a></li>
+<li>Haskell wiki <a href="https://wiki.haskell.org/GADT">GADT</a></li>
+</ul></li>
+</ul>
+<h2 id="stage-ii">Stage II</h2>
+<ul>
+<li>WHNF
+<ul>
+<li>Haskell wiki <a href="https://wiki.haskell.org/Weak_head_normal_form">weak head normal form</a></li>
+<li>Haskell wikibook <a href="https://en.wikibooks.org/wiki/Haskell/Graph_reduction#Weak_Head_Normal_Form">weak head normal form</a></li>
+</ul></li>
+<li>Eval and Buttom
+<ul>
+<li>Apfelmus’ <a href="https://hackhands.com/non-strict-semantics-haskell/">Haskell’s Non-Strict Semantics</a></li>
+</ul></li>
+<li>lifting(in general)
+<ul>
+<li>haskell wiki <a href="https://wiki.haskell.org/Lifting">Lifting</a></li>
+</ul></li>
+<li>kinds and datatype
+<ul>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/Kinds">Kinds</a></li>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/UnliftedDataTypes">Unlifted data types</a></li>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/TypeType">The data type Type and its friends</a></li>
+</ul></li>
+</ul>
+<h2 id="stage-iii">Stage III</h2>
+<ul>
+<li>unpack
+<ul>
+<li>GHC user’s guide <a href="https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/pragmas.html#unpack-pragma">7.22.11. UNPACK pragma</a></li>
+<li>Haskell wiki <a href="https://wiki.haskell.org/Performance/Data_types">Performance/Data types</a></li>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/UnpackedSumTypes">Unpacked sum types</a></li>
+</ul></li>
+<li>unboxed
+<ul>
+<li>GHC user’s guide <a href="https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/primitives.html">7.2. Unboxed types and primitive operations</a></li>
+<li>Hashell wiki <a href="https://wiki.haskell.org/Unboxed_type">Unboxed type</a></li>
+<li>Haskell-Cafe <a href="https://mail.haskell.org/pipermail/haskell-cafe/2002-October/003433.html">Boxed versus Unboxed</a></li>
+</ul></li>
+<li>Thunk
+<ul>
+<li>stack overflow <a href="http://stackoverflow.com/questions/13982863/how-much-memory-does-a-thunk-use">How much memory does a thunk use?</a></li>
+</ul></li>
+<li>STG
+<ul>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/GeneratedCode">I know kung fu: learning STG by example</a></li>
+<li>GHC wiki <a href="https://ghc.haskell.org/trac/ghc/wiki/Commentary/Rts/Storage/HeapObjects">GHC Commentary: The Layout of Heap Objects</a></li>
+</ul></li>
+</ul>
+<h2 id="其他或是無關的參考資料與註記">其他或是無關的參考資料與註記</h2>
+<p>Text and how to pick a text library</p>
+<ul>
+<li>Yang’s <a href="http://blog.ezyang.com/2010/08/strings-in-haskell/">How to pick your string library in Haskell</a></li>
+<li>Shmalko’s <a href="http://www.alexeyshmalko.com/2015/haskell-string-types/">Haskell String Types</a></li>
+<li>Haskell wiki <a href="https://wiki.haskell.org/Dealing_with_binary_data">Dealing with binary data</a></li>
+</ul>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>這裡所謂的資訊 (information) 是泛指包含廣泛的資料 (data) 或是資料結構 (data structure) 等等。<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
       </div>
       <div class="post-footnote">
   	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>

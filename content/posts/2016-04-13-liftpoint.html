@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Pointed? Lifted!</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 13 Apr 2016
+            <a href="../../content/posts/2016-04-13-liftpoint.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 17 May 2016 (11:48)</small>
+	</p>
+      </header>
+      <div class="post-description">
+	<p>關於 pointed 和 lifted 這兩個詞，一個有趣的切入點是 denotational semantics。 而這個故事可以從「我們寫出來的程式究竟代表什麼」這個問題開始…</p>
+<!-- 警告，本文章中會涉及 denotational semantics 和 domain theory 的部分基本觀念。如果不具備相關背景知識請先行閱讀[這份講義](http://www.cs.nott.ac.uk/~gmh/dom1.pdf)。 -->
+<!--more-->
+<p>所謂「一個程式的意義」有好幾種不同的理解方式與詮釋方法。例如說「<em>這個程式所有可能計算出來的結果</em>」、「<em>這個程式如何計算出一組結果</em>」或「<em>這個程式滿足哪些條件/特性</em>」等等。</p>
+<p>我們這邊要講的是第一種，也就是我們用「一支程式所有可能計算出來的結果」來代表這程式的意義。或是，直覺地來說，就是一支程式所可能包含/表達的資訊量。這種對於程式意義的解讀方式稱之為「<strong>指稱語意</strong>」 <strong>denotational semantics</strong>。例如說，正整數加法 <code>(+) :: Nat → Nat → Nat</code> 可能回傳出任一正整數，所以我們就用「所有正整數」來表示 <code>(+)</code> 的意義。或者說，<code>even :: Nat → Bool</code> 只可能回傳 <code>True</code> 或是 <code>False</code> 這兩個數值的其中一種，所以我們用 <code>Bool</code> 來表示 <code>even</code>。這種針對某個 function 而蒐集來的所有可能結果在 denotational semantics 中稱之謂一個 semantics domain，或直接簡稱為 domain。</p>
+<p>這樣看來，我們似乎可以很簡單地用一個 set 去描述一個 domain。例如說上面的 <code>even</code> 的 set-theoretical domain 就可以是 <span class="math inline">\(\{True, False\}\)</span>。嗯～看起來豪棒棒！不過，很可惜，這個世界沒有那麼簡單。首先，如果我們想單純用一個 set 來表示一個程式的意義，那麼，recursive function 就變成一個有點讓人尷尬的狀況了。因為我們可以寫出像是：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">foo x <span class="fu">=</span> (foo x) <span class="fu">+</span> <span class="dv">1</span>
+bar x <span class="fu">=</span> bar x</code></pre></div>
+<p>這樣的 function，但是他們的 domain 顯然不會是一個簡單的 set 就可以表示的，因為他們根本不會停下來！另一種情況是，我們不是永遠都是在處理 total function。而對 partial function 而言，是有可能給在碰到某些 input 時會沒法計算 (因為 undefined 嘛)。</p>
+<div class="block-notes">
+<p>其實其他原因，但是這可能超過了這篇文章的主軸。我們這邊需要知道的就只是 set 不夠用來描述程式這件事情就好。如果對於完整的原因有興趣可以參考<a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Domain Theory - G. Hutton</a>裡面的第一篇講義。</p>
+</div>
+<h2 id="pointed-set">Pointed Set</h2>
+<p>好，現在我們已經知道 set 不夠用了，那麼我們需要什麼？從上面的例子中我們知道說我們似乎是欠缺方法來描述「程式不會停」或者說「程式算不出東西」這樣的情況。所以，好像擴充 set 讓他可以多一個「東西」去專門表示這種情況似乎會是個不錯的主意。所以，這裡我們引入 <strong>pointed set</strong> 這個數學結構！</p>
+<div class="block-definition">
+<p>給定一個 set ， 一個 pointed set 是指 <span class="math inline">\(\mathcal{A}\)</span> 和某個特定的 <span class="math inline">\(x\)</span> (<span class="math inline">\(x \in \mathcal{A}\)</span>)。<br />
+這個 <span class="math inline">\(x\)</span> 被稱為 base point，而這個 pointed set 則被表示為 <span class="math inline">\((\mathcal{A}, x)\)</span>。</p>
+</div>
+<p>Pointed set 說穿了沒什麼了不起，就是一個 set 和該 set 裡面某個被特別指定的 element 而已。不過，就因為它具有這樣的一個 explicit membership，剛好就可以讓我們利用來偷偷多塞一個用來表示「算不出來」的 element 到某個集合上面。例如說，我們可以把 <code>Bool</code> = <span class="math inline">\(\{True, False\}\)</span> 給多塞一個 element 而成為 <span class="math inline">\(\{True, False, \mathtt{Bt}\}\)</span>。其中 <span class="math inline">\(\mathtt{Bt}\)</span> 就是那個我們企圖用來表示「算不出來/算不完」的東西。</p>
+<p>所以，比之 <span class="math inline">\((\{True, False, \mathtt{Bt}\}, \mathtt{Bt})\)</span>，現在顯然對於 <code>even</code> 而言 <span class="math inline">\((\{True, False, \mathtt{Bt}\}, \mathtt{Bt})\)</span> 會是一個更完整個 domain 結構。因為我們現在可以描述算不完或是 undefined。</p>
+<h2 id="information-ordering">Information Ordering</h2>
+<p>不過，仔細想想，其實光是有 base point 似乎還是不夠。因為上面那個 <span class="math inline">\(\mathtt{Bt}\)</span> 好像和 <span class="math inline">\(True\)</span> 或 <span class="math inline">\(False\)</span> 之間存在著某種差異。比如說，我們知道 <span class="math inline">\(True \land True = True\)</span> ，但是我們似乎沒有那麼肯定 <span class="math inline">\(True \land \mathtt{Bt}\)</span> 會是什麼。某個程度我們可以把這個差異理解成「資訊量」的不對等。尤其是當我們把 <span class="math inline">\(\mathtt{Bt}\)</span> 理解成 <em>undefined</em>。要注意的是，這裡所謂的資訊量和資訊內容的數值無關。舉例來說，整數 <code>1</code> 和 <code>10</code> 顯然數值上是 <code>10</code> 比較大，但是兩者個資訊的資訊含量是一樣的，都是「一個整數」而已。反過來說，<code>(1, 1)</code> 和 <code>1</code> 的資訊量就是前者比較多。</p>
+<div class="block-notes">
+<p>這裡的 <code>1</code> 和 <code>10</code> 這些的數值都是自然數，而且是指 primitive datatype 而不是 algebraic datatype。 如果這裡的自然數是 algebraic datatype 像 <code>data Nat = Z | S Nat</code> 這種，那這種 Nat 的資訊量的大小就是那個數值的大小。</p>
+</div>
+<p>為了體現這樣的資訊量差異，我們這邊引入了 <em>information ordering</em>。這樣的 information ordering 會是一個 partial ordering relation，並且會用符號 <span class="math inline">\(\sqsubseteq\)</span> 表示。</p>
+<div class="block-definition">
+<p>對一個 set，<span class="math inline">\(\mathcal{A}\)</span>，和一個定義在 <span class="math inline">\(\mathcal{A}\)</span> 上面的 partial ordering relation，<span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span>，<br />
+我們可以做出一個數學結構：<strong>poset</strong>，表示成 <span class="math inline">\((\mathcal{A}, \sqsubseteq_{\mathcal{A}})\)</span>。而且 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 要是：<br />
+<em>reflexive</em> 、 <em>transitive</em> 和 <em>anti-symmetric</em>。</p>
+<p>另外，對一個 poset <span class="math inline">\((\mathcal{A}, \sqsubseteq_{\mathcal{A}})\)</span> 來說，如果其中存在一個 <span class="math inline">\(b \in \mathcal{A}\)</span> 使得 <span class="math inline">\(\forall x \in \mathcal{A}\)</span> ， <span class="math inline">\(b \sqsubseteq_{\mathcal{A}} x\)</span> 都成立，<br />
+則 <span class="math inline">\(b\)</span> 被稱為 least element，並且標記為 <strong>⊥</strong>。</p>
+</div>
+<p>現在，既然我們這邊討論的 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 代表的是資訊量的大小，所以顯然這個 ⊥ 就是上面講到的那個用來表示 <em>undefined</em> 的 <span class="math inline">\(\mathtt{Bt}\)</span>！</p>
+<p>簡單總結一下，我們現在是用一個 pointed poset <span class="math inline">\(((\mathcal{A}, ⊥), \sqsubseteq_{\mathcal{A}})\)</span> 來描述一個 semantics domain。其中 <span class="math inline">\(\mathcal{A}\)</span> 是所有可能被計算出來的結果的集合；⊥ 表示計算結果是 undefined 或 non-terminated；<span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 會將 <span class="math inline">\(\mathcal{A}\)</span> 的所有 elements 分成若干等級。</p>
+<h2 id="pointed-domain-and-lifting">Pointed Domain and Lifting</h2>
+<p>雖說 pointed poset 很好，但是現實上我們程式語言裡面是存在著很多沒有 least element 的 datatype 的。例如說 <code>Int</code>, <code>Double</code>, <code>Char</code> 或 <code>Bool</code> 等等的 primitive type 都沒有內建 least element。這種沒有內建 least element 的 domain 有時候會被稱為 <strong>primitive domain</strong>。而有 least element 的則被稱為 <strong>pointed domain</strong>。</p>
+<p>另一方面，<em>lifting</em> 原本是一個針對 domain 的一個特殊操作：lifting 一個 domain 就是指在該 domain 上面放上 (introduce) 一個新的 ⊥。需要注意的是，lifting 其實是產生一個新的 domain (因為是新的 set 和新的 partial ordering relation)，稱為 <strong>lifted domain</strong>。這個操作非常常見且有用，例如說我們想要在 primitive domain 上面加上一個 ⊥ 我們就只要把那個 domain <em>lifting</em> 起來就好！</p>
+<div class="block-notes">
+<p>事實上 lifting 是 constructions on domain 中的其中一個。一般常見的 constructions on domain 包含： product domain 、 co-product domain 、 lifting domain 和 function domain。</p>
+</div>
+<p>這兩者個主要差別是，pointed domain 只要求有一個可以當做 least element 的東西存在就好。但是 lifted domain 則會要求那個 ⊥ 必須要是新加上的。例如說，<code>Unit</code> 可以表示成 <code>()--⊥</code>，那麼 lifted <code>Unit</code> 則可以表示成 <code>()--⊥--⊥</code> 或 <code>(C ())--(C ⊥)--⊥</code> (其中 <code>C</code> 是 wrapper 的 constructor)。顯然，lifted domain 一定會是 pointed。但是反過來不成立！例如說 product of two pointed domains 還會是 pointed (least element 會是 <em>(⊥,⊥)</em>)，可是不會是 lifted。其實這也不會很讓我們意外，因為除了 lifting 以外，其實沒有別的 constructions on CPOs 可以產生出新的 ⊥，所以生出 lifted domain 唯一個方法就只能是透過 lifting。</p>
+<h2 id="conclusion">Conclusion</h2>
+<p><strong>Pointed type</strong> 的概念源自於 pointed set 和 poset，它強調的重點是「<strong>存在一個可以作為 least element 的東西</strong>」。對那個 element 本身沒有什麼額外的要求。</p>
+<p><strong>Lifted type</strong> 則是源自於 constructions on domain，它強調的重點在於「<strong>插入一個新的 ⊥ 來當做新的 least element</strong>」。而因為那個 ⊥ 是新插入的，所以它會是外顯 (explicit) 的，也就是說它不能被包在某個資料結構中。例如說 <code>(⊥,⊥)</code> 就可能是個有效的 least element，但是因為 ⊥ 是在 constructor <code>(_,_)</code> 裡面所以它不是 explicit 的。</p>
+<p>補充，用 ⊥ 和 (C ⊥) 來當做一個 domain 的 least element 在惰性運算時是有不同結果的 (其中 <code>C</code> 是某個 constructor)。 例如說假設我們有 <code>yo x y = y</code> 這樣的一個 function， 那麼 <code>yo ⊥ 1</code> 和 <code>yo (C ⊥) 1</code> 會有完全不同的結果。 後者會可以回傳出 <code>1</code>，但是前者就爆炸了。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="http://pages.cs.wisc.edu/~horwitz/CS704-NOTES/8.DOMAIN-THEORY.html">Domain Theory - S. Horwitz</a></li>
+<li><a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Domain Theory - G. Hutton</a></li>
+<li><a href="http://dl.acm.org/citation.cfm?id=651452">Parametricity and Unboxing with Unpointed Types</a> <a href="http://galois.com/wp-content/uploads/2014/08/pub_JL_ParametricityAndUnboxingWithUnpointedTypes.pdf">[PDF]</a></li>
+<li><a href="http://blog.ezyang.com/category/computer-science/denotational-semantics/">Some posts - E. Yang</a></li>
+</ul>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/denotational%20semantics.html">denotational semantics</a>, <a href="../../tags/domain%20theory.html">domain theory</a>, <a href="../../tags/bottom.html">bottom</a>, <a href="../../tags/c2d.html">c2d</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

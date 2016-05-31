@@ -45,55 +45,71 @@
 	  
         <small>Posted on 13 Apr 2016
             <a href="../../content/posts/2016-04-13-liftpoint.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 17 May 2016 (15:25)</small>
+        <small>Last modified on 31 May 2016 (13:46)</small>
 	</p>
       </header>
       <div class="post-description">
-	<p>關於 pointed 和 lifted 這兩個詞，一個有趣的切入點是 denotational semantics。 而這個故事可以從「我們寫出來的程式究竟代表什麼」這個問題開始…</p>
+	<p>相信讀者在閱讀 Haskell 相關文件的時候，偶而會碰到兩個形容詞：「pointed」和「lifted」。他們通常是用來描述資料結構或是型別，例如說 pointed datatype 或 lifted type 等等。在某些情境下這兩個東西會指涉到同一個概念上，但是這不是一定的。所以，究竟這兩者之間的差異何在？就讓我們從「我們寫出來的程式究竟代表什麼」這個故事開始吧！</p>
 <!--more-->
-<p>所謂「一個程式的意義」有好幾種不同的理解方式與詮釋方法。例如說「<em>這個程式所有可能計算出來的結果</em>」、「<em>這個程式如何計算出一組結果</em>」或「<em>這個程式滿足哪些條件/特性</em>」等等。</p>
-<p>我們這邊要講的是第一種，也就是我們用「一支程式所有可能計算出來的結果」來代表這程式的意義。或是，直覺地來說，就是一支程式所可能包含/表達的資訊量。這種對於程式意義的解讀方式稱之為「<strong>指稱語意</strong>」 <strong>denotational semantics</strong>。例如說，正整數加法 <code>(+) :: Nat → Nat → Nat</code> 可能回傳出任一正整數，所以我們就用「所有正整數」來表示 <code>(+)</code> 的意義。或者說，<code>even :: Nat → Bool</code> 只可能回傳 <code>True</code> 或是 <code>False</code> 這兩個數值的其中一種，所以我們用 <code>Bool</code> 來表示 <code>even</code>。這種針對某個 function 而蒐集來的所有可能結果在 denotational semantics 中稱之謂一個 semantics domain，或直接簡稱為 domain。</p>
-<p>這樣看來，我們似乎可以很簡單地用一個 set 去描述一個 domain。例如說上面的 <code>even</code> 的 set-theoretical domain 就可以是 <span class="math inline">\(\{True, False\}\)</span>。嗯～看起來豪棒棒！不過，很可惜，這個世界沒有那麼簡單。首先，如果我們想單純用一個 set 來表示一個程式的意義，那麼，recursive function 就變成一個有點讓人尷尬的狀況了。因為我們可以寫出像是：</p>
+<p>所謂「一支程式究竟代表什麼」有好幾種不同的理解方式與詮釋方法。例如說「<em>這個程式所有可能計算出來的結果</em>」、「<em>這個程式如何計算出一組結果</em>」或「<em>這個程式滿足哪些條件/特性</em>」等等。</p>
+<p>我們這邊要講的是第一種，也就是說，我們用「一支程式所有可能計算出來的結果」來代表這程式的意義。或是，直覺地來說，就是一支程式(或一段程式碼)所可能包含的所有資訊量。這種對於程式意義的解讀方式稱之為「<strong>指稱語意</strong>」 <strong>denotational semantics</strong>。例如說，正整數加法 <code>(+) :: Nat → Nat → Nat</code> 可能回傳出任一正整數，所以我們就用「所有正整數」來表示 <code>(+)</code> 的意義。而 <code>even :: Nat → Bool</code> 只可能回傳 <code>True</code> 或是 <code>False</code> 這兩個數值的其中一種，所以我們用 <code>Bool</code> 來表示 <code>even</code> 這支程式的意義。這種「一段程式所有可能回傳的結果」被稱之為該程式的 semantics domain，或直接簡稱為 <strong>domain</strong>。所以我們可以(粗略地)說，<code>Nat</code> 是 <code>(+)</code> 的 domain 而 <code>Bool</code> 是 <code>even</code> 的 domain。</p>
+<p>有了 domain 這個觀念，我們就可以進一步來討論一支程式的意義，或是比較好幾支不同程式之間的差異。不過，一旦我們真的要拿 domain 來討論程式的意義，我們就不能簡單地用「 domain 就是一群某程式可以算出來的數值」這樣模糊的概念。對於 domain，我們需要更加精確的定義！</p>
+<h2 id="sets-as-domains">Sets as Domains</h2>
+<p>首先，最直觀地，因為是「一群數值」，所以理所當然地我們可以先試著用 <strong>set</strong> 去當做 domain 的 formal definition。舉例來說，我們可以說：上面的程式 <code>even</code> 的 <em>set-theoretical</em> domain 就是</p>
+<p><span class="math display">\[\{True, False\}\]</span></p>
+<p>嗯～ 這樣的 domain 看起來豪棒棒！不過，很可惜地，set 雖然可以表示「一群數值」，但是只有這樣的表示力其實還不夠我們用來討論程式。如果我們想單純用一個 set 來表示一個程式的意義，那麼，recursive function 就變成一個有點讓人尷尬的狀況了。因為我們可以寫出像是：</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">foo x <span class="fu">=</span> (foo x) <span class="fu">+</span> <span class="dv">1</span>
 bar x <span class="fu">=</span> bar x</code></pre></div>
-<p>這樣的 function，但是他們的 domain 顯然不會是一個簡單的 set 就可以表示的，因為他們根本不會停下來！另一種情況是，我們不是永遠都是在處理 total function。而對 partial function 而言，是有可能給在碰到某些 input 時會沒法計算 (因為 undefined 嘛)。</p>
+<p>這樣的 function，但是他們的 domain 顯然不會是一個簡單的 set 就可以表示的(因為他們根本不會停下來！)。除此之外，還有另一種尷尬的情況是：我們不是永遠都是在處理 total function。而對 partial function 而言，是有可能給在碰到某些 input 時會沒法計算 (因為 undefined 嘛)。</p>
 <div class="block-notes">
-<p>其實其他原因，但是這可能超過了這篇文章的主軸。我們這邊需要知道的就只是 set 不夠用來描述程式這件事情就好。如果對於完整的原因有興趣可以參考<a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Domain Theory - G. Hutton</a>裡面的第一篇講義。</p>
+<p>關於這個問題其實還有其他更多東西可以探討，但是這可能超過了這篇文章的主軸。我們這邊需要知道的就只是 set 不夠用來描述程式這件事情就好。如果對於完整的原因有興趣可以參考<a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Domain Theory - G. Hutton</a>裡面的第一篇講義。</p>
 </div>
-<h2 id="pointed-set">Pointed Set</h2>
-<p>好，現在我們已經知道 set 不夠用了，那麼我們需要什麼？從上面的例子中我們知道說我們似乎是欠缺方法來描述「程式不會停」或者說「程式算不出東西」這樣的情況。所以，好像擴充 set 讓他可以多一個「東西」去專門表示這種情況似乎會是個不錯的主意。所以，這裡我們引入 <strong>pointed set</strong> 這個數學結構！</p>
+<h2 id="pointed-sets-as-domains">Pointed Sets as Domains</h2>
+<p>好，現在我們已經知道 set 不夠用了。那麼，set 欠缺了什麼？從上面的例子中我們知道說，我們欠缺了描述「程式不會停」(或者說「程式算不出東西」)這種情況的方法。所以，好像擴充 set 讓他可以多一個「東西」去專門表示這種情況似乎會是個不錯的主意。所以，這裡我們引入 <strong>pointed set</strong> 這個數學結構！</p>
 <div class="block-definition">
-<p>給定一個 set ， 一個 pointed set 是指 <span class="math inline">\(\mathcal{A}\)</span> 和某個特定的 <span class="math inline">\(x\)</span> (<span class="math inline">\(x \in \mathcal{A}\)</span>)。<br />
+<p>給定一個 set <span class="math inline">\(\mathcal{A}\)</span>， 一個 pointed set 是指 <span class="math inline">\(\mathcal{A}\)</span> 本身以及某個 <span class="math inline">\(\mathcal{A}\)</span> 之中的特定元素 <span class="math inline">\(x\)</span> (<span class="math inline">\(x \in \mathcal{A}\)</span>)。<br />
 這個 <span class="math inline">\(x\)</span> 被稱為 base point，而這個 pointed set 則被表示為 <span class="math inline">\((\mathcal{A}, x)\)</span>。</p>
 </div>
-<p>Pointed set 說穿了沒什麼了不起，就是一個 set 和該 set 裡面某個被特別指定的 element 而已。不過，就因為它具有這樣的一個 explicit membership，剛好就可以讓我們利用來偷偷多塞一個用來表示「算不出來」的 element 到某個集合上面。例如說，我們可以把 <code>Bool</code> = <span class="math inline">\(\{True, False\}\)</span> 給多塞一個 element 而成為 <span class="math inline">\(\{True, False, \mathtt{Bt}\}\)</span>。其中 <span class="math inline">\(\mathtt{Bt}\)</span> 就是那個我們企圖用來表示「算不出來/算不完」的東西。</p>
-<p>所以，比之 <span class="math inline">\((\{True, False, \mathtt{Bt}\}, \mathtt{Bt})\)</span>，現在顯然對於 <code>even</code> 而言 <span class="math inline">\((\{True, False, \mathtt{Bt}\}, \mathtt{Bt})\)</span> 會是一個更完整個 domain 結構。因為我們現在可以描述算不完或是 undefined。</p>
-<h2 id="information-ordering">Information Ordering</h2>
-<p>不過，仔細想想，其實光是有 base point 似乎還是不夠。因為上面那個 <span class="math inline">\(\mathtt{Bt}\)</span> 好像和 <span class="math inline">\(True\)</span> 或 <span class="math inline">\(False\)</span> 之間存在著某種差異。比如說，我們知道 <span class="math inline">\(True \land True = True\)</span> ，但是我們似乎沒有那麼肯定 <span class="math inline">\(True \land \mathtt{Bt}\)</span> 會是什麼。某個程度我們可以把這個差異理解成「資訊量」的不對等。尤其是當我們把 <span class="math inline">\(\mathtt{Bt}\)</span> 理解成 <em>undefined</em>。要注意的是，這裡所謂的資訊量和資訊內容的數值無關。舉例來說，整數 <code>1</code> 和 <code>10</code> 顯然數值上是 <code>10</code> 比較大，但是兩者個資訊的資訊含量是一樣的，都是「一個整數」而已。反過來說，<code>(1, 1)</code> 和 <code>1</code> 的資訊量就是前者比較多。</p>
+<p>Pointed set 說穿了沒什麼了不起，就是一個 set 和該 set 裡面某個被特別指定的 element 而已。不過，就因為它具有這樣的一個 explicit membership，剛好就可以讓我們利用來偷偷多塞一個用來表示「算不出來」的 element 到某個集合上面。例如說，我們可以在 <span class="math display">\[\{True, False\}\]</span> 上多塞一個 element，而使其成為 <span class="math display">\[\{True, False, \mathtt{Bt}\}\]</span> 其中 <span class="math inline">\(\mathtt{Bt}\)</span> 就是那個我們企圖用來表示「算不出來/算不完」的東西。然後，我們就可以說 <code>even</code> 的 domain 現在是 pointed set <span class="math display">\[(\{True, False, \mathtt{Bt}\}, \mathtt{Bt})\]</span> 而且顯然這個結構會比 <span class="math inline">\(\{True, False\}\)</span> 這個單純的 set 更厲害！因為我們現在可以描述「算不完」或是「undefined」。</p>
+<h2 id="posets-as-domains">Posets as Domains</h2>
+<p>不過，仔細想想，光是有 base point 似乎還是不夠。比如說，我們知道 <span class="math inline">\(True \land True = True\)</span> ，但是我們似乎沒有那麼肯定 <span class="math inline">\(True \land \mathtt{Bt}\)</span> 會是什麼。從這裡我們可以觀察到說，<span class="math inline">\(\mathtt{Bt}\)</span> 和 <span class="math inline">\(True\)</span>(或 <span class="math inline">\(False\)</span>)之間似乎存在著某種本質上的差異。</p>
+<p>某個程度我們可以把這個差異理解成「資訊量」的不同。尤其是當我們把 <span class="math inline">\(\mathtt{Bt}\)</span> 理解成 <em>undefined</em>。一個直覺上的理解是，<span class="math inline">\(True\)</span> 不管是表示「真」還是「正確」或是「非零整數」，它總歸來說是表示了某種資訊，但是反過來說，<span class="math inline">\(\mathtt{Bt}\)</span> 本身表示的就是「得不到任何資訊」。</p>
+<p>要注意的是，這裡所謂的資訊量和資訊內容的數值無關。舉例來說，整數 <code>1</code> 和 <code>10</code> 顯然數值上是 <code>10</code> 比較大，但是兩者個資訊的資訊含量是一樣的，都是「一個整數」而已。反過來說，<code>(1, 1)</code> 和 <code>1</code> 相比之下，顯然就是前者資訊量比較多。</p>
 <div class="block-notes">
-<p>這裡的 <code>1</code> 和 <code>10</code> 這些的數值都是自然數，而且是指 primitive datatype 而不是 algebraic datatype。 如果這裡的自然數是 algebraic datatype 像 <code>data Nat = Z | S Nat</code> 這種，那這種 Nat 的資訊量的大小就是那個數值的大小。</p>
+<p>請注意！上面例子裡的 <code>1</code> 和 <code>10</code> 這些的數值都是自然數，而且是指 primitive datatype 而不是 algebraic datatype。 如果這裡的自然數是 algebraic datatype 像 <code>data Nat = Z | S Nat</code> 這種，那這種 Nat 的資訊量的大小就是那個數值的大小。</p>
 </div>
-<p>為了體現這樣的資訊量差異，我們這邊引入了 <em>information ordering</em>。這樣的 information ordering 會是一個 partial ordering relation，並且會用符號 <span class="math inline">\(\sqsubseteq\)</span> 表示。</p>
+<p>為了體現這樣的資訊量差異，我們這邊引入了 <strong>information ordering</strong> 和 <strong>poset</strong>。一個 information ordering 是一個 <em>partial ordering relation</em>，並且會用符號 <span class="math inline">\(\sqsubseteq\)</span> 表示。</p>
 <div class="block-definition">
 <p>對一個 set，<span class="math inline">\(\mathcal{A}\)</span>，和一個定義在 <span class="math inline">\(\mathcal{A}\)</span> 上面的 partial ordering relation，<span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span>，<br />
-我們可以做出一個數學結構：<strong>poset</strong>，表示成 <span class="math inline">\((\mathcal{A}, \sqsubseteq_{\mathcal{A}})\)</span>。而且 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 要是：<br />
+我們可以做出一個數學結構：<strong>poset</strong>，表示成 <span class="math inline">\((\mathcal{A}, \sqsubseteq_{\mathcal{A}})\)</span>。而且 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 要滿足：<br />
 <em>reflexive</em> 、 <em>transitive</em> 和 <em>anti-symmetric</em>。</p>
 <p>另外，對一個 poset <span class="math inline">\((\mathcal{A}, \sqsubseteq_{\mathcal{A}})\)</span> 來說，如果其中存在一個 <span class="math inline">\(b \in \mathcal{A}\)</span> 使得 <span class="math inline">\(\forall x \in \mathcal{A}\)</span> ， <span class="math inline">\(b \sqsubseteq_{\mathcal{A}} x\)</span> 都成立，<br />
 則 <span class="math inline">\(b\)</span> 被稱為 least element，並且標記為 <strong>⊥</strong>。</p>
 </div>
-<p>現在，既然我們這邊討論的 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 代表的是資訊量的大小，所以顯然這個 ⊥ 就是上面講到的那個用來表示 <em>undefined</em> 的 <span class="math inline">\(\mathtt{Bt}\)</span>！</p>
-<p>簡單總結一下，我們現在是用一個 pointed poset <span class="math inline">\(((\mathcal{A}, ⊥), \sqsubseteq_{\mathcal{A}})\)</span> 來描述一個 semantics domain。其中 <span class="math inline">\(\mathcal{A}\)</span> 是所有可能被計算出來的結果的集合；⊥ 表示計算結果是 undefined 或 non-terminated；<span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 會將 <span class="math inline">\(\mathcal{A}\)</span> 的所有 elements 分成若干等級。</p>
+<p>現在，既然我們這邊討論的 <span class="math inline">\(\sqsubseteq_{\mathcal{A}}\)</span> 代表的是資訊量的大小，所以顯然這個 ⊥ 就表示了「<strong>這個結構中資訊含量最小者</strong>」。</p>
+<div class="block-notes">
+<p>「資訊含量最小」不見得就是「沒有資訊」。慣例上，通常我們是直接使用 ⊥ 來表示「沒有資訊」，也就是前文內的 <span class="math inline">\(\mathtt{Bt}\)</span> 這個角色。但是這不是必然的。因此在討論和使用 ⊥ 的時候要特別注意前後文和當時討論的情境。一個簡單例子是，<code>(⊥,⊥)</code> 會可以是某個 domain 的 least element，但是他本身其實並不是完全沒有資訊量。因為，雖然說 pair 裡面沒有資訊，但是我們知道這是一個 pair！</p>
+</div>
+<p>結合前面的 pointed set 和 information ordering，我們現在改用 pointed poset 來當做是 domain 的 formal definition！而這樣的 domain 比之前面的 set 或是 pointed set 而言，它可以更精確的描述一段程式可能回傳的結果(包含回傳不了任何結果)。</p>
 <h2 id="pointed-domain-and-lifting">Pointed Domain and Lifting</h2>
 <p>雖說 pointed poset 很好，但是現實上我們程式語言裡面是存在著很多沒有 least element 的 datatype 的。例如說 <code>Int</code>, <code>Double</code>, <code>Char</code> 或 <code>Bool</code> 等等的 primitive type 都沒有內建 least element。這種沒有內建 least element 的 domain 有時候會被稱為 <strong>primitive domain</strong>。而有 least element 的則被稱為 <strong>pointed domain</strong>。</p>
-<p>另一方面，<em>lifting</em> 原本是一個針對 domain 的一個特殊操作：lifting 一個 domain 就是指在該 domain 上面放上 (introduce) 一個新的 ⊥。需要注意的是，lifting 其實是產生一個新的 domain (因為是新的 set 和新的 partial ordering relation)，稱為 <strong>lifted domain</strong>。這個操作非常常見且有用，例如說我們想要在 primitive domain 上面加上一個 ⊥ 我們就只要把那個 domain <em>lifting</em> 起來就好！</p>
+<p>既然有兩種不同的 domain，理所當然我們就會想要找出辦法來將其中一個轉換成另一個。而 <strong>lifting</strong> 就是將 primitive domain 給轉換成 pointed domain 的 operation！也就是說，「lifting a domain」就是指在該 domain 上面放上 (introduce) 一個新的 ⊥，而且這個 ⊥ 真的就是表示「沒有資訊」。這裡需要特別注意的是，lifting 這個 operation 其實是產生一個新的 domain (因為是新的 set 和新的 partial ordering relation)，稱為 <strong>lifted domain</strong>。</p>
 <div class="block-notes">
-<p>事實上 lifting 是 constructions on domain 中的其中一個。一般常見的 constructions on domain 包含： product domain 、 co-product domain 、 lifting domain 和 function domain。</p>
+<p>事實上 lifting 是 constructions on domain 中的其中一個。一般常見的 constructions on domain 包含： product domain 、 co-product domain 、 lifting domain 和 function domain。任何複雜的 domain 都是由 primitive domain 配合上這個 constructions on domain 建構而成的。更多細節請參考文末的參考資料中關於 domain theory 的部份。</p>
 </div>
-<p>這兩者個主要差別是，pointed domain 只要求有一個可以當做 least element 的東西存在就好。但是 lifted domain 則會要求那個 ⊥ 必須要是新加上的。例如說，<code>Unit</code> 可以表示成 <code>()--⊥</code>，那麼 lifted <code>Unit</code> 則可以表示成 <code>()--⊥--⊥</code> 或 <code>(C ())--(C ⊥)--⊥</code> (其中 <code>C</code> 是 wrapper 的 constructor)。顯然，lifted domain 一定會是 pointed。但是反過來不成立！例如說 product of two pointed domains 還會是 pointed (least element 會是 <em>(⊥,⊥)</em>)，可是不會是 lifted。其實這也不會很讓我們意外，因為除了 lifting 以外，其實沒有別的 constructions on CPOs 可以產生出新的 ⊥，所以生出 lifted domain 唯一個方法就只能是透過 lifting。</p>
+<p>現在，終於要進入這篇文章的重點了！pointed domain 和 lifted domain 的主要差別是：</p>
+<ul>
+<li>pointed domain 只要求有一個可以當做 least element 的東西存在就好。既然只是 least element，所以它不必然要表示「沒有資訊」。</li>
+<li>lifted domain 必須要求那個 ⊥ 必須要是新加上的，而且必然要表示「沒有資訊」。</li>
+</ul>
+<div class="block-notes">
+<p>例如說，假設我們將 <code>Unit</code> 表示成 <code>()--⊥</code>，接者我們用一個 wrapper 去將 <code>Unit</code> 包裝起來：<code>data CU = C ()</code>。那這個 <code>CU</code> 本身是 pointed，因為它可以表示成 <code>(C ())--(C ⊥)</code>，而其中 <code>(C ⊥)</code> 就是 least element。但是 <code>CU</code> 不是 lifted，因為顯然 <code>(C ⊥)</code> 不是表示「沒有資訊」。而如果我們 <em>lifting</em> <code>CU</code>，則會得到一組 <code>(C ())--(C ⊥)--⊥</code> ，而這個就會是 lifted！ <br /><br /> 用 ⊥ 和 (C ⊥) 來當做一個 domain 的 least element 在惰性運算時是會有不同運算結果的。假設我們有 <code>yo x y = y</code> 這樣的一個 function， 那麼 <code>yo ⊥ 1</code> 和 <code>yo (C ⊥) 1</code> 會有完全不同的結果。 後者會可以回傳出 <code>1</code>，但是前者就爆炸了。</p>
+</div>
+<p>顯然，lifted domain 一定會是 pointed。但是反過來不成立！例如說 product of two pointed domains 還會是 pointed (least element 會是 <em>(⊥,⊥)</em>)，可是不會是 lifted。其實這也不會很讓我們意外，因為除了 lifting 以外，其實沒有別的 constructions on CPOs 可以產生出新的 ⊥，所以生出 lifted domain 唯一個方法就只能是透過 lifting。</p>
 <h2 id="conclusion">Conclusion</h2>
+<p>如果我們把 constructing a constructure 給想像成是一種 function 的話，那麼顯然 domain 也會適用在描述資料結構上！因此我們可以簡單總結如下。</p>
 <p><strong>Pointed type</strong> 的概念源自於 pointed set 和 poset，它強調的重點是「<strong>存在一個可以作為 least element 的東西</strong>」。對那個 element 本身沒有什麼額外的要求。</p>
-<p><strong>Lifted type</strong> 則是源自於 constructions on domain，它強調的重點在於「<strong>插入一個新的 ⊥ 來當做新的 least element</strong>」。而因為那個 ⊥ 是新插入的，所以它會是外顯 (explicit) 的，也就是說它不能被包在某個資料結構中。例如說 <code>(⊥,⊥)</code> 就可能是個有效的 least element，但是因為 ⊥ 是在 constructor <code>(_,_)</code> 裡面所以它不是 explicit 的。</p>
-<p>補充，用 ⊥ 和 (C ⊥) 來當做一個 domain 的 least element 在惰性運算時是有不同結果的 (其中 <code>C</code> 是某個 constructor)。 例如說假設我們有 <code>yo x y = y</code> 這樣的一個 function， 那麼 <code>yo ⊥ 1</code> 和 <code>yo (C ⊥) 1</code> 會有完全不同的結果。 後者會可以回傳出 <code>1</code>，但是前者就爆炸了。</p>
+<p><strong>Lifted type</strong> 則是源自於 constructions on domain，它強調的重點在於「<strong>插入一個新的 ⊥ 來當做新的(且沒有任何資訊意義的) least element</strong>」。而因為那個 ⊥ 是新插入的，所以它會是外顯 (explicit) 的，也就是說它不能被包在某個資料結構中。</p>
 <h2 id="參考資料">參考資料</h2>
 <ul>
 <li><a href="http://pages.cs.wisc.edu/~horwitz/CS704-NOTES/8.DOMAIN-THEORY.html">Domain Theory - S. Horwitz</a></li>

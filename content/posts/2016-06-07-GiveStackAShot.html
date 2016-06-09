@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Give Stack a Shot</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 07 Jun 2016
+            <a href="../../content/posts/2016-06-07-GiveStackAShot.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 09 Jun 2016 (04:08)</small>
+	</p>
+      </header>
+      <div class="post-description">
+	<p>Stack 簡單筆記</p>
+<!--more-->
+<h2 id="背景知識">背景知識</h2>
+<h3 id="projects">projects</h3>
+<p>Stack 是以 project centralized 的方式在管理套件。所以 Stack 不認為在某 haskell project 之中時，它會切換到 implicit global project 模式，而此時東西會安裝到 <code>~/.stack/global-project/</code> 裡面去。反之，如果 Stack 可以找到 <code>&lt;project name&gt;.cabal</code> 或是 <code>stack.yaml</code>，它就會原地建立一個該 project 專用的編譯環境。這通常就是產生一個專用資料夾 <code>.stack-work/</code> 然後把所有相關的設定和套件放在裡面。</p>
+<h3 id="packages">packages</h3>
+<p>在 .cabal 檔中，我們會定義出 project 所需要的 build-depends，而 Stack 就會根據這項資訊來計算(resolve)所需要的 packages 有哪些。但是在進一步了解 Stack 怎麼計算 dependencies 之前，我們要先知道 Stack 是怎麼“認識” packages 的。Stack 將一個 project 會需要的 packages 分成三種：</p>
+<ul>
+<li><strong>local packages</strong> 係指我們自己寫在 local 的 projects，這是由我們自己定義與維護的東西。使用時需要在 <code>stack.yaml</code> 中的 <code>packages</code> 欄位中告訴 stack 這些 packages 的 remote 或是 local path。</li>
+<li><strong>curated packages</strong> Stack 每次在編譯時會先嘗試使用預先準備好的常用套件組合。這些套件組合被稱 snapshots，而一個 snapshot 基本上就是整個 hackage 的某個 subset，而在該 subset 中所有套件都是以「不會彼此衝突」為前提所選出。這些被 snapshot 所定義的套件就被稱為是 curated packages，更多細節請參考下面有關 snapshot 的部份。</li>
+<li><strong>extra-dep packages</strong> 凡是不存在於當前 snapshot 但是 Stack 可以在 hackage (或其他 indices) 中找到的套件。</li>
+</ul>
+<p>在預設的情況下，Stack 只會幫我們找出最適合的 snapshot 並且只安裝 curated packages。local packages 和 extra-dep packages 都要另外描述在 <code>stack.yaml</code> 裡面。</p>
+<div class="block-notes">
+<p>對 cabal 來說上面三種都是 dependencies，但是對 Stack 來說只有後面兩種比較容易會被稱為 dependencies。不過這點也不是絕對的，文件中還是可以看到一些相似但是好像不太一致的術語，所以這點僅供參考。</p>
+</div>
+<h3 id="snapshots">Snapshots</h3>
+<p>Stack 的核心關鍵(之一)是 snapshot。一個 <strong>snapshot</strong> 是一組預選好(而且沒有版本打架)的 version-specific 套件組合。整個 stack 系統就是建立在一大群預設好的<a href="https://www.stackage.org/snapshots">snapshot</a> 之上。這些不同的 snapshot 就如同字面上的意思，提供了我們所有 packages 在某個時間點的某種快照。而我們未來可以使用和之前同樣的一組 packages 去編譯我們的 project。Stack 有兩種 snapshots 可以用：LTS (long term support) Haskell 和 Stackage Nightly。前者一段時間推出一次是穩定版本，後者是每天更新的稍微沒那麼穩定版。</p>
+<p>對某個 snapshot 來說，並不是所有其中敘述到的 packages 就都會被預先安裝到系統中。只有曾經被使用過的才會被安裝，這點就跟 cabal 還有其他任何套件管理程式差不多。目前已經被安裝過的 curated packages 會儲存在 <code>~/.stack/snapshots/</code> 下面。如果要查詢 packages 清單，</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> exec ghc-pkg list</code></pre></div>
+<p>會根據目前 Stack 所能偵測到的 project 來列出所有當前可以存取的 packages。</p>
+<h3 id="build-plan-and-resolvers">Build-Plan and Resolvers</h3>
+<p>Stack 會為每一次 build 選擇一套 build plan，其中包括這次 build 所使用的編譯環境(包括 ghc 版本、ghc 參數、path等等)和一組 snapshot (裡面會定義可以被使用的 packages 有哪些)。這些 build plan 在 stack 裡面被稱為 <strong>resolver</strong> (因為我們會根據這裡面的資訊來做 dependency resolve)。所有 resolver 都會儲存在 <code>~/.stack/build-plan/</code> 裡面。</p>
+<h2 id="初探">初探</h2>
+<p>Stack 和 git 一樣是非常 project-based 的東西，它的操作流程如下並不複雜，不過根據目前 project 的狀態可以分成下列幾種情境：</p>
+<h3 id="情境a-什麼-project-我根本什麼都沒有呀">[情境A] 什麼 project? 我根本什麼都沒有呀!</h3>
+<p>我們可以用老方法：寫點 code 然後 <code>cabal init</code>，這樣就有一個 hackage project (然後就可以跳到 [情境C] 那節)。 或者，我們可以直接用 stack 來產生一個新的 stackage project！</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span></code></pre></div>
+<p>Stack 有內建一些 project template 來讓我們可以快速產生一個完整的 project dir，</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> <span class="kw">&lt;</span>template-name<span class="kw">&gt;</span></code></pre></div>
+<div class="block-notes">
+<p>有被用過的 templates 都會下載並放在 <code>~/.stack/templates/</code>。可以用</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> templates</code></pre></div>
+<p>來查詢所有可以用的 templates。另外，下列是個人覺得好用/常用的基本款 templates ：</p>
+<ul>
+<li>new-template</li>
+<li>simple</li>
+<li>simple-library</li>
+<li>haskeleton</li>
+<li>hakyll-template</li>
+<li>servant</li>
+</ul>
+</div>
+<p>因為 <code>stack new</code> 會幫我們產生 <code>stack.yaml</code> 檔案，所以一些相關的參數也都可以用，例如說， 我們也可以在 new 的時候同時指定我們想要用的 resolver 版本；也可以強制跳過有問題 packages 等等</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> --resolver <span class="kw">&lt;</span>resolver name<span class="kw">&gt;</span>
+<span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> --omit-packages</code></pre></div>
+<h3 id="情境b-我有一個-project-沒-.cabal-檔">[情境B] 我有一個 project (沒 .cabal 檔)</h3>
+<p>寫你個好 .cabal 然後直接進入下一節。</p>
+<h3 id="情境c-我有一個-hackage-project-有-.cabal-檔">[情境C] 我有一個 hackage project (有 .cabal 檔)</h3>
+<p>如果已經有寫好 .cabal 檔，我們可以用</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init</code></pre></div>
+<p>來根據那個 cabal 檔案來產生 <code>stack.yaml</code>。 Stack 預設會嘗試找出最佳 snapshot 來滿足 .cabal 上面描述的 build-depends。這其實有點煩人，因為這個找出最佳 snapshot 的動作其實蠻花時間的，所以如果我們就只是想用某個夠新或是慣用的 resolver ，我們也可以直接強制指定：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --resolver <span class="kw">&lt;</span>resolver name<span class="kw">&gt;</span></code></pre></div>
+<p>雖然說 snapshot 應該包不少 packages 了，但是其實還是有機會我們會要用某些 hackage 上面有但是 snapshot 沒有的東西。 這種時候 <code>stack init</code> 會哭哭類似</p>
+<blockquote>
+<p>Resolver ‘lts-6.2’ does not have all the packages to match your requirements.</p>
+</blockquote>
+<p>這樣的話。這種時候我們可以要求 <code>stack init</code> 去 hackage 上面幫我們找看看有沒有那些缺少 packages 可以用：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --solver</code></pre></div>
+<p>如果那些需要但是不在 snapshot 裡面的 packages 有在 hackage 裡面 (也就是說，他們是 extra-dep packages)，那 <code>stack init</code> 會自動把這些 packages 放在 <code>stack.yaml</code> 的 <code>extra-deps</code> 這個欄位之中。如果還是有 packages 找不到，那有兩種可能，一種是「你的 index 太舊了」這種時候我們就可以先試試看 <code>stack update</code> 看看能不能解決問題。如果還是不行，那八成就是因為你用了 local packages，這種時候我們就要先略過那些有問題的 packages 把 <code>stack.yaml</code> 生出來：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --solver --omit-packages</code></pre></div>
+<p>然後再在 <code>stack.yaml</code> 裡面的 <code>packages</code> 欄位中告訴 Stack 要去哪裡找這些東西 (請參考<a href="http://docs.haskellstack.org/en/stable/yaml_configuration/#packages">這段文章</a>)。最後再叫 Stack 根據更改過的 <code>stack.yaml</code> 重新安裝並檢查編譯環境是不是都 ok 了：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> solver</code></pre></div>
+<div class="block-notes">
+<p>有時候我們會需要在已經有 <code>stack.yaml</code> 時需要重新 init 一份，這種時候我們可以在 <code>stack init</code> 後面加上參數 <code>--force</code>。這樣就會讓目前 resolve 的結果強制蓋過之前的。</p>
+</div>
+<h3 id="情境d-我有一個-stackage-project-有-.cabal-和-stack.yaml-檔">[情境D] 我有一個 stackage project (有 .cabal 和 stack.yaml 檔)</h3>
+<p>不管是原本就有 stackage project 或是根據上面三種情境來生成 <code>stack.yaml</code> 檔，一旦準備好了以後我們就可以開心地根據那個 local yaml config 檔來 build 我們的 stackage：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">cd</span> <span class="kw">&lt;</span>path to project<span class="kw">&gt;</span>
+<span class="kw">&gt;</span> <span class="kw">stack</span> setup
+<span class="kw">&gt;</span> <span class="kw">stack</span> build
+<span class="kw">&gt;</span> <span class="kw">stack</span> exec <span class="kw">&lt;</span>project exec<span class="kw">&gt;</span></code></pre></div>
+<p>其中，因為 Stack 會順便幫你管一下包含 ghc 版本在內的編譯環境，而 <code>stack setup</code> 這的指令就是告訴 Stack 根據 local <code>stack.yaml</code> 去「幫我看一下這個 project 要用的 build-plan (i.e. resolver 的內容)是不是準備妥當了」。基本上就類似 <code>cabal configure</code> 這樣的指令。</p>
+<h2 id="關於-ghcs">關於 GHCs</h2>
+<p>因為不同 build plan 會用到不同版本的 ghc，所以 Stack 會順便幫我們安裝並且管理各種不同的 ghc。 不過要注意的是，Stack 並不會把 system path 設定到這些 ghc 身上， 所以除非我們另外用其他當是安裝 ghc 否則 console 裡面是沒有 ghc 可以用的。 但是我們可以透過</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> exec <span class="kw">&lt;</span>other commands<span class="kw">&gt;</span>
+<span class="kw">&gt;</span> <span class="kw">stack</span> ghc
+<span class="kw">&gt;</span> <span class="kw">stack</span> runghc
+<span class="kw">&gt;</span> <span class="kw">stack</span> ghci</code></pre></div>
+<p>這些指令來使用。</p>
+<h2 id="問題與待續">問題與待續</h2>
+<ul>
+<li><a href="https://github.com/commercialhaskell/stack/wiki/Custom-Snapshot">自己定義 snapshot</a></li>
+<li>local project 怎麼使用 global-project 裡面的 package?</li>
+<li><code>packages</code>+ <em>extra-dep: true</em> 和 <code>extra-deps</code> 到底<a href="http://docs.haskellstack.org/en/stable/yaml_configuration/#local-dependency-packages-extra-dep">差在哪</a>?</li>
+</ul>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/stack.html">stack</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

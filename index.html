@@ -23,6 +23,8 @@
                   <ul class="pure-menu-children">
                       <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">
                           From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="./agdaNotes.html" class="pure-menu-link">
+                          Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
                           Tags</a></li>
                       <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">
@@ -40,13 +42,38 @@
 
 <section class="post">
   <header class="post-header">
+	<h2 class="post-title">Phantom of Haskell</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 26 Jul 2016
+            <a href="./content/posts/2016-07-26-Phantom.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 26 Jul 2016 (09:46)</small>
+	</p>
+      </header>
+      <div class="post-description">
+  
+    <p>Phantom types 是指某個在 type constructor 上的 type parameter 而且沒有被任何該 type 的 data constructors 用到。 例如說：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T0</span> a n <span class="fu">=</span> <span class="dt">C00</span> a</code></pre></div>
+<p>對 type (constructor) <code>T0</code> 來說，<code>a</code> 是個一般的 parameter；而 <code>n</code>，因為沒有被 <code>C0</code> 用到，所以就被叫做 <strong>phantom types</strong> (幻影型別? 貌似有點二.. XD)。</p>
+
+    <p>... <a href="./content/posts/2016-07-26-Phantom.html" id="title">read more</a></p>
+  
+      </div>
+	<div class="post-footnote">
+      <!-- <small>[Tags: haskell, types]</small> -->
+	</div>
+    </section>
+
+<section class="post">
+  <header class="post-header">
 	<h2 class="post-title">Give Stack a Shot</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
         <small>Posted on 07 Jun 2016
             <a href="./content/posts/2016-06-07-GiveStackAShot.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 09 Jun 2016 (04:08)</small>
+        <small>Last modified on 09 Jun 2016 (04:10)</small>
 	</p>
       </header>
       <div class="post-description">
@@ -58,29 +85,6 @@
       </div>
 	<div class="post-footnote">
       <!-- <small>[Tags: haskell, stack]</small> -->
-	</div>
-    </section>
-
-<section class="post">
-  <header class="post-header">
-	<h2 class="post-title">Pointed? Lifted!</h2>
-	<p class="post-meta">
-	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
-	  
-        <small>Posted on 07 Jun 2016
-            <a href="./content/posts/2016-06-07-FuncProg.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 07 Jun 2016 (02:48)</small>
-	</p>
-      </header>
-      <div class="post-description">
-  
-    <p>相信讀者在閱讀 Haskell 相關文件的時候，偶而會碰到兩個形容詞：「pointed」和「lifted」。他們通常是用來描述資料結構或是型別，例如說 pointed datatype 或 lifted type 等等。在某些情境下這兩個東西會指涉到同一個概念上，但是這不是一定的。所以，究竟這兩者之間的差異何在？就讓我們從「我們寫出來的程式究竟代表什麼」這個故事開始吧！</p>
-
-    <p>... <a href="./content/posts/2016-06-07-FuncProg.html" id="title">read more</a></p>
-  
-      </div>
-	<div class="post-footnote">
-      <!-- <small>[Tags: haskell, denotational semantics, domain theory, bottom, c2d]</small> -->
 	</div>
     </section>
 

@@ -25,6 +25,8 @@
                           From Cloud to Dirt</a></li>
                       <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
                           Agda Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
+                          Haskell Notes</a></li>
                       <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
                           Tags</a></li>
                       <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
@@ -47,7 +49,7 @@
 	  
         <small>Posted on 26 Jul 2016
             <a href="../../content/posts/2016-07-26-Phantom.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 26 Jul 2016 (09:46)</small>
+        <small>Last modified on 27 Jul 2016 (06:16)</small>
 	</p>
       </header>
       <div class="post-description">
@@ -74,7 +76,7 @@
        <span class="fu">|</span> <span class="dt">Cp1</span> b</code></pre></div>
 <p>這樣我們好像不會在 type level 丟掉關於 <code>a</code> 和 <code>b</code> 是誰的資訊， 但是其實問題還是一樣。 以上面那個例子來說，當我們拿到一個 <code>x :: Tp Int String</code> 的時候， 除非我們把 <code>x</code> 打開 (也就是對 <code>x</code> 做 patten matching)， 否則我們還是不知道這個 <code>x</code> 到底裡面裝的是什麼。</p>
 </div>
-<h2 id="application">Application</h2>
+<h2 id="digging-deeper">Digging Deeper</h2>
 <p>上面的問題大概會是看到 phantom types 時最常見的入門範例。 但是，其實光時那樣的理解似乎並沒有讓我們比較好過。 尤其是，只是簡單看過上面的說明， 我們常常還是很難馬上反應過來到底 phantom types 要怎麼用。 所以，也許，也許我們可以試著把上面的看法反過來理解。</p>
 <p>首先，我們可以知道說，<code>data T a b</code> 其實是說，</p>
 <div class="block-definition">
@@ -120,7 +122,7 @@ workWithNonEmptyString f (<span class="dt">NES</span> str) <span class="fu">=</s
 <p>但是像 vector 這個例子中這樣的 phantom types， 其實相比之下又稍稍更複雜一點。 我們在 vector 的例子中的 2D 和 3D 是用 <code>newtype</code> 建立而成， 說穿了其實和上面的 <code>data Good</code> 和 <code>data Bad</code> 半斤八倆。 更好的作法是把自然數拉到 type level 上面， 然後用 type level natural number 去描述那個維度。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Zero</span> <span class="fu">=</span> <span class="dt">Zero</span>
 <span class="kw">data</span> <span class="dt">Succ</span> a <span class="fu">=</span> <span class="dt">Succ</span> a</code></pre></div>
-<p>這樣我們的 <code>2DVector a</code> 就會寫成 <code>Vector a (Succ (Succ Zero))</code>。 而這，如果讀者有接觸過 dependently typed programming， 就是我們一般說的 <strong>indexing</strong>。</p>
+<p>這樣我們的 <code>2DVector a</code> 就會寫成 <code>Vector a (Succ (Succ Zero))</code>。 就是我們一般說的 <strong>indexing</strong>。</p>
       </div>
 	<div class="post-footnote">
 	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/types.html">types</a>]</small>

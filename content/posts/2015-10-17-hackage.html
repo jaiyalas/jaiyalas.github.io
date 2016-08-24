@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
     <link rel="stylesheet" type="text/css" href="../../css/other.css" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
   <div class="bgarea">
@@ -27,10 +29,10 @@
                           Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
                           Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
                           Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
                           About</a></li>
                   </ul>
@@ -53,7 +55,17 @@
 	</p>
       </header>
       <div class="post-description">
-	<p>一個 haskell package 的版本號是有明確意義而不是隨便亂取的數字開心就好的。 到底這些數字個別有什麼意思？不同的數字間又代表了什麼差異？接下來我們會簡單介紹一下， 希望對於有心開發 hackage 的人會有幫助。</p>
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#版本號">版本號</a></li>
+<li><a href="#相容性-compatibility">相容性 (compatibility)</a></li>
+<li><a href="#orphan">孤兒 (<em>orphan instance</em>)</a></li>
+</ul>
+        </div>
+        
+    	<p>一個 haskell package 的版本號是有明確意義而不是隨便亂取的數字開心就好的。 到底這些數字個別有什麼意思？不同的數字間又代表了什麼差異？接下來我們會簡單介紹一下， 希望對於有心開發 hackage 的人會有幫助。</p>
 <p>此外，我們說一個 <code>instance C T</code> 是一個孤兒 (<em>orphan instance</em>) 是指這個 instance 既不是和 <code>data T</code> 一起被定義在同一個 module 中，也不是和 <code>class C</code> 一起被定義在同一個 module 中。這樣的 instance 會產生一些 importing 上面的問題，也因此這個議題對於開發 hackage 的人來說是值得了解的。</p>
 <!--more-->
 <h2 id="版本號">版本號</h2>

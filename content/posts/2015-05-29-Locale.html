@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
     <link rel="stylesheet" type="text/css" href="../../css/other.css" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
   <div class="bgarea">
@@ -27,10 +29,10 @@
                           Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
                           Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
                           Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
                           About</a></li>
                   </ul>
@@ -53,7 +55,13 @@
 	</p>
       </header>
       <div class="post-description">
-	<p>In haskell, locale is defined as a set of <em>how to present date and time nicely</em>. Here we only discuss <code>Data.Time.Format.TimeLocale</code> not <code>Ststem.Locale</code>.</p>
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        
+        </div>
+        
+    	<p>In haskell, locale is defined as a set of <em>how to present date and time nicely</em>. Here we only discuss <code>Data.Time.Format.TimeLocale</code> not <code>Ststem.Locale</code>.</p>
 <!--more-->
 <p>Module <code>Data.Time.Format</code> provides</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TimeLocale</span> <span class="fu">=</span> <span class="dt">TimeLocale</span> {

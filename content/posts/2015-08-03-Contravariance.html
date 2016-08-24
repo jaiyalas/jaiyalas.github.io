@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
     <link rel="stylesheet" type="text/css" href="../../css/other.css" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
   <div class="bgarea">
@@ -27,10 +29,10 @@
                           Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
                           Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
                           Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
                           About</a></li>
                   </ul>
@@ -53,7 +55,13 @@
 	</p>
       </header>
       <div class="post-description">
-	<p>In category, a contravariant functor is not thing but a functor with reversed output. For example, given type <code>a</code>, <code>b</code> in category <code>C</code> and a morphism <code>f :: a -&gt; b</code>, a functor <code>CF</code> is a contravariant functor if <code>CF f</code> has type as <code>CF b -&gt; CF a</code></p>
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        
+        </div>
+        
+    	<p>In category, a contravariant functor is not thing but a functor with reversed output. For example, given type <code>a</code>, <code>b</code> in category <code>C</code> and a morphism <code>f :: a -&gt; b</code>, a functor <code>CF</code> is a contravariant functor if <code>CF f</code> has type as <code>CF b -&gt; CF a</code></p>
 <!--more-->
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Data.Functor.Contravariant</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Contravariant</span> f <span class="kw">where</span>

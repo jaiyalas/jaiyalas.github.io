@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
     <link rel="stylesheet" type="text/css" href="../../css/other.css" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
   <div class="bgarea">
@@ -27,10 +29,10 @@
                           Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
                           Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
                           Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
                       <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
                           About</a></li>
                   </ul>
@@ -53,7 +55,17 @@
 	</p>
       </header>
       <div class="post-description">
-	<p>Phantom types 是指某個在 type constructor 上的 type parameter 而且沒有被任何該 type 的 data constructors 用到。 例如說：</p>
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#motivative-problem">Motivative Problem</a></li>
+<li><a href="#digging-deeper">Digging Deeper</a></li>
+<li><a href="#小結">小結</a></li>
+</ul>
+        </div>
+        
+    	<p>Phantom types 是指某個在 type constructor 上的 type parameter 而且沒有被任何該 type 的 data constructors 用到。 例如說：</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T0</span> a n <span class="fu">=</span> <span class="dt">C00</span> a</code></pre></div>
 <p>對 type (constructor) <code>T0</code> 來說，<code>a</code> 是個一般的 parameter；而 <code>n</code>，因為沒有被 <code>C0</code> 用到，所以就被叫做 <strong>phantom types</strong> (幻影型別? 貌似有點二.. XD)。</p>
 <!--more-->

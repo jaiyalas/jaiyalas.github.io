@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="./css/menu.css" />
     <link rel="stylesheet" type="text/css" href="./css/other.css" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
   <div class="bgarea">
@@ -27,10 +29,10 @@
                           Agda Notes</a></li>
                       <li class="pure-menu-item"><a href="./haskellNotes.html" class="pure-menu-link">
                           Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
-                          Tags</a></li>
                       <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">
                           Slides</a></li>
+                      <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
+                          Tags</a></li>
                       <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">
                           About</a></li>
                   </ul>
@@ -46,7 +48,26 @@
 	<h2 class="post-title">From Cloud to Dirt</h2>
       </header>
       <div class="post-description">
-	<h1 id="緣起">緣起</h1>
+        
+        <div id="TOC">
+          <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#緣起">緣起</a></li>
+<li><a href="#系列結構與列表">系列結構與列表</a><ul>
+<li><a href="#denotational-semantics-and-domain">Denotational Semantics and Domain</a></li>
+<li><a href="#constructions-on-datatype-in-haskell">Constructions on Datatype in Haskell</a></li>
+<li><a href="#haskell-ghc-and-stg-machine">Haskell, GHC and STG Machine</a></li>
+</ul></li>
+<li><a href="#參考資料">參考資料</a><ul>
+<li><a href="#stage-i">Stage I</a></li>
+<li><a href="#stage-ii">Stage II</a></li>
+<li><a href="#stage-iii">Stage III</a></li>
+<li><a href="#其他或是無關的參考資料與註記">其他或是無關的參考資料與註記</a></li>
+</ul></li>
+</ul>
+        </div>
+        
+        <h1 id="緣起">緣起</h1>
 <p>「雲泥之間」是一系列關於 Haskell 的教學/筆記文章。</p>
 <p>最初的目的只是希望釐清幾個常見但是容易混淆的詞彙諸如 boxed 和 lifted 等等， 但是，隨著深入這些詞彙背後的情境，問題漸漸的形成了一個共同的問題： 「<strong>我們怎麼</strong>(在 Haskell 中)<strong>描述資訊</strong>(information<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>)<strong>？</strong>」。 為了進一步地理解這個問題，便產生了這個系列文章。 也許最終沒有辦法有個結論或是答案，但是至少這系列的文章可以留下一些線索， 讓我們可以朝著答案前進。</p>
 <h1 id="系列結構與列表">系列結構與列表</h1>

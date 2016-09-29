@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
+                          Agda Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
+                          Haskell Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Newtype and coerce (I)</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 27 Aug 2016
+            <a href="../../content/posts/2016-08-27-CoerceA.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 10 Sep 2016 (10:45)</small>
+	</p>
+      </header>
+      <div class="post-description">
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#prelude-pattern-matching">Prelude (pattern matching)</a><ul>
+<li><a href="#case-vs-let"><code>case</code> vs <code>let</code></a></li>
+<li><a href="#irrefutable-patterns">Irrefutable patterns</a></li>
+</ul></li>
+<li><a href="#the-newtype-1">The <code>newtype</code></a><ul>
+<li><a href="#wrap-by-data">wrap by <code>data</code></a></li>
+<li><a href="#as-wrapper-or-as-datatype-renaming">as <em>wrapper</em> or as <em>datatype renaming</em></a></li>
+<li><a href="#why-wrapping-renaming">why wrapping? renaming?</a></li>
+<li><a href="#things-in-newtype-which-are-not-that-good">things in newtype which are not that good</a></li>
+</ul></li>
+<li><a href="#參考資料">參考資料</a></li>
+</ul>
+        </div>
+        
+    	<p>This post is written for explaining how to manipulate datatype with newtype and coerce.</p>
+<!--more-->
+<h1 id="prelude-pattern-matching">Prelude (pattern matching)</h1>
+<h2 id="case-vs-let"><code>case</code> vs <code>let</code></h2>
+<p>說到 pattern matching，大家都知道是 haskell 核心的功能之一。不管是一般 function definition 時寫在等號左手邊或是 lambda function 裡面的 pattern matching，基本上都和 <code>case .. of ..</code> 是同樣的 <strong><em>strict</em></strong> pattern matching。換句話說，給定</p>
+<ul>
+<li>case <strong>v</strong> of <strong>p</strong> → <strong>e</strong></li>
+<li>(\ <strong>p</strong> . <strong>e</strong>) <strong>v</strong></li>
+</ul>
+<p>不管 <strong>e</strong> 之中有沒有用到 <strong>p</strong> 裡面的東西，<strong>v</strong> 一定要先被 match 到 pattern <strong>p</strong> 上面，然後才會執行 <strong>e</strong>。</p>
+另一方面，haskell 中的 <code>let .. in ..</code> 則是 <strong><em>lazy</em></strong> pattern matching。所有 <code>let</code> 都會被轉換成 <code>case</code>，同時會把 pattern 轉換成 lazy pattern ：
+<div class="block-definition">
+let <strong>p</strong> = <strong>v</strong> in <strong>e</strong> = case <strong>v</strong> of ~<strong>p</strong> -&gt; <strong>e</strong>。
+</div>
+<h2 id="irrefutable-patterns">Irrefutable patterns</h2>
+<p>在 haskell 中有一部分的 pattern 被稱為是 irrefutable (無法駁倒的)。例如說：</p>
+<ul>
+<li>variable</li>
+<li>wild-pattern <code>_</code></li>
+<li>lazy-pattern <code>~p</code> (for any pattern <code>p</code>)</li>
+</ul>
+<p>是三種基本的 irrefutable pattern。Irrefutable matching 有些有趣的地方，首先，它其實暗指了這個 pattern <em>一定要被 match 成功</em>。 而如果一個 irrefutable matching 失敗了，會丟出特定的錯誤訊息，而不是一般的 matching 錯誤。 例如說，我們會可以寫出這種奇怪的情況：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> (<span class="dt">False</span>, <span class="dv">1</span>) <span class="kw">of</span> {(<span class="dt">True</span>,p) <span class="ot">-&gt;</span> p}
+<span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Non</span><span class="fu">-</span>exhaustive patterns <span class="kw">in</span> <span class="kw">case</span>
+
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> (<span class="dt">False</span>, <span class="dv">1</span>) <span class="kw">of</span> {<span class="fu">~</span>(<span class="dt">True</span>,p) <span class="ot">-&gt;</span> p; (<span class="dt">False</span>,p) <span class="ot">-&gt;</span> p}
+<span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Irrefutable</span> pattern failed for pattern (<span class="dt">True</span>, p)</code></pre></div>
+<p>除了上面的基本款之外，我們還有兩種 inductively 定義出 irrefutable pattern 的方法，as-pattern 和 newtype：</p>
+<h3 id="the-as-pattern">The as-pattern</h3>
+<p>一個 as-pattern <code>x@ip</code> 是 irrefutable 如果 <code>ip</code> 是 irrefutable。 這其實不難理解，因為 <strong>x@</strong> 的部份其實就只是多 bind 一個變數而已。 我們可以從 Haskell 2010 language report 裡面的 <a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-610003.17.3">Formal Semantics of Pattern Matching</a> 中的 rule:</p>
+<div class="block-definition">
+(e): case <strong>v</strong> of { <strong>x@ p</strong> -&gt; e; _ -&gt; e′ } = case <strong>v</strong> of { <strong>p</strong> -&gt; (\ <strong>x</strong> -&gt; e) <strong>v</strong>; _ -&gt; e′}
+</div>
+<p>來理解 haskll 事實上做了什麼樣的轉換。不過為了簡單獲得操作性的理解，我們可以直接用個連續的例子來試著看看會發生什麼事情！</p>
+<p>首先，一般的情況下，我們的 strictly 和 lazily matching 會像這樣下面這樣。這邊請順便留意一下兩個 exceptions 是不一樣的！</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">1</span>] <span class="kw">of</span> (<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+[<span class="dv">1</span>]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> (<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+<span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Non</span><span class="fu">-</span>exhaustive patterns <span class="kw">in</span> <span class="kw">case</span>
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">1</span>] <span class="kw">of</span> <span class="fu">~</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+[<span class="dv">1</span>]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> <span class="fu">~</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+[<span class="dv">1</span><span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Irrefutable</span> pattern failed for pattern (<span class="dv">1</span> <span class="fu">:</span> ys)</code></pre></div>
+<p>接著，我們試著在 strictly matching 時用 as-pattern。然後我們可以發現說，如果 pattern <code>(1:ys)</code> 有可以被 matching 成功就是成功，不然就 matching 失敗。也就是說，如果 pattern 本身還是 refutable patterns，那不管我們用了 <code>x</code> 還是 <code>ys</code> 結果都一樣。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">1</span>] <span class="kw">of</span> x<span class="fu">@</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+[<span class="dv">1</span>]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">1</span>] <span class="kw">of</span> x<span class="fu">@</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> x
+[<span class="dv">1</span>]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> x<span class="fu">@</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+<span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Non</span><span class="fu">-</span>exhaustive patterns <span class="kw">in</span> <span class="kw">case</span>
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> x<span class="fu">@</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> x
+<span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Non</span><span class="fu">-</span>exhaustive patterns <span class="kw">in</span> <span class="kw">case</span></code></pre></div>
+<p>最後，我們用 lazy-pattern 把 refutable patterns <code>(1:ys)</code> 給變成 irrefutable patterns。 這時候我們就會發現 expression 裡面用的是 <code>x</code> 還是 <code>ys</code> 是有差別的！ 就算 <code>(1:ys)</code> 會 matching 失敗，因為我們其實沒有真的去 match 它，所以可以整個裝傻當做是 matching 成功。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> x<span class="fu">@</span> <span class="fu">~</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> <span class="dv">1</span><span class="fu">:</span>ys
+[<span class="dv">1</span><span class="fu">***</span> <span class="dt">Exception</span><span class="fu">:</span> <span class="dt">Irrefutable</span> pattern failed for pattern (<span class="dv">1</span> <span class="fu">:</span> ys)
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">case</span> [<span class="dv">2</span>] <span class="kw">of</span> x<span class="fu">@</span> <span class="fu">~</span>(<span class="dv">1</span><span class="fu">:</span>ys) <span class="ot">-&gt;</span> x
+[<span class="dv">2</span>]</code></pre></div>
+<h3 id="the-newtype">The newtype</h3>
+<p>一個由 newtype constructor 作為 head 的 pattern，例如說 <code>N p</code> (<code>N</code> 是 newtype 的 constructor)，是 irrefutable， 如果其 inner pattern <code>p</code> 已知是 irrefutable pattern。 Newtype 的 constructor 是個有趣的東西，更多細節請看下一節，在這裡我們只要知道說：假設我們有 <code>newtype N = N t</code>，那麼，出現在某 pattern，裡面的 <code>N</code> 會將某個 <code>v : N</code> 變成是 <code>v : t</code>。</p>
+<p>確實，我們理論上希望 newtype constructor 只是一個單純的 label，所以如果 <code>p</code> 是 irrefutable 那麼 <code>N p</code> 也應該要是 irrefutable，反之亦然。再一次，我們還是可以從 Haskell 2010 language report 裡面的 <a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-610003.17.3">Formal Semantics of Pattern Matching</a> 中的 rule:</p>
+<div class="block-definition">
+(k): case <strong>N</strong> <em>v</em> of { <strong>N</strong> <em>p -&gt; e</em>; _ -&gt; e′ } = case <em>v</em> of { <em>p -&gt; e</em>; _ -&gt; e′ }<br />(l): case <strong>⊥</strong> of { <strong>N</strong> <em>p -&gt; e</em>; _ -&gt; e′ } = case <strong>⊥</strong> of { <em>p -&gt; e</em> }
+</div>
+<p>去了解 haskell 實際上是怎麼辦到這件事情的。</p>
+<hr />
+<p>總結來說，與其說是 at-pattern 和 newtype 會可以用來產生 irrefutability，還不如說：at-pattern 和 newtype 會保留 pattern 的 (ir)refutability。因為 at-pattern 和 newtype 其實沒有對於 pattern 增加或減少任何資訊，所以 haskell 在 pattern matching 的時候就簡單的把 <code>x@</code> 和 <code>N</code> 給直接拿掉或是換成沒影響的東西。</p>
+<h1 id="the-newtype-1">The <code>newtype</code></h1>
+<p><code>newtype</code> 是 haskell 中用來複製 algebraic datatype 的機制。 而這個被複製出來的 algebraic datatype 習慣上我們稱之為 wrapper。</p>
+<div class="block-notes">
+<p>一個很經典的例子就是 Prelude 裡面的 <code>Bool</code> 和 Data.Monoid 裡面的 <code>All</code> 與 <code>Any</code>。</p>
+</div>
+<p>概念上，wrapper 就是在某個原有的資料結構的最外面包上一個新的 constructor， 而這件事情其實在 haskell 中也可以簡單的用 data 辦到。 所以，到底為什麼我們要創造出一個複製資料結構專用的弱化版的 data 呢？ 這件事情要從用 data 做 wrapper 會產生出來的缺點說起。</p>
+<h2 id="wrap-by-data">wrap by <code>data</code></h2>
+<p><code>data</code> 所產生的 constructor 是一個 <a href="http://jaiyalas.github.io/content/posts/2016-04-13-liftpoint.html#pointed-domain-and-lifting">lifting operator</a>，</p>
+<p>在 haskell 中 data wrapper 可以用 <code>data</code> 和 <code>newtype</code> 來實現。 不管是哪個方法，都有清空原本 instances 的效果。</p>
+<p>例如說，假設我們有一個頗複雜的資料結構 <code>Original</code> 如下</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Original</span> <span class="fu">=</span> <span class="dt">MkOgl1</span> <span class="fu">...</span>
+              <span class="fu">|</span> <span class="dt">MkOgl2</span> <span class="fu">...</span>
+              <span class="fu">|</span> <span class="dt">MkOgl3</span> <span class="fu">...</span>
+              <span class="fu">...</span> <span class="kw">deriving</span> (<span class="dt">Cla</span>, <span class="dt">Clb</span>, <span class="dt">Clc</span>)</code></pre></div>
+<p>我們分別可以定出兩個 wrappers:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">NtOgl</span> <span class="fu">=</span> <span class="dt">MkNtOgl</span> <span class="dt">Original</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">DtOgl</span> <span class="fu">=</span> <span class="dt">MkDtOgl</span> <span class="dt">Original</span></code></pre></div>
+<h2 id="as-wrapper-or-as-datatype-renaming">as <em>wrapper</em> or as <em>datatype renaming</em></h2>
+<p>As a wrapper, one can wrap it in a newtype and it’ll be considered distinct to the type-checker, but identical at runtime.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">N</span> <span class="dt">A</span></code></pre></div>
+<ul>
+<li>In expression, <code>N</code> coerces a value from type <code>A</code> to type <code>T</code>.
+<ul>
+<li>是一個 type wrapper：將 datatype <code>A</code> 用 constructor <code>N</code> 給重新包裝成 <code>T</code>。 而 A 和 T 在 run-time 是一樣的東西(have same representation)</li>
+</ul></li>
+<li>Within pattern, <code>N</code> coerces a value from type <code>T</code> to type <code>A</code>.</li>
+<li>看情況，有時候這些 coercions 會是免費的(no run-time overheads)</li>
+</ul>
+<h3 id="difference-between-newtype-and-data">Difference between <code>newtype</code> and <code>data</code></h3>
+<p>Constructing a <code>data</code> is a <em>lifting</em> operation; <code>newtype</code>, however, is <em>unlifting</em>.</p>
+<p>Which means, given a datatype <code>A</code> with its constructor <code>CA</code>, the constructor <code>D</code> in <code>data D = D A</code> will translate(?) <code>⊥ : A</code> into <code>D ⊥ : D</code>. This <code>D ⊥ : D</code> will differ from <code>⊥ : D</code>.</p>
+<p>可以舉例子 as domain ： Bool 和 Maybe Bool 中的 bot</p>
+<ul>
+<li>clone datatype itself without run-time cost</li>
+<li>as a way to define ad-hoc poly. (operator overloading)</li>
+</ul>
+<h2 id="why-wrapping-renaming">why wrapping? renaming?</h2>
+<p>我們可以將它視為是一種 reset typeclasses</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Bool</span> <span class="fu">:</span> <span class="fu">*</span></code></pre></div>
+<p>在 <code>Data.Monoid</code> 之下，有兩個 Bool wrappers</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Monoid</span> a <span class="kw">where</span>
+<span class="ot">        mempty  ::</span> a
+        <span class="co">-- ^ Identity of 'mappend'</span>
+<span class="ot">        mappend ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+        <span class="co">-- ^ An associative operation</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">All</span> <span class="fu">=</span> <span class="dt">All</span> {<span class="ot">getAll ::</span> <span class="dt">Bool</span>}
+<span class="kw">newtype</span> <span class="dt">Any</span> <span class="fu">=</span> <span class="dt">Any</span> {<span class="ot">getAny ::</span> <span class="dt">Bool</span>}
+
+<span class="co">-- | Boolean monoid under conjunction ('&amp;&amp;').</span>
+<span class="kw">newtype</span> <span class="dt">All</span> <span class="fu">=</span> <span class="dt">All</span> {<span class="ot"> getAll ::</span> <span class="dt">Bool</span> }
+        <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Ord</span>, <span class="dt">Read</span>, <span class="dt">Show</span>, <span class="dt">Bounded</span>, <span class="dt">Generic</span>)
+
+<span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">All</span> <span class="kw">where</span>
+        mempty <span class="fu">=</span> <span class="dt">All</span> <span class="dt">True</span>
+        <span class="dt">All</span> x <span class="ot">`mappend`</span> <span class="dt">All</span> y <span class="fu">=</span> <span class="dt">All</span> (x <span class="fu">&amp;&amp;</span> y)
+
+<span class="co">-- | Boolean monoid under disjunction ('||').</span>
+<span class="kw">newtype</span> <span class="dt">Any</span> <span class="fu">=</span> <span class="dt">Any</span> {<span class="ot"> getAny ::</span> <span class="dt">Bool</span> }
+        <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Ord</span>, <span class="dt">Read</span>, <span class="dt">Show</span>, <span class="dt">Bounded</span>, <span class="dt">Generic</span>)
+
+<span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Any</span> <span class="kw">where</span>
+        mempty <span class="fu">=</span> <span class="dt">Any</span> <span class="dt">False</span>
+        <span class="dt">Any</span> x <span class="ot">`mappend`</span> <span class="dt">Any</span> y <span class="fu">=</span> <span class="dt">Any</span> (x <span class="fu">||</span> y)</code></pre></div>
+<h2 id="things-in-newtype-which-are-not-that-good">things in newtype which are not that good</h2>
+<p>缺點</p>
+<ul>
+<li>clean up all provided instances</li>
+<li>some standard typeclass can be derivable, but most not</li>
+<li>for those instances we don’t want to modify computation underneath,
+<ul>
+<li>we still have to write instances for them.</li>
+<li>This will create overhead; and,</li>
+<li>we will get no promise on that GHC is smart enough to optimize this for us so that these lifted operator require no extra run-time costs.</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>好範例</p>
+</blockquote>
+<h3 id="breaking-module-boundary-datatype-constrain">Breaking module boundary (datatype constrain)</h3>
+<p>…</p>
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/">Haskell 2010 Language Report</a>
+<ul>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-440003.12">3.12 Let Expressions</a></li>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-580003.17">3.17 Pattern Matching</a></li>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-610003.17.3">3.17.3 Formal Semantics of Pattern Matching</a></li>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch4.html#x10-740004.2.3">4.2.3 Datatype Renamings</a></li>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch4.html#x10-840004.4.3.1">4.4.3.1 Function bindings</a></li>
+<li><a href="https://www.haskell.org/onlinereport/haskell2010/haskellch4.html#x10-860004.4.3.2">4.4.3.2 Pattern bindings</a></li>
+</ul></li>
+</ul>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/types.html">types</a>, <a href="../../tags/typeclass.html">typeclass</a>, <a href="../../tags/newtype.html">newtype</a>, <a href="../../tags/pattern%20matching.html">pattern matching</a>, <a href="../../tags/GeneralizedNewtypeDeriving.html">GeneralizedNewtypeDeriving</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

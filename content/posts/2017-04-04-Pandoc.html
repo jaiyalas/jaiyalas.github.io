@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
+                          Agda Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
+                          Haskell Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Quick notes on Pandoc</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 04 Apr 2017
+            <a href="../../content/posts/2017-04-04-Pandoc.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 04 Apr 2017 (15:56)</small>
+	</p>
+      </header>
+      <div class="post-description">
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#懶人直接抄">懶人直接抄</a><ul>
+<li><a href="#markdown-to-slide"><code>markdown</code> to slide</a></li>
+<li><a href="#markdownlhs-to-pdf"><code>markdown+lhs</code> to <code>pdf</code></a></li>
+<li><a href="#markdownlhs-to-html-epub-or-docx-word"><code>markdown+lhs</code> to <code>html</code>, <code>epub</code> or <code>docx</code> (word)</a></li>
+</ul></li>
+<li><a href="#基本參數">基本參數</a><ul>
+<li><a href="#輸入相關參數">輸入相關參數</a></li>
+<li><a href="#輸出相關參數">輸出相關參數</a></li>
+<li><a href="#內容相關參數">內容相關參數</a></li>
+</ul></li>
+<li><a href="#特殊格式專用參數">特殊格式專用參數</a><ul>
+<li><a href="#指定輸出樣板-template">指定輸出樣板 (template)</a></li>
+<li><a href="#epub-專用輸出參數">epub 專用輸出參數</a></li>
+<li><a href="#latex-pdf-專用輸出參數">latex (pdf) 專用輸出參數</a></li>
+<li><a href="#slide-專用輸出參數與編輯技巧">slide 專用輸出參數(與編輯技巧)</a></li>
+<li><a href="#使用-filter">使用 filter</a></li>
+</ul></li>
+<li><a href="#常見格式列表">常見格式列表</a><ul>
+<li><a href="#輸入格式">輸入格式</a></li>
+<li><a href="#輸出格式">輸出格式</a></li>
+<li><a href="#highlight-style">highlight-style</a></li>
+</ul></li>
+</ul>
+        </div>
+        
+    	<p>Pandoc, 相當好用的 haskell 程式。可以讓使用者在 markdown(+lhs), tex, pdf, epub 這些格式之間相互轉換。 但是 pandoc 使用上有很多參數和小細節需要注意，這篇文章簡單整理一些重點以供未來參考與翻閱。</p>
+<!--more-->
+<h1 id="懶人直接抄">懶人直接抄</h1>
+<h2 id="markdown-to-slide"><code>markdown</code> to slide</h2>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> --mathml -i -t beamer -V theme:Warsaw -V colortheme:beetle -s -o slide.pdf slide.md</code></pre></div>
+<p>或</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> --mathml -i -t revealjs -V theme=sky --highlight-style espresso -s -o slide.html slide.md</code></pre></div>
+<h2 id="markdownlhs-to-pdf"><code>markdown+lhs</code> to <code>pdf</code></h2>
+<p>懶人法</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs -s --highlight-style kate -o OutFile.pdf InFile.lhs</code></pre></div>
+<p>要 <strong>使用 tikz</strong> 或是要 <strong>使用中文</strong> 或是要 <strong>自定 latex 設定</strong></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">vim</span> tikz.preamble</code></pre></div>
+<p>加入</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs --latex-engine=xelatex -B tikz.preamble -V CJKmainfont=<span class="st">'Hiragino Maru Gothic ProN'</span> -V papersize=A4 -V geometry:margin=2cm --highlight-style espresso -s -o Output.pdf Input.lhs</code></pre></div>
+<h2 id="markdownlhs-to-html-epub-or-docx-word"><code>markdown+lhs</code> to <code>html</code>, <code>epub</code> or <code>docx</code> (word)</h2>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs --highlight-style kate InFile.lhs -s -o OutFile.html  
+<span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.epub
+<span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.docx</code></pre></div>
+<h1 id="基本參數">基本參數</h1>
+<h2 id="輸入相關參數">輸入相關參數</h2>
+<ul>
+<li><code>-f FORMAT</code> 指定輸入格式
+<ul>
+<li>使用 <code>pandoc --list-input-formats</code> 可以瀏覽所有輸入格式</li>
+<li>使用 <code>pandoc --list-extensions</code> 可以瀏覽所有擴充與其設定</li>
+</ul></li>
+<li><code>+lhs</code> 指定輸入格式為 lhs 檔
+<ul>
+<li>只能用於 <code>markdown</code>, <code>rst</code>, <code>latex</code>, 或 <code>html</code></li>
+<li>開啟時會強制取消 markdown 的 ATX-style (header 不能用 <code># ooxx</code> 那種)</li>
+</ul></li>
+</ul>
+<h2 id="輸出相關參數">輸出相關參數</h2>
+<ul>
+<li><code>-s</code> 產生獨立 (standalone) 檔案而非程式碼片段 (fragment)
+<ul>
+<li>輸出格式為 html, latex, rtf 有效</li>
+</ul></li>
+<li><code>-o</code> 輸出到指定檔案
+<ul>
+<li>不指定時會直接輸出到 stdout</li>
+</ul></li>
+<li><code>-t FORMAT</code> 指定輸出格式
+<ul>
+<li>不指定時直接根據輸出檔案的副檔名決定</li>
+<li>使用 <code>pandoc --list-output-formats</code> 可以瀏覽所有輸出格式</li>
+</ul></li>
+</ul>
+<h2 id="內容相關參數">內容相關參數</h2>
+<ul>
+<li><code>--toc</code> 開啟 toc
+<ul>
+<li><code>--toc-depth=NUMBER</code> 指定有效 toc 深度</li>
+<li><code>-N</code> 在標題前加上計數數字</li>
+</ul></li>
+<li><code>--highlight-style STYLE</code> 指定 syntax-highlight style
+<ul>
+<li><code>--no-highlight</code> 強制關閉 syntax-highlight</li>
+</ul></li>
+<li><code>--atx-headers</code> markdown using ATX-Headers
+<ul>
+<li>啟用 <code>+lhs</code> 時會自動關閉 ATX-style 的支援</li>
+</ul></li>
+<li><code>--wrap=auto|none|preserve</code> 設定 wrap 方式
+<ul>
+<li><code>--no-wrap</code> 關閉 wrap 功能</li>
+</ul></li>
+</ul>
+<h3 id="變數設定">變數設定</h3>
+<ul>
+<li><code>-V KEY=[VALUE]</code> 增加/指定 template variable
+<ul>
+<li>latex 可用變數： <a href="http://pandoc.org/MANUAL.html#variables-for-latex" class="uri">http://pandoc.org/MANUAL.html#variables-for-latex</a></li>
+<li>投影片可用變數： <a href="http://pandoc.org/MANUAL.html#variables-for-slides" class="uri">http://pandoc.org/MANUAL.html#variables-for-slides</a></li>
+<li>pandoc 可用變數： <a href="http://pandoc.org/MANUAL.html#variables-set-by-pandoc" class="uri">http://pandoc.org/MANUAL.html#variables-set-by-pandoc</a></li>
+<li>template 可用變數： <a href="http://pandoc.org/MANUAL.html#using-variables-in-templates" class="uri">http://pandoc.org/MANUAL.html#using-variables-in-templates</a></li>
+</ul></li>
+<li><code>-M KEY[=VALUE]</code> 增加/指定 metadata field
+<ul>
+<li>template 中可以讀到</li>
+<li>filter 中可以讀到</li>
+<li>writer 中不見得可以讀到</li>
+</ul></li>
+</ul>
+<h3 id="引入額外文件內容-latexhtml">引入額外文件內容 (latex/html)</h3>
+<ul>
+<li><code>-B FILE</code> 貼上檔案內容至文件主體前
+<ul>
+<li>(latex) <code>\begin{document}</code> 前</li>
+<li>(html) 緊貼在 <code>&lt;body&gt;</code> 後面</li>
+</ul></li>
+<li><code>-A FILE</code> 貼上檔案內容至文件主體後
+<ul>
+<li>(latex) <code>\end{document}</code> 後</li>
+<li>(html) 緊貼在 <code>&lt;/body&gt;</code> 前面</li>
+</ul></li>
+</ul>
+<h1 id="特殊格式專用參數">特殊格式專用參數</h1>
+<h2 id="指定輸出樣板-template">指定輸出樣板 (template)</h2>
+<ul>
+<li><code>--template=FILE</code> 指定樣板檔案
+<ul>
+<li>預設樣板檔案可以在 <a href="https://github.com/jgm/pandoc-templates" class="uri">https://github.com/jgm/pandoc-templates</a> 找到</li>
+<li>整理好的額外好用樣板 <a href="https://github.com/jgm/pandoc/wiki/User-contributed-templates" class="uri">https://github.com/jgm/pandoc/wiki/User-contributed-templates</a></li>
+<li>樣板中可以使用的變數介紹 <a href="http://pandoc.org/MANUAL.html#templates" class="uri">http://pandoc.org/MANUAL.html#templates</a></li>
+</ul></li>
+</ul>
+<h3 id="範例-藉由自定樣板來支援-tikz">(範例) 藉由自定樣板來支援 tikz</h3>
+<p>首先，輸出預設 latex 用 template 檔案：</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -D latex <span class="kw">&gt;</span> tikz.latex</code></pre></div>
+<p>接著，打開 <code>tikz.latex</code> 並且在 preamble 區域加入以下程式碼：</p>
+<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows}</code></pre></div>
+<p>最後就只要在使用 pandoc 產生 pdf 時多加上參數 <code>--template=tikz.latex</code> 即可。</p>
+<h2 id="epub-專用輸出參數">epub 專用輸出參數</h2>
+<ul>
+<li><code>--epub-cover-image=FILE</code> 指定封面圖</li>
+<li><code>--epub-stylesheet=FILE</code> 指定額外的 css 檔案
+<ul>
+<li><code>--epub-embed-font=FONTFILE</code> 包入指定的字型檔案 (需要在 css 中設定使用)</li>
+</ul></li>
+<li><code>--epub-metadata=FILE</code> 指定額外的 metadata 檔案</li>
+</ul>
+<h2 id="latex-pdf-專用輸出參數">latex (pdf) 專用輸出參數</h2>
+<ul>
+<li><code>--latex-engine=pdflatex|lualatex|xelatex</code> 指定 latex 引擎</li>
+<li>要使用中文需要開啟最少：
+<ul>
+<li><code>--latex-engine=xelatex</code></li>
+<li><code>-V CJKmainfont='Lihei Pro'</code></li>
+</ul></li>
+</ul>
+<h2 id="slide-專用輸出參數與編輯技巧">slide 專用輸出參數(與編輯技巧)</h2>
+<ul>
+<li><code>-i</code> 漸進式 bullet 呈現</li>
+<li>將 <code>. . .</code> 作為獨立段落 = 暫停</li>
+<li>reveal.js 或 beamer 的設定參數可以用 <code>-V</code> 設定
+<ul>
+<li>e.g. <code>-V theme=sky</code> 或 <code>-V theme:Warsaw</code></li>
+<li>reveal.js congif 可以參考 <a href="https://github.com/hakimel/reveal.js#configuration" class="uri">https://github.com/hakimel/reveal.js#configuration</a></li>
+<li>beamer theme 可以參考 <a href="http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html" class="uri">http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html</a></li>
+</ul></li>
+</ul>
+<h2 id="使用-filter">使用 filter</h2>
+<ul>
+<li><code>--filter=PROGRAM</code> 指定外部 filter 程式
+<ul>
+<li>會在 parse 好但是還沒交付給 writer 之前使用。</li>
+<li>已經由好人寫好的第三方 filter 可以在 <a href="https://github.com/jgm/pandoc/wiki/Pandoc-Filters" class="uri">https://github.com/jgm/pandoc/wiki/Pandoc-Filters</a> 找到</li>
+</ul></li>
+</ul>
+<h1 id="常見格式列表">常見格式列表</h1>
+<h2 id="輸入格式">輸入格式</h2>
+<ul>
+<li>native (native Haskell)</li>
+<li>json</li>
+<li>markdown</li>
+<li>markdown_strict</li>
+<li>markdown_github</li>
+<li>html</li>
+<li>docx</li>
+<li>odt</li>
+<li>epub</li>
+<li>haddock</li>
+<li>latex</li>
+</ul>
+<h2 id="輸出格式">輸出格式</h2>
+<ul>
+<li>native (native Haskell)</li>
+<li>json (JSON version of native AST)</li>
+<li>plain (plain text)</li>
+<li>markdown (pandoc’s extended Markdown)</li>
+<li>markdown_strict (original unextended Markdown)</li>
+<li>markdown_github (GitHub-Flavored Markdown)</li>
+<li>rst (reStructuredText)</li>
+<li>html (XHTML)</li>
+<li>html5 (HTML5)</li>
+<li>latex (LaTeX)</li>
+<li>opendocument (OpenDocument)</li>
+<li>odt (OpenOffice text document)</li>
+<li>docx (Word docx)</li>
+<li>haddock (Haddock markup)</li>
+<li>rtf (rich text format)</li>
+<li>epub (EPUB v2 book)</li>
+<li>epub3 (EPUB v3)</li>
+</ul>
+<h3 id="slide-專用格式-html-或-pdf">slide 專用格式 (html 或 pdf)</h3>
+<ul>
+<li>beamer (LaTeX beamer slide show)</li>
+<li>slidy (Slidy HTML + JavaScript slide show)</li>
+<li>slideous (Slideous HTML + JavaScript slide show)</li>
+<li>dzslides (DZSlides HTML5 + JavaScript slide show)</li>
+<li>revealjs (reveal.js HTML5 + JavaScript slide show)</li>
+<li>s5 (S5 HTML + JavaScript slide show)</li>
+</ul>
+<h2 id="highlight-style">highlight-style</h2>
+<ul>
+<li>pygments</li>
+<li>tango</li>
+<li>espresso</li>
+<li>zenburn</li>
+<li>kate</li>
+<li>monochrome</li>
+<li>breezedark</li>
+<li>haddock</li>
+</ul>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/types.html">types</a>, <a href="../../tags/pandoc.html">pandoc</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

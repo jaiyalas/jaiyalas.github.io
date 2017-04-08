@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<title>程式與邏輯</title>
+
+<meta name="description" content="程式與邏輯">
+  <meta name="author" content="08 Apr 2017" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="https://dl.dropboxusercontent.com/u/11966021/www/reveal.js/css/reveal.css" />
+<link rel="stylesheet" href="https://dl.dropboxusercontent.com/u/11966021/www/reveal.js/css/theme/black.css" id="theme" />
+<link rel="stylesheet" href="https://dl.dropboxusercontent.com/u/11966021/www/custom.css" />
+<link rel="stylesheet" href="https://dl.dropboxusercontent.com/u/11966021/www/syntaxH.css" />
+
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+  if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'reveal.js/css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  }
+</script>
+<!--[if lt IE 9]>
+<script src="reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<section>
+    <h1 class="title">程式與邏輯</h1>
+    <h2 class="author">08 Apr 2017</h2>
+    <h3 class="date"></h3>
+</section>
+
+<section><section id="prelude" class="titleslide slide level1"><h1>Prelude</h1></section><section id="section" class="slide level2">
+<h2></h2>
+<h4 id="背景調查">背景調查</h4>
+<ul>
+<li class="fragment">程式 Programming ?</li>
+<li class="fragment">型別 Types ?</li>
+<li class="fragment">遞迴 Recursion ?</li>
+<li class="fragment">集合 Set ?</li>
+<li class="fragment">邏輯 Logic ?</li>
+</ul>
+</section><section id="section-1" class="slide level2">
+<h2></h2>
+<h3 id="郗昀彥">郗昀彥</h3>
+<ul>
+<li>
+程式計算與建構
+</li>
+<li>
+設計型別系統
+</li>
+<li>
+設計程式語言
+</li>
+</ul>
+</section><section id="section-2" class="slide level2" data-background="img/logo.png">
+<h2></h2>
+</section><section id="section-3" class="slide level2">
+<h2></h2>
+<p>我們發展..<br />
+保證程式 <strong>正確性</strong> 之技術</p>
+</section><section id="section-4" class="slide level2">
+<h2></h2>
+<ul>
+<li>
+程式
+</li>
+<li>
+邏輯
+</li>
+<li>
+能(在)做什麼
+</li>
+</ul>
+<!-- ################################# -->
+</section></section>
+<section><section id="電腦-程式" class="titleslide slide level1"><h1>電腦 <em>程式</em></h1></section><section id="section-5" class="slide level2">
+<h2></h2>
+<p>Q: 這個 function 是做什麼的?</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- haskell</span>
+<span class="ot">func1 ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+func1 n <span class="fu">=</span> n <span class="fu">+</span><span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="co">// java</span>
+<span class="dt">int</span> <span class="fu">func1</span>(<span class="dt">int</span> i){ <span class="kw">return</span> (i+<span class="dv">1</span>); }</code></pre></div>
+<ul>
+<li class="fragment">拿一個自然數回傳該數加一</li>
+<li class="fragment">func1 :: Int <span class="math inline">→</span> Int
+<ul>
+<li class="fragment"><strong>type</strong> information</li>
+</ul></li>
+</ul>
+</section><section id="section-6" class="slide level2">
+<h2></h2>
+<p><small>假設 Int 是由 0 開始的所有自然數</small></p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- haskell</span>
+<span class="ot">func2 ::</span> (<span class="dt">Int</span>, <span class="dt">Int</span>) <span class="ot">-&gt;</span> <span class="dt">Int</span>
+func2 (m, <span class="dv">0</span>) <span class="fu">=</span> <span class="dv">0</span>
+func2 (m, n) <span class="fu">=</span> (func2 (m, n<span class="fu">-</span><span class="dv">1</span>)) <span class="fu">+</span> m</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="co">// java</span>
+<span class="dt">int</span> <span class="fu">func2</span>(<span class="dt">int</span> m, <span class="dt">int</span> n){
+    <span class="kw">if</span>(n == <span class="dv">0</span>){ <span class="kw">return</span> <span class="dv">0</span>; }
+    <span class="kw">else</span>{ <span class="kw">return</span> <span class="fu">func2</span>(m, n-<span class="dv">1</span>) + m; }
+}</code></pre></div>
+<ul>
+<li class="fragment">(Int, Int) <span class="math inline">→</span> Int</li>
+<li class="fragment">Int <span class="math inline">→</span> Int <span class="math inline">→</span> Int</li>
+</ul>
+</section><section id="section-7" class="slide level2">
+<h2></h2>
+<p><small>假設 input 不能是空的 list</small></p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- haskell</span>
+<span class="ot">func3 ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
+func3 [x] <span class="fu">=</span> x
+func3 (head <span class="fu">:</span> tail) <span class="fu">=</span> <span class="kw">let</span> m <span class="fu">=</span> func3 tail <span class="kw">in</span>
+    <span class="kw">if</span> (head <span class="fu">&gt;=</span> m) <span class="kw">then</span> head <span class="kw">else</span> m</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="co">// java</span>
+<span class="bu">Integer</span> <span class="fu">func3</span>(<span class="bu">ArrayList</span>&lt;<span class="bu">Integer</span>&gt; list){
+    T head = list.<span class="fu">get</span>(<span class="dv">0</span>);
+    <span class="kw">if</span>(list.<span class="fu">size</span>() == <span class="dv">1</span>){
+        <span class="kw">return</span> head;
+    }<span class="kw">else</span>{
+        T m = <span class="fu">func3</span>(list.<span class="fu">remove</span>(<span class="dv">0</span>));
+        <span class="kw">if</span>(head &gt;= m){ <span class="kw">return</span> head; }
+        <span class="kw">else</span>{ <span class="kw">return</span> m; }
+    }
+}</code></pre></div>
+<ul>
+<li class="fragment">List&lt;Int&gt; <span class="math inline">→</span> Int</li>
+</ul>
+</section><section id="section-8" class="slide level2">
+<h2></h2>
+<h3 id="型別資訊-type-information">型別資訊 (type information)</h3>
+<ul>
+<li class="fragment"><em>型別</em> 告訴我們？
+<ul>
+<li class="fragment">輸入和輸出的 <strong>資料種類</strong></li>
+</ul></li>
+<li class="fragment"><em>型別</em> 可以用來？
+<ul>
+<li class="fragment">確保語法被 <strong>正確地使用</strong>
+<ul>
+<li class="fragment"><span class="math inline">✓</span> <code class="sourceCode java"><span class="fu">isEven</span>( <span class="dv">11</span> );</code></li>
+<li class="fragment"><span class="math inline">×</span> <code class="sourceCode java"><span class="fu">isEven</span>( <span class="kw">false</span> );</code></li>
+</ul></li>
+</ul></li>
+<li class="fragment">所以，型別重要嗎？</li>
+</ul>
+<!-- ################################# -->
+</section></section>
+<section><section id="簡單-邏輯" class="titleslide slide level1"><h1>簡單 <em>邏輯</em></h1></section><section id="logic" class="slide level2">
+<h2>Logic</h2>
+<table>
+<thead>
+<tr class="header">
+<th>符號</th>
+<th></th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p <strong><span class="math inline">∧</span></strong> q</td>
+<td></td>
+<td>p 和 q</td>
+</tr>
+<tr class="even">
+<td>p <strong><span class="math inline">∨</span></strong> q</td>
+<td></td>
+<td>p 或 p</td>
+</tr>
+<tr class="odd">
+<td>p <strong><span class="math inline">→</span></strong> q</td>
+<td></td>
+<td>若 p 則 q</td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">¬</span></strong> p</td>
+<td></td>
+<td>非 p</td>
+</tr>
+</tbody>
+</table>
+</section><section id="section-9" class="slide level2">
+<h2></h2>
+<h3 id="牛刀小試">牛刀小試</h3>
+<p><em>p</em> = 我今天跳祈雨舞; <em>q</em> = 明天會下雨</p>
+<ul>
+<li>
+Q1: <strong>p <span class="math inline">∧</span> q</strong> ?
+</li>
+<li>
+Q2: <strong>p <span class="math inline">→</span> q</strong> ?
+</li>
+</ul>
+</section><section id="first-order-logic" class="slide level2">
+<h2>First-Order Logic</h2>
+<p><small> 假設： p 裡面有用到 x </small></p>
+<table>
+<thead>
+<tr class="header">
+<th>符號</th>
+<th></th>
+<th>意義</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><span class="math inline">∀</span></strong> x . <span class="math inline"><em>p</em><sub><em>x</em></sub></span></td>
+<td></td>
+<td>對所有 x, <span class="math inline"><em>p</em><sub><em>x</em></sub></span> 都成立</td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">∃</span></strong> x . <span class="math inline"><em>p</em><sub><em>x</em></sub></span></td>
+<td></td>
+<td>存在有 x, <span class="math inline"><em>p</em><sub><em>x</em></sub></span> 都成立</td>
+</tr>
+</tbody>
+</table>
+</section><section id="section-10" class="slide level2">
+<h2></h2>
+<h3 id="範例">範例</h3>
+<ul>
+<li class="fragment">「有某一學生的身高大於 180 公分」...?
+<ul>
+<li class="fragment"><strong><span class="math inline">∃</span></strong> s 是學生 . <em>s 的身高 &gt; 180</em></li>
+</ul></li>
+<li class="fragment">「所有奇異果都是綠色的」...?
+<ul>
+<li class="fragment"><strong><span class="math inline">∀</span></strong> k 是奇異果 . <em>k 是綠色的</em></li>
+</ul></li>
+</ul>
+</section><section id="section-11" class="slide level2">
+<h2></h2>
+<h3 id="更形式化-符號化-一點..">更形式化 (符號化) 一點..</h3>
+<p><em>S</em> 表示 <em>所有奇異果的集合</em> ； <em><span class="math inline"><em>p</em><sub><em>x</em></sub></span></em> 表示 <em>x 是係金ㄟ</em></p>
+<ul>
+<li class="fragment">「有某顆奇異果不是係金ㄟ」...?
+<ul>
+<li class="fragment"><strong><span class="math inline">∃</span></strong> x <span class="math inline">∈</span> S. <em><span class="math inline">¬</span> <span class="math inline"><em>p</em><sub><em>x</em></sub></span></em></li>
+</ul></li>
+<li class="fragment">「所有的奇異果要嘛就是係金ㄟ，不然就不是」...?
+<ul>
+<li class="fragment"><strong><span class="math inline">∀</span></strong> x <span class="math inline">∈</span> S. <em><span class="math inline"><em>p</em><sub><em>x</em></sub></span> <span class="math inline">∨¬</span> <span class="math inline"><em>p</em><sub><em>x</em></sub></span></em></li>
+</ul></li>
+</ul>
+</section><section id="section-12" class="slide level2">
+<h2></h2>
+<h3 id="請問-下述邏輯句子的意思"><strong>請問</strong> 下述邏輯句子的意思?</h3>
+<p><small><span class="math inline">ℕ</span> 是所有自然數的集合(包含零)</small></p>
+<ul>
+<li>
+<span class="math inline">∀</span> <strong>m</strong>, <strong>n</strong> <span class="math inline">∈ℕ</span> . <span class="math inline">∃</span> <strong>i</strong> <span class="math inline">∈ℕ</span> . <em>m <span class="math inline">×</span> n = 0</em> <span class="math inline">∨</span> <em>m <span class="math inline">×</span> n = i + m</em>
+</li>
+<li>
+<span class="math inline">∀</span> 非空自然數集合 <strong>S</strong> . <span class="math inline">∃</span> <strong>m</strong> <span class="math inline">∈</span> S . <span class="math inline">∀</span> x <span class="math inline">∈</span> S . <em>m <span class="math inline">≥</span> x</em>
+</li>
+</ul>
+</section></section>
+<section><section id="何謂-真實" class="titleslide slide level1"><h1>何謂 <em>真實</em></h1></section><section id="section-13" class="slide level2">
+<h2></h2>
+<p>問題：我們如何 <em>檢驗</em> 某個「邏輯句子」是否為 <strong>真</strong> ?</p>
+</section><section class="slide level2">
+
+<h3 id="真值表">真值表</h3>
+<table style="width:56%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 16%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>p</th>
+<th>q</th>
+<th>p <span class="math inline">→</span> q</th>
+<th><span class="math inline">¬</span> p <span class="math inline">∨</span> q</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>T</p></td>
+<td><p>T</p></td>
+<td><p>T</p></td>
+<td><p>T</p></td>
+</tr>
+<tr class="even">
+<td><p>T</p></td>
+<td><p>F</p></td>
+<td><p>F</p></td>
+<td><p>F</p></td>
+</tr>
+<tr class="odd">
+<td><p>F</p></td>
+<td><p>T</p></td>
+<td><p>T</p></td>
+<td><p>T</p></td>
+</tr>
+<tr class="even">
+<td><p>F</p></td>
+<td><p>F</p></td>
+<td><p>T</p></td>
+<td><p>T</p></td>
+</tr>
+</tbody>
+</table>
+</section><section id="section-14" class="slide level2">
+<h2></h2>
+<p>某個「邏輯句子」為真，如果「句子」中每個部分都為真</p>
+</section><section id="真的是這樣嗎" class="slide level2">
+<h2>真的是這樣嗎?</h2>
+</section><section id="這顆奇異果係金ㄟ" class="slide level2">
+<h2>這顆奇異果係金ㄟ</h2>
+<figure>
+<img src="./img/kiwi.png" />
+</figure>
+<ul>
+<li class="fragment">但是，我們怎麼知道?</li>
+</ul>
+</section><section id="section-15" class="slide level2">
+<h2></h2>
+<figure>
+<img src="./img/kiwi2.png" />
+</figure>
+<ul>
+<li class="fragment">相信自己.. 嗎?</li>
+<li class="fragment"><strong>直構主義</strong>
+<ul>
+<li class="fragment">不再信任自己對於世界的認知 (眼見不為憑)</li>
+<li class="fragment">提供形式化的證據來證明</li>
+</ul></li>
+</ul>
+</section><section id="section-16" class="slide level2">
+<h2></h2>
+<h3 id="也就是說..">也就是說..</h3>
+<p>我們所謂的 True 從</p>
+<ul>
+<li class="fragment"><em>真實</em> 、 <em>存在</em> 、 <em>真理</em> ...</li>
+</ul>
+<p>轉變為</p>
+<ul>
+<li class="fragment"><strong>有證明</strong> 可以證實</li>
+</ul>
+</section><section id="section-17" class="slide level2">
+<h2></h2>
+<ul>
+<li>
+前者稱為 <em>古典</em> 邏輯 (classical)
+</li>
+<li>
+後者稱為 <strong>直構</strong> 邏輯 (intuitionistic)
+</li>
+</ul>
+</section><section id="古典-vs-直構" class="slide level2">
+<h2>古典 vs 直構</h2>
+<h3 id="bot"><strong><span class="math inline">⊥</span></strong></h3>
+<ul>
+<li class="fragment">true: 真; false: 假</li>
+<li class="fragment"><em><span class="math inline">⊥</span></em>: 不存在的東西/某種未定之物</li>
+<li class="fragment">爆炸原理: <em><span class="math inline">⊥</span></em> <span class="math inline">→</span> <strong>anything</strong></li>
+</ul>
+</section><section id="section-18" class="slide level2">
+<h2></h2>
+<h3 id="範例-neg-p">範例 <em><span class="math inline">¬</span> p</em></h3>
+<ul>
+<li class="fragment">[古典] p = false</li>
+<li class="fragment">[直構] p <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong></li>
+</ul>
+</section><section id="section-19" class="slide level2">
+<h2></h2>
+<h3 id="範例-neg-neg-p-和-p">範例 <em><span class="math inline">¬</span> <span class="math inline">¬</span> p</em> 和 <em>p</em></h3>
+<ul>
+<li class="fragment">[古典] <span class="math inline">¬</span> <span class="math inline">¬</span> p <em>=</em> p</li>
+<li class="fragment">[直構] (p <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong>) <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong></li>
+</ul>
+</section><section id="section-20" class="slide level2">
+<h2></h2>
+<h3 id="請證明"><strong>請證明</strong></h3>
+<p><span class="math inline">∀<em>m</em>, <em>n</em> ∈ ℕ</span> . <span class="math inline">∃<em>i</em> ∈ ℕ</span> . <span class="math inline"><em>m</em> × <em>n</em> = 0</span> <span class="math inline">∨</span> <span class="math inline"><em>m</em> × <em>n</em> = <em>i</em> + <em>m</em></span></p>
+<ul>
+<li class="fragment">若 n = 0, 顯然 m <span class="math inline">×</span> 0 = 0</li>
+<li class="fragment">假設 n = k + 1
+<ul>
+<li class="fragment">根據 MI, 已知 n = k 時存在一個 <strong>j</strong> 使得 <em><span class="math inline"><em>m</em> × <em>k</em> = 0</span></em> <span class="math inline">∨</span> <em><span class="math inline"><em>m</em> × <em>k</em> = <em>j</em> + <em>m</em></span></em>
+<ul>
+<li class="fragment">[case 1]: m <span class="math inline">×</span> (k + 1) = (m <span class="math inline">×</span> k) + m = <strong>0</strong> + m</li>
+<li class="fragment">[case 2]: m <span class="math inline">×</span> (k + 1) = (m <span class="math inline">×</span> k) + m = <strong>(j + m)</strong> + m</li>
+</ul></li>
+</ul></li>
+</ul>
+</section><section id="section-21" class="slide level2">
+<h2></h2>
+<h3 id="請證明-1"><strong>請證明</strong></h3>
+<p><span class="math inline">∀</span> 非空自然數集合 <strong>S</strong> . <span class="math inline">∃<em>m</em> ∈ <em>S</em></span> . <span class="math inline">∀<em>x</em> ∈ <em>S</em></span> . <em><span class="math inline"><em>m</em> ≥ <em>x</em></span></em></p>
+<ul>
+<li class="fragment">若 S <span class="math inline">≡</span> {x}, 顯然 x <span class="math inline">≥</span> x</li>
+<li class="fragment">假設 S <span class="math inline">≡</span> {x} <span class="math inline">∪</span> T
+<ul>
+<li class="fragment">根據歸納法, 已知存在一個 m <span class="math inline">∈</span> T 且 <span class="math inline">∀</span> t <span class="math inline">∈</span> T . <em>m <span class="math inline">≥</span> t</em>
+<ul>
+<li class="fragment">若 x <span class="math inline">≥</span> m 則 <span class="math inline">∀</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span> <span class="math inline">∈</span> {x} <span class="math inline">∪</span> T . x <span class="math inline">≥</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span></li>
+<li class="fragment">若 x <span class="math inline">&lt;</span> m 則 <span class="math inline">∀</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span> <span class="math inline">∈</span> {x} <span class="math inline">∪</span> T . m <span class="math inline">≥</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span></li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- CH CH CH CH CH CH CH CH CH CH CH CH CH CH -->
+</section></section>
+<section><section id="邏輯與程式" class="titleslide slide level1"><h1>邏輯與程式</h1></section><section id="section-22" class="slide level2">
+<h2></h2>
+<h3 id="回到程式..">回到程式..</h3>
+<ul>
+<li class="fragment">自然數乘法的程式
+<ul>
+<li class="fragment">m <span class="math inline">×</span> n 要嘛是 0 不然就是 m + 某個自然數</li>
+<li class="fragment"><span class="math inline">∀<em>m</em>, <em>n</em> ∈ ℕ</span> . <span class="math inline">∃<em>i</em> ∈ ℕ</span> . <span class="math inline"><em>m</em> × <em>n</em> = 0</span> <span class="math inline">∨</span> <span class="math inline"><em>m</em> × <em>n</em> = <em>i</em> + <em>m</em></span></li>
+</ul></li>
+<li class="fragment">從一堆資料中找最大值的程式
+<ul>
+<li class="fragment">最大值 m 必定大於等於其他所有數值</li>
+<li class="fragment"><span class="math inline">∀</span> 非空自然數集合 S . <span class="math inline">∃<em>m</em> ∈ <em>S</em></span> . <span class="math inline">∀<em>x</em> ∈ <em>S</em></span> . <em><span class="math inline"><em>m</em> ≥ <em>x</em></span></em></li>
+</ul></li>
+<li class="fragment">用「<strong>邏輯句子</strong>」描述我們想要做的事情的「<strong>性質</strong>」</li>
+</ul>
+</section><section id="section-23" class="slide level2">
+<h2></h2>
+<p><small><span class="math inline">∀<em>m</em>, <em>n</em> ∈ ℕ</span> . <span class="math inline">∃<em>i</em> ∈ ℕ</span> . <span class="math inline"><em>m</em> × <em>n</em> = 0</span> <span class="math inline">∨</span> <span class="math inline"><em>m</em> × <em>n</em> = <em>i</em> + <em>m</em></span></small></p>
+<ul>
+<li class="fragment">若 n = 0, 顯然 m <span class="math inline">×</span> 0 = 0</li>
+<li class="fragment">假設 n = k + 1
+<ul>
+<li class="fragment">已知存在 <strong>j</strong> 使得 <em><span class="math inline"><em>m</em> × <em>k</em> = 0</span></em> <span class="math inline">∨</span> <em><span class="math inline"><em>m</em> × <em>k</em> = <em>j</em> + <em>m</em></span></em>
+<ul>
+<li class="fragment">[case 1]: m <span class="math inline">×</span> (k + 1) = (m <span class="math inline">×</span> k) + m = <strong>0</strong> + m</li>
+<li class="fragment">[case 2]: m <span class="math inline">×</span> (k + 1) = (m <span class="math inline">×</span> k) + m = <strong>(j + m)</strong> + m</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="co">// java</span>
+<span class="dt">int</span> <span class="fu">func2</span>(<span class="dt">int</span> m, <span class="dt">int</span> n){
+    <span class="kw">if</span>(n == <span class="dv">0</span>){ <span class="kw">return</span> <span class="dv">0</span>; }
+    <span class="kw">else</span>{ <span class="kw">return</span> <span class="fu">times</span>(m, n-<span class="dv">1</span>) + m; }
+}</code></pre></div>
+</section><section id="section-24" class="slide level2">
+<h2></h2>
+<p><small><span class="math inline">∀</span> 非空自然數集合 <strong>S</strong> . <span class="math inline">∃<em>m</em> ∈ <em>S</em></span> . <span class="math inline">∀<em>x</em> ∈ <em>S</em></span> . <em><span class="math inline"><em>m</em> ≥ <em>x</em></span></em></small></p>
+<ul>
+<li class="fragment">若 S <span class="math inline">≡</span> {x}, 顯然 x <span class="math inline">≥</span> x</li>
+<li class="fragment">假設 S <span class="math inline">≡</span> {x} <span class="math inline">∪</span> T
+<ul>
+<li class="fragment">根據歸納法, 已知存在一個 m <span class="math inline">∈</span> T 且 <span class="math inline">∀</span> t <span class="math inline">∈</span> T . <em>m <span class="math inline">≥</span> t</em>
+<ul>
+<li class="fragment">若 x <span class="math inline">≥</span> m 則 <span class="math inline">∀</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span> <span class="math inline">∈</span> {x} <span class="math inline">∪</span> T . x <span class="math inline">≥</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span></li>
+<li class="fragment">若 x <span class="math inline">&lt;</span> m 則 <span class="math inline">∀</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span> <span class="math inline">∈</span> {x} <span class="math inline">∪</span> T . m <span class="math inline">≥</span> <span class="math inline"><em>x</em><sub><em>i</em></sub></span></li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="co">// java</span>
+<span class="bu">Integer</span> <span class="fu">func3</span>(<span class="bu">ArrayList</span>&lt;<span class="bu">Integer</span>&gt; list){
+    T head = list.<span class="fu">get</span>(<span class="dv">0</span>);
+    <span class="kw">if</span>(list.<span class="fu">size</span>() == <span class="dv">1</span>){ <span class="kw">return</span> head; }
+    <span class="kw">else</span>{
+        T m = <span class="fu">func3</span>(list.<span class="fu">remove</span>(<span class="dv">0</span>));
+        <span class="kw">if</span>(head &gt;= m){ <span class="kw">return</span> head; }
+        <span class="kw">else</span>{ <span class="kw">return</span> m; }
+    }
+}</code></pre></div>
+</section><section id="curry-howard-對應" class="slide level2">
+<h2>Curry-Howard 對應</h2>
+<ul>
+<li class="fragment">「<strong>邏輯系統</strong>」 <span class="math inline">⇔</span> 「<em>型別系統</em>」</li>
+<li class="fragment">「<strong>邏輯句子/性質</strong>」 <span class="math inline">⇔</span> 「<em>型別資訊</em>」</li>
+<li class="fragment">「<strong>證明</strong>」 <span class="math inline">⇔</span> 「<em>程式</em>」</li>
+</ul>
+</section><section id="邏輯系統百百種" class="slide level2">
+<h2>邏輯系統百百種</h2>
+<ul>
+<li class="fragment">一階直構邏輯 <span class="math inline">⇔</span> <strong>簡單型別系統</strong> (Martin-Löf type theory)
+<ul>
+<li class="fragment">描述 <em>簡單資料</em> 性質</li>
+</ul></li>
+<li class="fragment">二階直構邏輯 <span class="math inline">⇔</span> <strong>多型型別</strong> (System-F)
+<ul>
+<li class="fragment">描述 <em>抽象資料</em> 與 <em>計算</em> 相關的性質</li>
+</ul></li>
+<li class="fragment">古典線性邏輯 <span class="math inline">⇔</span> <strong>會議型別</strong> (session types)
+<ul>
+<li class="fragment">描述 <em>不同程序</em> 之間如何 <em>傳遞訊息</em></li>
+</ul></li>
+<li class="fragment">直構線性邏輯 <span class="math inline">⇔</span> <strong>線性型別</strong> (linear types)
+<ul>
+<li class="fragment">描述系統 <em>資源</em> 被 <em>使用的次數</em></li>
+</ul></li>
+</ul>
+</section><section id="section-25" class="slide level2">
+<h2></h2>
+<figure>
+<img src="img/logoS.png" />
+</figure>
+<ol type="1">
+<li class="fragment"><em>有「程式」</em> 也 <em>有「型別(性質)」</em>
+<ul>
+<li class="fragment"><strong>檢查</strong> 這個「程式」能否作為該性質的「證明」</li>
+<li class="fragment"><strong>產生</strong> 一個更好(執行更快)的「證明」</li>
+</ul></li>
+<li class="fragment"><em>有「型別(性質)」</em> 但是 <em>沒有「程式」</em>
+<ul>
+<li class="fragment">自動化地 <strong>產生</strong> 「證明」</li>
+<li class="fragment">利用我們對數學的理解去讓這個「證明」<br />
+<strong>更容易被想出來</strong></li>
+</ul></li>
+</ol>
+<!--
+##
+
+### 所以，型別重要嗎？
+
++ *型別* 告訴我們？
+    + 輸入和輸出的資料種類
+    + 一支程式該滿足的 **好性質**
++ *型別* 可以用來？
+    + 確保語法被正確地使用
+    + 描述我們對於一支程式 -->
+</section><section id="section-26" class="slide level2">
+<h2></h2>
+<figure>
+<img src="./img/fin.jpg" />
+</figure>
+<p>寫 <em>程式</em> 就是寫 <strong>證明</strong> ！</p>
+<ul>
+<li class="fragment">[<strong>有獎徵答</strong>] <em><span class="math inline">⊥</span></em> 的意義? <em><span class="math inline">⊥</span></em> 在程式上的意義?</li>
+</ul>
+</section></section>
+</div>
+</div>
+
+<script src="https://dl.dropboxusercontent.com/u/11966021/www/reveal.js/lib/js/head.min.js"></script>
+<script src="https://dl.dropboxusercontent.com/u/11966021/www/reveal.js/js/reveal.js"></script>
+
+<script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    slideNumber: true,
+    transition: 'concave',
+    fragments: true,
+      // none/fade/slide/convex/concave/zoom
+  // available themes are in /css/theme
+      theme: Reveal.getQueryHash().theme || 'black',
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+  });
+
+</script>
+</body>
+</html>

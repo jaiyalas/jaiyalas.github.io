@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
+                          Agda Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
+                          Haskell Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">About record fields</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 15 Apr 2017
+            <a href="../../content/posts/2017-04-15-Record.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 26 Apr 2017 (17:27)</small>
+	</p>
+      </header>
+      <div class="post-description">
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#disambiguaterecordfields">DisambiguateRecordFields</a><ul>
+<li><a href="#the-easy-way">the easy way</a></li>
+<li><a href="#the-other-way">the other way</a></li>
+</ul></li>
+<li><a href="#duplicaterecordfields">DuplicateRecordFields</a><ul>
+<li><a href="#selector-functions">selector functions</a></li>
+<li><a href="#record-update">record update</a></li>
+<li><a href="#more-cases">more cases</a></li>
+</ul></li>
+<li><a href="#namedfieldpuns">NamedFieldPuns</a></li>
+<li><a href="#recordwildcards">RecordWildCards</a><ul>
+<li><a href="#more-detail">more detail</a></li>
+</ul></li>
+</ul>
+        </div>
+        
+    	<p>每日豆知識： Records</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE DisambiguateRecordFields #-}</span>
+<span class="ot">{-# LANGUAGE DuplicateRecordFields #-}</span>
+<span class="ot">{-# LANGUAGE NamedFieldPuns #-}</span>
+<span class="ot">{-# LANGUAGE RecordWildCards #-}</span></code></pre></div>
+<!--more-->
+<hr />
+<h1 id="disambiguaterecordfields">DisambiguateRecordFields</h1>
+<p>GHC 預設情況 (haskell 98) 下在同一個 namespace 裡面不允許有同名的 fields 出現。 這還算合理，因為每一個 fields 基本上就是被轉換成一個 functions。 所以就算這個 functions 的 type 都不一樣也還是會有撞名問題。 例如說下面的兩個 modules 中，就算我們把 foo1 和 foo2 的 type 都給出來也是沒有用的。一樣會拿到 <code>Ambiguous occurrence ‘x’</code> 這樣的錯誤訊息。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">M1</span> <span class="kw">where</span>
+    <span class="kw">data</span> <span class="dt">TinM1</span> <span class="fu">=</span> <span class="dt">CinM1</span> {<span class="ot">x ::</span> <span class="dt">Int</span>,<span class="ot"> y ::</span> <span class="dt">String</span>}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">M2</span> <span class="kw">where</span>
+    <span class="kw">import </span><span class="dt">M1</span>
+    <span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">C</span> {<span class="ot">x ::</span> <span class="dt">Char</span>}
+    foo1 (<span class="dt">CinM1</span> { x <span class="fu">=</span> n }) <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span>
+    foo2 n <span class="fu">=</span> <span class="dt">C</span> { x <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span> }</code></pre></div>
+<p>但是說實在話，我們確實很可能把 fields 取的非常一般化 (aka 菜市場-style)。特別是不同 module 之間彼此撞名的情況是有可能發生的。 這邊提供兩種解決這個問題的方法：</p>
+<h2 id="the-easy-way">the easy way</h2>
+<p>最簡單的解決方法就是用 qualified fields。 例如說，上面的例子如果改成下面這樣就不會有問題。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">foo1 (<span class="dt">CinM1</span> { M1.x <span class="fu">=</span> n }) <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span>
+foo2 n <span class="fu">=</span> <span class="dt">C</span> { M2.x <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span> }</code></pre></div>
+<p>當然，這免不了最終一堆東西前面都會跑出個 <code>OOXX.</code> 這種情況。</p>
+<h2 id="the-other-way">the other way</h2>
+<p>此外，ghc 提供一個方便的 extension 來解決這個問題： <strong>DisambiguateRecordFields</strong>。 根據 constructors ，ghc 會判斷出當下的 fields 是從哪來的， 所以可以避免 fields 混淆。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">M1</span> <span class="kw">where</span>
+    <span class="kw">data</span> <span class="dt">TinM1</span> <span class="fu">=</span> <span class="dt">CinM1</span> {<span class="ot">x ::</span> <span class="dt">Int</span>,<span class="ot"> y ::</span> <span class="dt">String</span>}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE DisambiguateRecordFields #-}</span>
+<span class="kw">module</span> <span class="dt">M2</span> <span class="kw">where</span>
+    <span class="kw">import </span><span class="dt">M1</span>
+    <span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">C</span> {<span class="ot">x ::</span> <span class="dt">Char</span>}
+    <span class="fu">--</span>
+    ok1 (<span class="dt">CinM1</span> { x <span class="fu">=</span> n }) <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span>
+    ok2 n <span class="fu">=</span> <span class="dt">C</span> { x <span class="fu">=</span> n<span class="fu">+</span><span class="dv">1</span> }
+    <span class="fu">--</span>
+    <span class="co">-- bad1 k = k { x = 3 }</span>
+    <span class="co">-- bad2 k = x k    </span></code></pre></div>
+<hr />
+<h1 id="duplicaterecordfields">DuplicateRecordFields</h1>
+<p>上面的 DisambiguateRecordFields 解決了不同 modules 之間的 fields 撞名問題。 但是如果是同一個 module 裡面的撞名問題，DisambiguateRecordFields 就沒有用了。 事實上， haskell 是根本不允許同一個 module 裡面有同樣的 fields。 所以，如果試圖用 ghc 來 compile 下述的程式， 我們會得到錯誤訊息說 <code>Multiple declarations of ‘x’</code>。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T1</span> <span class="fu">=</span> <span class="dt">C1</span> {<span class="ot">x ::</span> <span class="dt">Char</span>}
+<span class="kw">data</span> <span class="dt">T2</span> <span class="fu">=</span> <span class="dt">C2</span> {<span class="ot">x ::</span> <span class="dt">Int</span>}</code></pre></div>
+<p>好消息是， ghc 提供另一個 extension: <strong>DuplicateRecordFields</strong> 來專門放寬這個限制。 一旦使用這個 extension，ghc 會放棄部分使用 record 時的 type inference。</p>
+<p>舉例來說，給定程式：</p>
+<pre class="{haskell}"><code>data T = C {x :: Int}
+newT n = C {x = n}</code></pre>
+<p>原本 ghc 看到 <code>C { x = n }</code> 時會因為 <code>C</code> 而推導出整個 term 的 type 是 <code>T</code> (以此知道是要用哪個 field)。 開了這個 extension 以後 ghc 不會去進行這個 inference，所以， 需要我們手動告訴 ghc 那個我們要使用的 fields 的 type 。(這會造成 fields 使用起來會更加瑣碎。)</p>
+<p>以下根據 selecting 和 updating 兩種情況分別加以描述。</p>
+<div class="block-notes">
+<p>注意：使用 <strong>DuplicateRecordFields</strong> 會連帶開啟 <em>DisambiguateRecordFields</em></p>
+</div>
+<h2 id="selector-functions">selector functions</h2>
+<p>要能正常使用的方法只有</p>
+<p>我們有兩種方法可以 <em>「直接指定該 fields 的 type」</em> ：</p>
+<ol style="list-style-type: decimal">
+<li>把整個 <em>fields 的 type</em> 寫出來</li>
+<li>把 field 的 <em>參數的 type</em> 寫出來</li>
+</ol>
+<p>請特別注意，就算我們從其他地方給了足夠的 type information。 但是因為 ghc 在這裡壓根就不會幫我們做 inference，所以 ghc 還是會跟你說 error。</p>
+<p>舉例來說，下面程式中， <code>bad1</code> 中我們在 pattern 中限制了 constructor 一定要是 <code>C2</code>，所以理論上應該可以決定出那個 <code>x</code> 是要用 <code>T1</code> 的。但是 ghc 在這裡，就會因為沒做 inference 所以不會發現到這點。另一方面，<code>ok1</code> 和 <code>ok3</code> 因為我們指定了參數的 type ，所以可以唯一決定那個一個 field 是誰。如果沒有指定，如 <code>bad2</code> ，則會無法確定要哪個 <code>x</code>。就算我們給了整個 function 的 type，如 <code>bad3</code> ，也是沒有效果的。而 <code>ok2</code> 和 <code>ok4</code> 都是直接指定了 field 的 type 所以沒有問題。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T1</span> <span class="fu">=</span> <span class="dt">C1</span> {<span class="ot">x ::</span> <span class="dt">Char</span>}
+<span class="kw">data</span> <span class="dt">T2</span> <span class="fu">=</span> <span class="dt">C2</span> {<span class="ot">x ::</span> <span class="dt">Int</span>}
+<span class="fu">--</span>
+ok1 r <span class="fu">=</span> x (<span class="ot">r ::</span> <span class="dt">T1</span>)
+<span class="fu">--</span>
+ok2 <span class="fu">=</span><span class="ot"> x ::</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">Char</span>
+<span class="fu">--</span>
+<span class="ot">ok3 ::</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">Char</span>
+ok3 r <span class="fu">=</span> x (<span class="ot">r ::</span> <span class="dt">T1</span>)
+<span class="fu">--</span>
+<span class="ot">ok4 ::</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">Char</span>
+ok4 <span class="fu">=</span> x
+<span class="fu">--</span>
+<span class="co">-- bad1 r@(C1 _) = x r</span>
+<span class="fu">--</span>
+<span class="co">-- bad2 r = x r</span>
+<span class="fu">--</span>
+<span class="co">-- bad3 :: T1 -&gt; Char</span>
+<span class="co">-- bad3 r = x r</span></code></pre></div>
+<h2 id="record-update">record update</h2>
+<p>和 selector 一樣，直接指定 type 是最安全的作法。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">T</span> {<span class="ot">f ::</span> <span class="dt">Int</span>,<span class="ot"> g ::</span> <span class="dt">Int</span>}
+<span class="kw">data</span> <span class="dt">S</span> <span class="fu">=</span> <span class="dt">S</span> {<span class="ot">f ::</span> <span class="dt">Int</span>,<span class="ot"> g ::</span> <span class="dt">Int</span>}
+<span class="fu">--</span>
+<span class="ot">ok1 ::</span> <span class="dt">S</span> <span class="ot">-&gt;</span> <span class="dt">S</span>
+ok1 x <span class="fu">=</span> x {f <span class="fu">=</span> <span class="dv">1</span>}
+<span class="fu">--</span>
+ok2 x <span class="fu">=</span> x {f <span class="fu">=</span> <span class="dv">1</span>}<span class="ot"> ::</span> <span class="dt">S</span>
+<span class="fu">--</span>
+ok3 x <span class="fu">=</span> k x {f <span class="fu">=</span> <span class="dv">1</span>} <span class="co">-- given k :: S -&gt; a</span></code></pre></div>
+<p>這裡要特別注意的是，這邊需要明確且直接指定的是： 「被 updated 以後的東西的 type」(因為 ghc 不會在這裡做任何 type inference)； 或，「立即要被 update 的 record 的 type」， 因此下面的 <code>notOk1</code>, <code>notOk2</code> 和 <code>notOk3</code> 都不會過， 但是 <code>update4</code> 和 可以正確使用。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- notOk1 = let x :: S</span>
+<span class="co">--              x = S 1 1</span>
+<span class="co">--          in x { f = 2 }</span>
+<span class="fu">--</span>
+<span class="co">-- notOk2 x =</span>
+<span class="co">--     [ x { foo = 3 }</span>
+<span class="co">--     , S 1 1 :: T ]</span>
+<span class="fu">--</span>
+<span class="co">-- notOk3 (x :: S) = x { f = 1 }</span>
+<span class="fu">--</span>
+ok4 x <span class="fu">=</span> (<span class="ot">x ::</span> <span class="dt">S</span>) { f <span class="fu">=</span> <span class="dv">1</span> }</code></pre></div>
+<div class="block-notes">
+<p>如 <code>notOk3</code> 和 <code>update4</code>，為了在 pattern 裡面指定 type，我們會需要啟用</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE ScopedTypeVariables #-}</span></code></pre></div>
+</div>
+<h2 id="more-cases">more cases</h2>
+<h3 id="duplicate-fields-with-different-types">duplicate fields with different types</h3>
+<p>因為 ghc 在這邊不會對 record 做任何 type inference， 所以就算重名(撞名)的 fields 具有不同 types 也還是一樣會變成 ambiguous field。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">U</span> <span class="fu">=</span> <span class="dt">U</span> {<span class="ot">f ::</span> <span class="dt">String</span>}
+<span class="kw">data</span> <span class="dt">V</span> <span class="fu">=</span> <span class="dt">V</span> {<span class="ot">f ::</span> <span class="dt">Int</span>}
+<span class="fu">--</span>
+notOk4 x <span class="fu">=</span> x {f <span class="fu">=</span> <span class="dv">1</span>}</code></pre></div>
+<p>上述的程式片段餵給 ghc 會拿到 <em>Record update is ambiguous, and requires a type signature</em> 。</p>
+<h3 id="not-100-overlapping">not 100% overlapping</h3>
+<p>如果兩個 structures 的 fields 不是 100% overlapped， 一種便宜作法是多用幾個 fields 直到 ghc 可以根據使用的 fields 來判斷是要用的是誰。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">A</span> <span class="fu">=</span> <span class="dt">A</span> {<span class="ot">f ::</span> <span class="dt">Int</span>}
+<span class="kw">data</span> <span class="dt">B</span> <span class="fu">=</span> <span class="dt">B</span> {<span class="ot">f ::</span> <span class="dt">Int</span>,<span class="ot"> g ::</span> <span class="dt">Int</span>}
+<span class="fu">--</span>
+<span class="co">-- notOk5 x = x {f = 1}</span>
+<span class="fu">--</span>
+ok5 x <span class="fu">=</span> x {f <span class="fu">=</span> <span class="dv">1</span>, g <span class="fu">=</span> <span class="dv">2</span>}
+ok6 x <span class="fu">=</span> x {g <span class="fu">=</span> <span class="st">&quot;a&quot;</span>}</code></pre></div>
+<hr />
+<h1 id="namedfieldpuns">NamedFieldPuns</h1>
+<p>作為 selector ，我們用 field 來對 structure 取其內部的值。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">C</span> {<span class="ot">num ::</span> <span class="dt">Int</span>}
+
+getNum1 c <span class="fu">=</span> num c</code></pre></div>
+<p>我們也可以在 record pattern 裡面去把他 (locally) bind 到一個新的變數上。 下述 <code>getNum1</code> 和 <code>getNum2</code> 完全是等價的。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">getNum1 (<span class="dt">C</span> {num <span class="fu">=</span> x}) <span class="fu">=</span> x
+getNum2 c <span class="fu">=</span> <span class="kw">let</span> x <span class="fu">=</span> num c <span class="kw">in</span> x</code></pre></div>
+<p>程式設計師的美德「懶惰」告訴我們那個 <code>getNum1</code> 裡面的 <code>x</code> 實在是有點雞肋。 幸好， ghc 提供 <strong>NamedFieldPuns</strong> - 可以直接假裝 field name 是一個 (local) variable 那樣來用。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">getNum3 (<span class="dt">C</span> {num}) <span class="fu">=</span> num</code></pre></div>
+<p>Puns 對於 mixed record patterns 和 qualified field name 也都可以用：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">M</span> <span class="kw">where</span>
+    <span class="kw">data</span> <span class="dt">TinM</span> <span class="fu">=</span> <span class="dt">CinM</span> {<span class="ot">x ::</span> <span class="dt">Int</span>,<span class="ot"> y ::</span> <span class="dt">String</span>}
+<span class="kw">module</span> <span class="dt">N</span> <span class="kw">where</span>
+    foo (<span class="dt">CinM</span> {M.x, M.y <span class="fu">=</span> <span class="st">&quot;&quot;</span>}) <span class="fu">=</span> x
+    foo (<span class="dt">CinM</span> {M.x, M.y}) <span class="fu">=</span> x <span class="fu">+</span> length y</code></pre></div>
+<div class="block-notes">
+<p>注意：有時候 qualified field name 的使用是無法避免的。 例如說，上例中 module N 裡面可能另外有別的 structure 也有 field name 是 x 或 y。</p>
+</div>
+<hr />
+<h1 id="recordwildcards">RecordWildCards</h1>
+<p>假設我們今天有個 data structure ：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">C</span> {<span class="ot"> p ::</span> <span class="dt">Bool</span>
+           ,<span class="ot"> x1 ::</span> <span class="dt">Int</span>
+           ,<span class="ot"> x2 ::</span> <span class="dt">Int</span> }</code></pre></div>
+<p>然後我們想要寫一個 function 來根據第一個參數的值決定，我們是要把剩下的數值相加或是相減：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">func1 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">True</span>,  x1 <span class="fu">=</span> m, x2 <span class="fu">=</span> n}) <span class="fu">=</span> m <span class="fu">+</span> n
+func1 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">False</span>, x1 <span class="fu">=</span> m, x2 <span class="fu">=</span> n}) <span class="fu">=</span> m <span class="fu">-</span> n</code></pre></div>
+<p>這個 <code>func1</code> 完全是正確可以執行的，但是，上面這樣的重新命名實在是有點繞路又雞肋。 所以，懶惰如我等，大概就會開啟 puns 然後把上面改寫成：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">func2 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">True</span>,  x1, x2}) <span class="fu">=</span> x1 <span class="fu">+</span> x2
+func2 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">False</span>, x1, x2}) <span class="fu">=</span> x1 <span class="fu">-</span> x2</code></pre></div>
+<p>很好很好，現在看起來比較不會混淆了。但是！ 多看久一點我們果然還是會嫌裡面的 <code>x1, x2</code> 這種東西有點礙眼。 明明就是寫在 structure 定義裡面的東西， 為什麼我還要有事沒事一直去重複打那些 fields！</p>
+<p><em>你想偷懶的願望 ghc 聽到了！</em> ghc 現在推出 extension <strong>RecordWildCards</strong> 來讓我們可以用 <code>..</code> 去省略那些我們懶得打的東西！也就是說，上面又可以改寫成：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">func3 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">True</span>,  <span class="fu">..</span> }) <span class="fu">=</span> x1 <span class="fu">+</span> x2
+func3 (<span class="dt">C</span> {p <span class="fu">=</span> <span class="dt">False</span>, <span class="fu">..</span> }) <span class="fu">=</span> x1 <span class="fu">-</span> x2</code></pre></div>
+<div class="block-notes">
+<p>注意：啟用 RecordWildCards 會連帶開啟 <em>DisambiguateRecordFields</em>。</p>
+</div>
+<h2 id="more-detail">more detail</h2>
+<p>Record wild cards 允許在 construction 時使用，ghc 會去找和 fields 名字一致的變數名稱來用。但是， updating 時則不允許使用 wild cards。因此下面 <code>newT</code> 可以過 (而且其實就算 <code>C</code> 需要的參數值沒有都給齊也 ok，只是會有 warning)，但是 <code>updateT</code> 則 compile 根本不會過。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">newT <span class="fu">=</span>
+    <span class="kw">let</span> x1 <span class="fu">=</span> <span class="dv">10</span>
+        x2 <span class="fu">=</span> <span class="dv">2</span>
+        x3 <span class="fu">=</span> <span class="dv">1</span>
+    <span class="kw">in</span> <span class="dt">C</span> {<span class="fu">..</span>}
+
+<span class="co">-- updateT c1 =</span>
+<span class="co">--     let x1 = 10</span>
+<span class="co">--         x2 = 2</span>
+<span class="co">--         x3 = 1</span>
+<span class="co">--     in c1 {..}</span></code></pre></div>
+<p>更進一步說，其實只要 ghc 可以在當下的 scope 中找到和那個 field 同名的東西就可以。要注意的是，field 本身可以是 qualified 或 unqualified 的，但是要拿來用的那個同名變數必須要是 unqualified 的。舉例來說，假設我們已經有定義好兩個 modules 如下：</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">A</span> <span class="kw">where</span>
+    <span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">C</span> {<span class="ot"> x1 ::</span> <span class="dt">Int</span>
+               ,<span class="ot"> x2 ::</span> <span class="dt">Int</span>
+               ,<span class="ot"> x3 ::</span> <span class="dt">Int</span> }
+
+<span class="kw">module</span> <span class="dt">B</span> <span class="kw">where</span>
+    x1 <span class="fu">=</span> <span class="dv">1</span><span class="ot"> ::</span> <span class="dt">Int</span>
+    x2 <span class="fu">=</span> <span class="dv">2</span><span class="ot"> ::</span> <span class="dt">Int</span></code></pre></div>
+<p>那麼下述程式是正確的。而其中因為 <code>A</code> 和 <code>B</code> 兩個 module 中有東西撞名，所以我們需要 qualified 其中一個。如果我們如下面一樣 <code>import qualified A</code>，則 <code>newT</code> 裡面就可以用 wildcards。不過如果我們是對 <code>B</code> 做 qualified。那麼 ghc 就會沒法把 <code>B</code> 裡面的 <code>x1</code> 和 <code>x2</code> 拿出來用。因為他們現在全名是 <code>B.x1</code> 和 <code>B.x2</code>，而這不 match 我們 construct <code>T</code> 需要的 <code>x1</code> 和 <code>x2</code>。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE RecordWildCards #-}</span>
+<span class="kw">module</span> <span class="dt">M</span> <span class="kw">where</span>
+<span class="kw">import qualified</span> <span class="dt">A</span>
+<span class="kw">import </span><span class="dt">B</span>
+<span class="fu">--</span>
+newT x3 <span class="fu">=</span> <span class="dt">A.C</span> {<span class="fu">..</span>}</code></pre></div>
+<p>我們可以試跑上面的範例，會得到一個合乎預期的結果！</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">*</span><span class="dt">M</span><span class="fu">&gt;</span> newT <span class="dv">3</span>
+<span class="dt">C</span> {x1 <span class="fu">=</span> <span class="dv">1</span>, x2 <span class="fu">=</span> <span class="dv">2</span>, x3 <span class="fu">=</span> <span class="dv">3</span>}</code></pre></div>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

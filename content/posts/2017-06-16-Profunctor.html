@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
+                  <ul class="pure-menu-children">
+                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
+                          From Cloud to Dirt</a></li>
+                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
+                          Agda Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
+                          Haskell Notes</a></li>
+                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
+                          Slides</a></li>
+                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
+                          Tags</a></li>
+                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
+                          About</a></li>
+                  </ul>
+              </li>
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              </ul>
+          </div>
+      </div>
+	<div class="content">
+	    <div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Profunctors and its relatives</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 16 Jun 2017
+            <a href="../../content/posts/2017-06-16-Profunctor.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 15 Jun 2017 (23:54)</small>
+	</p>
+      </header>
+      <div class="post-description">
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#functors">Functors</a><ul>
+<li><a href="#covariant-functor">Covariant functor</a></li>
+<li><a href="#contravariant-functor">Contravariant functor</a></li>
+</ul></li>
+<li><a href="#bifunctor">Bifunctor</a></li>
+<li><a href="#profunctor">Profunctor</a></li>
+</ul>
+        </div>
+        
+    	<p>Functor 是 haskell 中很常見的基本型別操作，而實務上 functors 有幾個好用的特例。 這篇文章會介紹 (covariant) functors, contravariant functors, bifunctors 和 profunctors 這四種之間的定義與(個人整理之)使用的時間。</p>
+<!--more-->
+<h1 id="functors">Functors</h1>
+<p>所謂 functors 是兩個資料結構之間的轉換。一個完整的 functor 包含<strong>結構的轉換</strong>和<strong>計算的轉換</strong>。</p>
+<p>一種理解 functors 的方式是：定義新的資料結構。</p>
+<h2 id="covariant-functor">Covariant functor</h2>
+<p>我們把一個 functor F 被當做 type-level function， 有兩個部分</p>
+<p>data F a = C0 vec0 …</p>
+<p>instance Functor F where fmap f = …</p>
+<ul>
+<li>algebraic datastructure 一定是 covariant functor</li>
+</ul>
+<h2 id="contravariant-functor">Contravariant functor</h2>
+<ul>
+<li>functor made of arrows 且 type variable are on negative position 一定是 contravariant functor</li>
+</ul>
+<h1 id="bifunctor">Bifunctor</h1>
+<h1 id="profunctor">Profunctor</h1>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+	  <div class="footer">Powered by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
+          <a href="http://purecss.io/">PureCSS</a>
+      </div>
+	</div>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'jaiyalasio';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </body>
+</html>

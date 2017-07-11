@@ -46,6 +46,29 @@
 
 <section class="post">
   <header class="post-header">
+	<h2 class="post-title">Profunctors and its relatives</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 16 Jun 2017
+            <a href="./content/posts/2017-06-16-Profunctor.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
+        <small>Last modified on 15 Jun 2017 (23:54)</small>
+	</p>
+      </header>
+      <div class="post-description">
+  
+    <p>Functor 是 haskell 中很常見的基本型別操作，而實務上 functors 有幾個好用的特例。 這篇文章會介紹 (covariant) functors, contravariant functors, bifunctors 和 profunctors 這四種之間的定義與(個人整理之)使用的時間。</p>
+
+    <p>... <a href="./content/posts/2017-06-16-Profunctor.html" id="title">read more</a></p>
+  
+      </div>
+	<div class="post-footnote">
+      <!-- <small>[Tags: haskell]</small> -->
+	</div>
+    </section>
+
+<section class="post">
+  <header class="post-header">
 	<h2 class="post-title">About record fields</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
@@ -91,31 +114,6 @@
       </div>
 	<div class="post-footnote">
       <!-- <small>[Tags: haskell, types, pandoc]</small> -->
-	</div>
-    </section>
-
-<section class="post">
-  <header class="post-header">
-	<h2 class="post-title">Phantom of Haskell</h2>
-	<p class="post-meta">
-	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
-	  
-        <small>Posted on 26 Jul 2016
-            <a href="./content/posts/2016-07-26-Phantom.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (08:37)</small>
-	</p>
-      </header>
-      <div class="post-description">
-  
-    <p>Phantom types 是指某個在 type constructor 上的 type parameter 而且沒有被任何該 type 的 data constructors 用到。 例如說：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T0</span> a n <span class="fu">=</span> <span class="dt">C00</span> a</code></pre></div>
-<p>對 type (constructor) <code>T0</code> 來說，<code>a</code> 是個一般的 parameter；而 <code>n</code>，因為沒有被 <code>C0</code> 用到，所以就被叫做 <strong>phantom types</strong> (幻影型別? 貌似有點二.. XD)。</p>
-
-    <p>... <a href="./content/posts/2016-07-26-Phantom.html" id="title">read more</a></p>
-  
-      </div>
-	<div class="post-footnote">
-      <!-- <small>[Tags: haskell, types]</small> -->
 	</div>
     </section>
 

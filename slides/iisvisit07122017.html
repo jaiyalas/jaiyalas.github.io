@@ -112,7 +112,7 @@ plus4 x y <span class="fu">=</span>
     <span class="kw">in</span> <span class="dv">1</span> <span class="fu">+</span> temp</code></pre></div>
 </section><section id="section-8" class="slide level2">
 <h2></h2>
-<p><small>(假設 Int <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≡</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\equiv \mathbb{N}</annotation></semantics></math>)</small></p>
+<p><small>(假設 Int <span class="math inline">≡ℕ</span>)</small></p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">func1 ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> (<span class="dt">Int</span>, <span class="dt">Bool</span>)
 func1 <span class="dv">0</span> <span class="fu">=</span> (<span class="dv">0</span>, <span class="dt">True</span>)
 func1 n <span class="fu">=</span> <span class="kw">let</span> (m, isEven) <span class="fu">=</span> func1 (n<span class="fu">-</span><span class="dv">1</span>) <span class="kw">in</span>
@@ -162,22 +162,22 @@ $$
 </thead>
 <tbody>
 <tr class="odd">
-<td>p <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∧</mo><annotation encoding="application/x-tex">\land</annotation></semantics></math></strong> q</td>
+<td>p <strong><span class="math inline">∧</span></strong> q</td>
 <td></td>
 <td>p 和 q</td>
 </tr>
 <tr class="even">
-<td>p <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math></strong> q</td>
+<td>p <strong><span class="math inline">∨</span></strong> q</td>
 <td></td>
 <td>p 或 p</td>
 </tr>
 <tr class="odd">
-<td>p <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math></strong> q</td>
+<td>p <strong><span class="math inline">→</span></strong> q</td>
 <td></td>
 <td>若 p 則 q</td>
 </tr>
 <tr class="even">
-<td><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math></strong> p</td>
+<td><strong><span class="math inline">¬</span></strong> p</td>
 <td></td>
 <td>非 p</td>
 </tr>
@@ -189,10 +189,10 @@ $$
 <p><em>p</em> = 我今天跳祈雨舞; <em>q</em> = 明天會下雨</p>
 <ul>
 <li>
-Q1: <strong>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∧</mo><annotation encoding="application/x-tex">\land</annotation></semantics></math> q</strong> ?
+Q1: <strong>p <span class="math inline">∧</span> q</strong> ?
 </li>
 <li>
-Q2: <strong>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> q</strong> ?
+Q2: <strong>p <span class="math inline">→</span> q</strong> ?
 </li>
 </ul>
 </section><section id="一階邏輯" class="slide level2">
@@ -208,36 +208,36 @@ Q2: <strong>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∀</mo><annotation encoding="application/x-tex">\forall</annotation></semantics></math></strong> x . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math></td>
+<td><strong><span class="math inline">∀</span></strong> x . <span class="math inline"><em>p</em><sub><em>x</em></sub></span></td>
 <td></td>
-<td>對所有 x, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math> 都成立</td>
+<td>對所有 x, <span class="math inline"><em>p</em><sub><em>x</em></sub></span> 都成立</td>
 </tr>
 <tr class="even">
-<td><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∃</mo><annotation encoding="application/x-tex">\exists</annotation></semantics></math></strong> x . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math></td>
+<td><strong><span class="math inline">∃</span></strong> x . <span class="math inline"><em>p</em><sub><em>x</em></sub></span></td>
 <td></td>
-<td>存在有 x, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math> 都成立</td>
+<td>存在有 x, <span class="math inline"><em>p</em><sub><em>x</em></sub></span> 都成立</td>
 </tr>
 </tbody>
 </table>
 </section><section id="section-11" class="slide level2">
 <h2></h2>
 <h3 id="練習-1">練習</h3>
-<p><em>S</em> 表示 <em>所有奇異果的集合</em> ； <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math></em> 表示 <em>x 是係金ㄟ</em></p>
+<p><em>S</em> 表示 <em>所有奇異果的集合</em> ； <em><span class="math inline"><em>p</em><sub><em>x</em></sub></span></em> 表示 <em>x 是係金ㄟ</em></p>
 <ul>
 <li class="fragment">「有某顆奇異果不是係金ㄟ」...?
 <ul>
-<li class="fragment"><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∃</mo><annotation encoding="application/x-tex">\exists</annotation></semantics></math></strong> x <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∈</mo><annotation encoding="application/x-tex">\in</annotation></semantics></math> S. <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math></em></li>
+<li class="fragment"><strong><span class="math inline">∃</span></strong> x <span class="math inline">∈</span> S. <em><span class="math inline">¬</span> <span class="math inline"><em>p</em><sub><em>x</em></sub></span></em></li>
 </ul></li>
 <li class="fragment">「所有的奇異果要嘛就是係金ㄟ，不然就不是」...?
 <ul>
-<li class="fragment"><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∀</mo><annotation encoding="application/x-tex">\forall</annotation></semantics></math></strong> x <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∈</mo><annotation encoding="application/x-tex">\in</annotation></semantics></math> S. <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∨</mo><mo>¬</mo></mrow><annotation encoding="application/x-tex">\lor \neg</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>x</mi></msub><annotation encoding="application/x-tex">p_x</annotation></semantics></math></em></li>
+<li class="fragment"><strong><span class="math inline">∀</span></strong> x <span class="math inline">∈</span> S. <em><span class="math inline"><em>p</em><sub><em>x</em></sub></span> <span class="math inline">∨¬</span> <span class="math inline"><em>p</em><sub><em>x</em></sub></span></em></li>
 </ul></li>
 </ul>
 </section><section id="section-12" class="slide level2">
 <h2></h2>
 <h3 id="請問-下述邏輯句子的意思"><strong>請問</strong> 下述邏輯句子的意思?</h3>
-<p><small><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle><annotation encoding="application/x-tex">\mathbb{N}</annotation></semantics></math> 是所有自然數的集合(包含零)</small></p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∀</mo><annotation encoding="application/x-tex">\forall</annotation></semantics></math> <strong>n</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\in \mathbb{N}</annotation></semantics></math> . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∃</mo><annotation encoding="application/x-tex">\exists</annotation></semantics></math> <strong>m</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\in \mathbb{N}</annotation></semantics></math> such that <br/> <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>2</mn><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n = 2 \times m</annotation></semantics></math></em> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math> <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>2</mn><mo>×</mo><mi>m</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n = 2 \times m + 1</annotation></semantics></math></em></p>
+<p><small><span class="math inline">ℕ</span> 是所有自然數的集合(包含零)</small></p>
+<p><span class="math inline">∀</span> <strong>n</strong> <span class="math inline">∈ℕ</span> . <span class="math inline">∃</span> <strong>m</strong> <span class="math inline">∈ℕ</span> such that <br/> <em><span class="math inline"><em>n</em> = 2 × <em>m</em></span></em> <span class="math inline">∨</span> <em><span class="math inline"><em>n</em> = 2 × <em>m</em> + 1</span></em></p>
 <!-- ######################## -->
 </section></section>
 <section><section id="正確性" class="titleslide slide level1"><h1><em>正確性</em></h1></section><section id="section-13" class="slide level2">
@@ -257,8 +257,8 @@ Q2: <strong>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
 <tr class="header">
 <th>p</th>
 <th>q</th>
-<th>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> q</th>
-<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math> q</th>
+<th>p <span class="math inline">→</span> q</th>
+<th><span class="math inline">¬</span> p <span class="math inline">∨</span> q</th>
 </tr>
 </thead>
 <tbody>
@@ -338,34 +338,34 @@ Q2: <strong>p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
 </ul>
 </section><section id="古典-vs-直構" class="slide level2">
 <h2>古典 vs 直構</h2>
-<h3 id="neg-p"><em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> p</em></h3>
+<h3 id="neg-p"><em><span class="math inline">¬</span> p</em></h3>
 <ul>
 <li class="fragment">[古典] p = false</li>
-<li class="fragment">[直構] p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></strong></li>
-<li class="fragment"><em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></em>: 不存在的東西/某種未定之物
+<li class="fragment">[直構] p <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong></li>
+<li class="fragment"><em><span class="math inline">⊥</span></em>: 不存在的東西/某種未定之物
 <ul>
-<li class="fragment">爆炸原理: <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></em> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> <strong>anything</strong></li>
+<li class="fragment">爆炸原理: <em><span class="math inline">⊥</span></em> <span class="math inline">→</span> <strong>anything</strong></li>
 </ul></li>
 </ul>
 </section><section id="古典-vs-直構-1" class="slide level2">
 <h2>古典 vs 直構</h2>
-<h3 id="neg-neg-p-和-p"><em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> p</em> 和 <em>p</em></h3>
+<h3 id="neg-neg-p-和-p"><em><span class="math inline">¬</span> <span class="math inline">¬</span> p</em> 和 <em>p</em></h3>
 <ul>
-<li class="fragment">[古典] <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>¬</mo><annotation encoding="application/x-tex">\neg</annotation></semantics></math> p <em>=</em> p</li>
-<li class="fragment">[直構] (p <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></strong>) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">→</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math> <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></strong></li>
+<li class="fragment">[古典] <span class="math inline">¬</span> <span class="math inline">¬</span> p <em>=</em> p</li>
+<li class="fragment">[直構] (p <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong>) <span class="math inline">→</span> <strong><span class="math inline">⊥</span></strong></li>
 </ul>
 </section><section id="section-17" class="slide level2">
 <h2></h2>
 <h3 id="證明"><strong>證明</strong></h3>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∀</mo><annotation encoding="application/x-tex">\forall</annotation></semantics></math> <strong>n</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\in \mathbb{N}</annotation></semantics></math> . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∃</mo><annotation encoding="application/x-tex">\exists</annotation></semantics></math> <strong>m</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\in \mathbb{N}</annotation></semantics></math> such that <br/> <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>2</mn><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n = 2 \times m</annotation></semantics></math></em> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math> <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>2</mn><mo>×</mo><mi>m</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n = 2 \times m + 1</annotation></semantics></math></em></p>
+<p><span class="math inline">∀</span> <strong>n</strong> <span class="math inline">∈ℕ</span> . <span class="math inline">∃</span> <strong>m</strong> <span class="math inline">∈ℕ</span> such that <br/> <em><span class="math inline"><em>n</em> = 2 × <em>m</em></span></em> <span class="math inline">∨</span> <em><span class="math inline"><em>n</em> = 2 × <em>m</em> + 1</span></em></p>
 <ul>
-<li class="fragment">若 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n = 0</annotation></semantics></math>, 顯然存在偶數 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m = 0</annotation></semantics></math> 使得 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mn>2</mn><mo>×</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0 = 2 \times 0</annotation></semantics></math></li>
-<li class="fragment">假設 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>t</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n = t + 1</annotation></semantics></math>
+<li class="fragment">若 <span class="math inline"><em>n</em> = 0</span>, 顯然存在偶數 <span class="math inline"><em>m</em> = 0</span> 使得 <span class="math inline">0 = 2 × 0</span></li>
+<li class="fragment">假設 <span class="math inline"><em>n</em> = <em>t</em> + 1</span>
 <ul>
-<li class="fragment">根據 MI, 已知 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">n = t</annotation></semantics></math> 時存在一個 <strong>m</strong> 使得 <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mi>m</mi><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">t = m \times 2</annotation></semantics></math></em> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math> <em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mi>m</mi><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t = m \times 2 + 1</annotation></semantics></math></em>
+<li class="fragment">根據 MI, 已知 <span class="math inline"><em>n</em> = <em>t</em></span> 時存在一個 <strong>m</strong> 使得 <em><span class="math inline"><em>t</em> = <em>m</em> × 2</span></em> <span class="math inline">∨</span> <em><span class="math inline"><em>t</em> = <em>m</em> × 2 + 1</span></em>
 <ul>
-<li class="fragment">[case 1]: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>×</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n = (m \times 2) + 1</annotation></semantics></math></li>
-<li class="fragment">[case 2]: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>1</mn><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n = (m \times 2 + 1) + 1 = (m + 1) \times 2</annotation></semantics></math></li>
+<li class="fragment">[case 1]: <span class="math inline"><em>n</em> = (<em>m</em> × 2)+1</span></li>
+<li class="fragment">[case 2]: <span class="math inline"><em>n</em> = (<em>m</em> × 2 + 1)+1 = (<em>m</em> + 1)×2</span></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -389,9 +389,9 @@ $\forall$ 非空自然數集合 **S** . $\exists m \in S$ . $\forall x \in S$ . 
 <h3 id="邏輯-1">「<em>邏輯</em>」</h3>
 <ul>
 <li class="fragment">用以描述「性質」、「現象」、「觀察」、「問題」</li>
-<li class="fragment">例：m <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>×</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math> n 要嘛是 0 不然就是 m + 某個自然數
+<li class="fragment">例：m <span class="math inline">×</span> n 要嘛是 0 不然就是 m + 某個自然數
 <ul>
-<li class="fragment"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∀</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\forall m, n \in \mathbb{N}</annotation></semantics></math> . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∃</mo><mi>i</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℕ</mi></mstyle></mrow><annotation encoding="application/x-tex">\exists i \in \mathbb{N}</annotation></semantics></math> . <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">m \times n = 0</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∨</mo><annotation encoding="application/x-tex">\lor</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi><mo>=</mo><mi>i</mi><mo>+</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">m \times n = i + m</annotation></semantics></math></li>
+<li class="fragment"><span class="math inline">∀<em>m</em>, <em>n</em> ∈ ℕ</span> . <span class="math inline">∃<em>i</em> ∈ ℕ</span> . <span class="math inline"><em>m</em> × <em>n</em> = 0</span> <span class="math inline">∨</span> <span class="math inline"><em>m</em> × <em>n</em> = <em>i</em> + <em>m</em></span></li>
 </ul></li>
 <li class="fragment">證明其為 <strong>真</strong></li>
 </ul>
@@ -421,9 +421,9 @@ func1 n <span class="fu">=</span> <span class="kw">let</span> (m, isEven) <span 
 </section><section id="curry-howard-對應" class="slide level2">
 <h2>Curry-Howard 對應</h2>
 <ul>
-<li class="fragment">「<strong>邏輯系統</strong>」 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math> 「<em>型別系統</em>」</li>
-<li class="fragment">「<strong>邏輯陳述</strong>」 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math> 「<em>型別資訊</em>」</li>
-<li class="fragment">「<strong>形式證明</strong>」 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo accent="false">⇔</mo><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math> 「<em>電腦程式</em>」</li>
+<li class="fragment">「<strong>邏輯系統</strong>」 <span class="math inline">⇔</span> 「<em>型別系統</em>」</li>
+<li class="fragment">「<strong>邏輯陳述</strong>」 <span class="math inline">⇔</span> 「<em>型別資訊</em>」</li>
+<li class="fragment">「<strong>形式證明</strong>」 <span class="math inline">⇔</span> 「<em>電腦程式</em>」</li>
 </ul>
 <!--##
 
@@ -457,8 +457,12 @@ $\forall m, n \in \mathbb{N}$ . $\exists i \in \mathbb{N}$ . $m \times n = 0$ $\
 </section><section id="section-24" class="slide level2">
 <h2></h2>
 <ul>
-<li><em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></em> 的意義?</li>
-<li><em><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⊥</mi><annotation encoding="application/x-tex">\bot</annotation></semantics></math></em> 在程式上的意義?</li>
+<li>
+<em><span class="math inline">⊥</span></em> 的意義?
+</li>
+<li>
+<em><span class="math inline">⊥</span></em> 在程式上的意義?
+</li>
 </ul>
 </section></section>
 </div>

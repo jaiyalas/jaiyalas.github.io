@@ -20,38 +20,37 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
-	    <div class="posts">
+	  
+
+<div class="posts">
       <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Define and Use Hackage</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 17 Oct 2015
-            <a href="../../content/posts/2015-10-17-hackage.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (08:37)</small>
+        <small>Posted on 17 Oct 2015. Last modified on 07 Jun 2020 (12:28).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -72,7 +71,7 @@
 <p>一個 haskell package 的版本號基本上都具有 <strong>A.B.C</strong> 的形式。其中 <strong>A.B</strong> 被稱為是<strong>主要版本號</strong> (<em>major</em> version number)，而 <strong>C</strong> 則是<strong>次要版本號</strong> (<em>minor</em> version number)。除了 <strong>A.B.C</strong> 以外，目前還允許更多的數字當做是輔助的版本號，例如說 <code>1.2.1.1</code>。 原則上版本號會根據下列 policy 來做變更：</p>
 <p>[如果出現下列變更，增加主要版本號 <strong>A.B</strong>]</p>
 <ul>
-<li>刪除<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> entities<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
+<li>刪除<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> entities<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></li>
 <li>刪除 instances</li>
 <li>更改 entities 的型別 (type)</li>
 <li>更改 datatype 或 classes 的定義更改</li>
@@ -91,55 +90,55 @@
 <p>但是，如果套件中有出現了 orphan instance，那麼在設定 dependency 時必須根據 orphan instance 牽涉到的 datatype and typeclass 來精確地指定 <strong>C</strong>。例如說，假設某套件在 <code>2.1.1</code> 時新增了 <code>data T</code> (或 <code>class C</code>) 且根據 <code>T</code> (或 <code>C</code>) 定義了若干組 orphan instances ，則在使用該套件時必須很精確地去描述那一個特定的次要版本號以維持相容性，例如說 <code>abc &gt;= 2.1.1 &amp;&amp; &lt; 2.1.2</code>。(不過在這個情況下，也許應該說是在強制套件使用者要去注意相容性的問題。)</p>
 <h3 id="關於-import">關於 import</h3>
 <p>不同的 importing 方式會造成 dependency 設定上可以允許的版本號範圍會不太一樣。例如說，給定下面兩種 importing 方式：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import qualified</span> <span class="dt">ABC.Tree</span> <span class="kw">as</span> <span class="dt">AT</span>
-<span class="kw">import </span><span class="dt">Another.Tree</span> (foo, hoo)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">ABC.Tree</span>
-<span class="kw">import </span><span class="dt">Another.Tree</span> <span class="kw">hiding</span> (yoo, loo)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">ABC.Tree</span> <span class="kw">as</span> <span class="dt">AT</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Another.Tree</span> (foo, hoo)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="dt">ABC.Tree</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Another.Tree</span> <span class="kw">hiding</span> (yoo, loo)</a></code></pre></div>
 <p>第一種方法可以有效地避免兩個 modules 之間的內容物撞名問題。所以兩個 modules 不管怎麼新增東西都還是不會有撞名的問題， 因此我們可以設定比較寬鬆的 dependency 如</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.2</span>
-another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.2</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.2</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.2</span></a></code></pre></div>
 <p>第二種 importing 方法就沒那麼好了。第一個問題是，假設兩個 modules 同時都新增了一個叫做 <code>xoo</code> 的 function， 那麼很容易我們可以發現這會有撞名問題。為了在更新這兩個 packages 時避免這種撞名問題，我們被迫只能設定比較嚴格的 dependency 如</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">3</span>
-another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">2</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">abc     <span class="fu">&gt;=</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">2</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">2.1</span><span class="fu">.</span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">1</span> <span class="fu">&amp;&amp;</span> <span class="fu">&lt;</span> <span class="fl">1.1</span><span class="fu">.</span><span class="dv">2</span></a></code></pre></div>
 <p>此外，第二種 importing 還有一個問題：因為宣告 <em>DEPRECATED</em> 和實際刪除程式碼都視為是刪除(所以需要改主要版本號)，所以我們沒法從主要版本號上面去區別這兩種情況。 用上面的例子來說明：假設 yoo 被宣告成 <em>DEPRECATED</em>，那麼第二種方法會在 yoo 真的被刪除時出現 importing 錯誤。</p>
 <h2 id="orphan">孤兒 (<em>orphan instance</em>)</h2>
 <p>誠如一開始所介紹的，一個 <code>instance C T</code> 是一個孤兒 (<em>orphan instance</em>) 是指這個 instance 既不是和 <code>data T</code> 一起被定義在同一個 module 中，也不是和 <code>class C</code> 一起被定義在同一個 module 中。</p>
 <p>這會造成什麼問題呢？主要的問題是來自於：「instance 本身是沒有辦法在定義 module 時被暴露 (expose) 的」，實際上這會造成：「我們沒有辦法選擇要或是不要 import 某個或某些 instances」。例如說給定下面兩個 modules</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">TM</span> (<span class="dt">T</span>(<span class="fu">..</span>)) <span class="kw">where</span>
-  <span class="kw">import </span><span class="dt">CM</span>
-  <span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">A</span> <span class="fu">|</span> <span class="dt">B</span>
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">T</span> <span class="kw">where</span>
-    foo <span class="fu">=</span> <span class="dt">A</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">CM</span> (<span class="dt">C</span>(<span class="fu">..</span>)) <span class="kw">where</span>
-  <span class="kw">class</span> <span class="dt">C</span> <span class="kw">where</span>
-<span class="ot">    foo ::</span> <span class="dt">T</span> <span class="ot">-&gt;</span> <span class="dt">T</span>
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Int</span> <span class="kw">where</span>
-    foo _ <span class="fu">=</span> <span class="dv">0</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">module</span> <span class="dt">TM</span> (<span class="dt">T</span>(<span class="fu">..</span>)) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw">import</span> <span class="dt">CM</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw">data</span> <span class="dt">T</span> <span class="fu">=</span> <span class="dt">A</span> <span class="fu">|</span> <span class="dt">B</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">T</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    foo <span class="fu">=</span> <span class="dt">A</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">module</span> <span class="dt">CM</span> (<span class="dt">C</span>(<span class="fu">..</span>)) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw">class</span> <span class="dt">C</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="ot">    foo ::</span> <span class="dt">T</span> <span class="ot">-&gt;</span> <span class="dt">T</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Int</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">    foo _ <span class="fu">=</span> <span class="dv">0</span></a></code></pre></div>
 <p>我們可以在 import <code>TM</code> 和 <code>CM</code> 時自由地把 <code>data T</code> 和 <code>class C</code> 給隱藏 (hide) 起來，這種時候那些相關的 instance 就會被連帶隱藏起來。可是對於 orphan instances 例如說</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Another</span> <span class="kw">where</span>
-  <span class="kw">import </span><span class="dt">MC</span>
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Char</span> <span class="kw">where</span>
-    foo <span class="fu">=</span> id
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Bool</span> <span class="kw">where</span>
-    foo <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Another</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw">import</span> <span class="dt">MC</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Char</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    foo <span class="fu">=</span> id</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Bool</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">    foo <span class="fu">=</span> <span class="dt">False</span></a></code></pre></div>
 <p>就沒這種事情了。一旦任何人 import 了 <code>Another</code>，那兩個 instances 就會被強制性地 import 到那個 module 裡面，而且我們沒有辦法選擇不要也沒有辦法隱藏其中任何一個。</p>
 <p>一個解決孤兒問題的方法是使用 <code>newtype</code>。例如說上面那個 <code>Another</code> 可以被改寫成</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">AnotherSafe</span> (<span class="dt">Wc</span> (<span class="fu">..</span>), <span class="dt">Wb</span> (<span class="fu">..</span>)) <span class="kw">where</span>
-  <span class="kw">import </span><span class="dt">MC</span>
-  <span class="kw">newtype</span> <span class="dt">Wc</span> <span class="fu">=</span> <span class="dt">Wc</span> <span class="dt">Char</span>
-  <span class="kw">newtype</span> <span class="dt">Wb</span> <span class="fu">=</span> <span class="dt">Wb</span> <span class="dt">Bool</span>
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Wc</span> <span class="kw">where</span>
-    foo <span class="fu">=</span> id
-  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Wb</span> <span class="kw">where</span>
-    foo <span class="fu">=</span> <span class="dt">Wb</span> <span class="dt">False</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">module</span> <span class="dt">AnotherSafe</span> (<span class="dt">Wc</span> (<span class="fu">..</span>), <span class="dt">Wb</span> (<span class="fu">..</span>)) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="kw">import</span> <span class="dt">MC</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="kw">newtype</span> <span class="dt">Wc</span> <span class="fu">=</span> <span class="dt">Wc</span> <span class="dt">Char</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  <span class="kw">newtype</span> <span class="dt">Wb</span> <span class="fu">=</span> <span class="dt">Wb</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Wc</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    foo <span class="fu">=</span> id</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">  <span class="kw">instance</span> <span class="dt">C</span> <span class="dt">Wb</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">    foo <span class="fu">=</span> <span class="dt">Wb</span> <span class="dt">False</span></a></code></pre></div>
 <p>這樣就可以強制性地把這兩個孤兒給領養(?)起來。</p>
-<div class="footnotes">
+<section class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>宣告 <a href="https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/pragmas.html"><em>DEPRECATED</em></a> 也是視為一種刪除<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>一個 entity 是指在某個 module 中可以“看到”的 value 或 datatype 或 typeclass。所謂“看到”可能意味著該 entity 被定義在這個 module 或是被 import 進來。<a href="#fnref2">↩</a></p></li>
+<li id="fn1"><p>宣告 <a href="https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/pragmas.html"><em>DEPRECATED</em></a> 也是視為一種刪除<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>一個 entity 是指在某個 module 中可以“看到”的 value 或 datatype 或 typeclass。所謂“看到”可能意味著該 entity 被定義在這個 module 或是被 import 進來。<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
-</div>
+</section>
       </div>
 	<div class="post-footnote">
 	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/hackage.html">hackage</a>]</small>
@@ -149,11 +148,15 @@ another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -161,23 +164,10 @@ another <span class="fu">&gt;=</span> <span class="fl">1.1</span><span class="fu
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

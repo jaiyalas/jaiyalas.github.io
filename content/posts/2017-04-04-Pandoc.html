@@ -20,38 +20,37 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
-	    <div class="posts">
+	  
+
+<div class="posts">
       <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Quick notes on Pandoc</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 04 Apr 2017
-            <a href="../../content/posts/2017-04-04-Pandoc.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (15:56)</small>
+        <small>Posted on 04 Apr 2017. Last modified on 19 Jun 2020 (14:51).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -88,24 +87,24 @@
 <!--more-->
 <h1 id="懶人直接抄">懶人直接抄</h1>
 <h2 id="markdown-to-slide"><code>markdown</code> to slide</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> --mathml -i -t beamer -V theme:Warsaw -V colortheme:beetle -s -o slide.pdf slide.md</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> --mathml -i -t beamer -V theme:Warsaw -V colortheme:beetle -s -o slide.pdf slide.md</a></code></pre></div>
 <p>或</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> --mathml -i -t revealjs -V theme=sky --highlight-style espresso -s -o slide.html slide.md</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> --mathml -i -t revealjs -V theme=sky --highlight-style espresso -s -o slide.html slide.md</a></code></pre></div>
 <h2 id="markdownlhs-to-pdf"><code>markdown+lhs</code> to <code>pdf</code></h2>
 <p>懶人法</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs -s --highlight-style kate -o OutFile.pdf InFile.lhs</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> -f markdown+lhs -s --highlight-style kate -o OutFile.pdf InFile.lhs</a></code></pre></div>
 <p>要 <strong>使用 tikz</strong> 或是要 <strong>使用中文</strong> 或是要 <strong>自定 latex 設定</strong></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">vim</span> tikz.preamble</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">vim</span> tikz.preamble</a></code></pre></div>
 <p>加入</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">\usepackage{tikz}
-\usepackage{tikz-cd}
-\usetikzlibrary{matrix}
-\usetikzlibrary{arrows}</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs --latex-engine=xelatex -B tikz.preamble -V CJKmainfont=<span class="st">'Hiragino Maru Gothic ProN'</span> -V papersize=A4 -V geometry:margin=2cm --highlight-style espresso -s -o Output.pdf Input.lhs</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="bu">\usepackage</span>{<span class="ex">tikz</span>}</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="bu">\usepackage</span>{<span class="ex">tikz-cd</span>}</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="fu">\usetikzlibrary</span>{matrix}</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="fu">\usetikzlibrary</span>{arrows}</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> -f markdown+lhs --latex-engine=xelatex -B tikz.preamble -V CJKmainfont=<span class="st">'Hiragino Maru Gothic ProN'</span> -V papersize=A4 -V geometry:margin=2cm --highlight-style espresso -s -o Output.pdf Input.lhs</a></code></pre></div>
 <h2 id="markdownlhs-to-html-epub-or-docx-word"><code>markdown+lhs</code> to <code>html</code>, <code>epub</code> or <code>docx</code> (word)</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown+lhs --highlight-style kate InFile.lhs -s -o OutFile.html  
-<span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.epub
-<span class="kw">&gt;</span> <span class="kw">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.docx</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> -f markdown+lhs --highlight-style kate InFile.lhs -s -o OutFile.html  </a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.epub</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="op">&gt;</span> <span class="ex">pandoc</span> -f markdown --highlight-style kate InFile.md -s -o OutFile.docx</a></code></pre></div>
 <h1 id="基本參數">基本參數</h1>
 <h2 id="輸入相關參數">輸入相關參數</h2>
 <ul>
@@ -197,12 +196,12 @@
 </ul>
 <h3 id="範例-藉由自定樣板來支援-tikz">(範例) 藉由自定樣板來支援 tikz</h3>
 <p>首先，輸出預設 latex 用 template 檔案：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">pandoc</span> -D latex <span class="kw">&gt;</span> tikz.latex</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">pandoc</span> -D latex <span class="op">&gt;</span> tikz.latex</a></code></pre></div>
 <p>接著，打開 <code>tikz.latex</code> 並且在 preamble 區域加入以下程式碼：</p>
-<div class="sourceCode"><pre class="sourceCode tex"><code class="sourceCode latex">\usepackage{tikz}
-\usepackage{tikz-cd}
-\usetikzlibrary{matrix}
-\usetikzlibrary{arrows}</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode tex"><code class="sourceCode latex"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="bu">\usepackage</span>{<span class="ex">tikz</span>}</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="bu">\usepackage</span>{<span class="ex">tikz-cd</span>}</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="fu">\usetikzlibrary</span>{matrix}</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="fu">\usetikzlibrary</span>{arrows}</a></code></pre></div>
 <p>最後就只要在使用 pandoc 產生 pdf 時多加上參數 <code>--template=tikz.latex</code> 即可。</p>
 <h2 id="epub-專用輸出參數">epub 專用輸出參數</h2>
 <ul>
@@ -305,11 +304,15 @@
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -317,23 +320,10 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

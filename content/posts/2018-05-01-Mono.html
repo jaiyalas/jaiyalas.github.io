@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/other.css" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <div class="bgarea">
+      <div class="custom-menu-wrapper">
+          <div class="pure-menu custom-menu pure-menu-horizontal">
+              <ul class="pure-menu-list">
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
+              </ul>
+          </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
+      </div>
+	<div class="content">
+	  
+
+<div class="posts">
+      <section class="post">
+      <header class="post-header">
+	<h2 class="post-title">Monomorphism in Haskell</h2>
+	<p class="post-meta">
+	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
+	  
+        <small>Posted on 01 May 2018. Last modified on 19 Jun 2020 (14:51).</small>
+	</p>
+      </header>
+      <div class="post-description">
+        
+        <div id="TOC">
+            <p class="tocheader">目錄</p>
+        <ul>
+<li><a href="#universal-quantification-與-parametric-polymorphism">1. universal quantification 與 parametric polymorphism</a></li>
+<li><a href="#type-inference-與-generalization">2. type inference 與 generalization</a></li>
+<li><a href="#monomorphic-type">3. Monomorphic type</a><ul>
+<li><a href="#section">.</a></li>
+</ul></li>
+</ul>
+        </div>
+        
+    	<p>這篇文章簡單地介紹了 haskell 怎麼做型別推導 (type inference)， 以及討論這中間會產生的議題，與我們怎麼處理或使用這些議題。</p>
+<!--more-->
+<h1 id="universal-quantification-與-parametric-polymorphism">1. universal quantification 與 parametric polymorphism</h1>
+<p>在 Haskell 中，對一個 polymorphic typed function 例如</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">f ::</span> a <span class="ot">-&gt;</span> (a, [a])</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">f x <span class="fu">=</span> (x,[x])</a></code></pre></div>
+<p>我們可以合法地將不同的參數餵進去：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">exp <span class="fu">=</span> (f <span class="dv">1</span>, f <span class="st">&quot;str&quot;</span>)</a></code></pre></div>
+<p>這裡的重點是，pair 裡面左邊的 <code>f</code> 和右邊的 <code>f</code> 事實上具有<em>不同型別</em>。 要理解這裡這個情況是怎麼回事，關鍵的一點是要先了解： haskell 中，對每個沒被指明的 type variables 而言， 其最外面都有一個隱藏的 <strong>universal quantifier</strong> (<span class="math inline">\(\forall\)</span>)。</p>
+<p>也就是說一個 type，以上面的 <code>f</code> 為例，事實上應該要寫成 <type>f :: forall a. a -&gt; (a, [a])</type>。 因此， exp 可以看成是</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">exp <span class="fu">=</span> ( (<span class="ot">f ::</span> forall a<span class="fu">.</span> a <span class="ot">-&gt;</span> (a, [a])) <span class="fu">$</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">        (<span class="ot">f ::</span> forall a<span class="fu">.</span> a <span class="ot">-&gt;</span> (a, [a])) <span class="fu">$</span> <span class="st">&quot;str&quot;</span>)</a></code></pre></div>
+<p>而，因為這兩個 forall 是各自獨立的，所以 pair 的兩邊的 f 就會根據不同的參數而有了不同的型別：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">exp <span class="fu">=</span> ( f <span class="dv">1</span>     <span class="co">-- f :: Num t =&gt; t -&gt; (t, [t]))</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">      , f <span class="st">&quot;str&quot;</span> <span class="co">-- f :: String -&gt; (String, [String]))</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">      )</a></code></pre></div>
+<p>這種由 “universal type variable” 所構造出來的 polymorphic function 就被稱為 <strong>parametric polymorphism</strong>。</p>
+<h1 id="type-inference-與-generalization">2. type inference 與 generalization</h1>
+<p>haskell 推導 (infer) types 的過程簡易來說有兩步：</p>
+<ol type="1">
+<li>(Hindley–Milner) <strong>type inference</strong> - 推導出整個式子的 type signature。</li>
+<li><strong>generalization</strong> - 對所有 free variable 加上 universal quantifier。</li>
+</ol>
+<p>這裡我們舉一個有助想像的實際例子：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">h x <span class="fu">=</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">    <span class="kw">let</span> f y <span class="fu">=</span> (x, y)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="kw">in</span> f x</a></code></pre></div>
+<p>首先，haskell 看到第 1 行的時候會想說「阿，這邊有個 x ，那先假裝它的 type 叫做 t 好了」。 也就是說 haskell 會在 context 裡面加上 <type>x :: t</type> 這筆資訊。 而一進入到第 2 行， haskell 會可以馬上 infer 出 <type>f :: a -&gt; (t, a)</type>。 接著，haskell 會開始試圖對 <code>f</code> 做 generalization，也就是，試著對所有 <code>f</code> 的 type variables 加上 forall：</p>
+<p><strong>對 type variable <type>a</type> ：</strong><br />
+顯然 <type>a</type> 是 free 的，所以要對 <type>a</type> 加上 <code>forall</code>。<br />
+<strong>對 type variable <type>t</type> ：</strong><br />
+這裡的 <type>t</type> 不是 free 的，他已經在 context 裡面有出現了。</p>
+<p>最終，haskell 會推導出 <type>f :: forall a. a -&gt; (t, a)</type>。 接著，根據 <code>f</code> 的 type，我們可以輕易地進一步推導出 <type>h :: forall t. t -&gt; (t, t)</type>。</p>
+<h1 id="monomorphic-type">3. Monomorphic type</h1>
+<p>就字面上直譯來說，monomorphic 就是相對於 polymorphic 的存在。 例如說 <type>f1 :: forall a. a -&gt; a</type> 是 polymorphic， 而 <type>f2 :: Int -&gt; Int</type> 則被稱為 monomorphic。</p>
+<p>承接上面的例子。對 <code>f</code> 來說， <code>t</code> 沒有被 forall 綁住會造成一些容易被我們的影響。例如說我們改寫一下 <code>h</code> 的定義：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">h x <span class="fu">=</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="kw">let</span> f y <span class="fu">=</span> (x, y)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    <span class="kw">in</span> (f <span class="dv">1</span>, f <span class="dt">False</span>)</a></code></pre></div>
+<p>此時，整個 <code>h</code> 語法上還是合法的，也可以被正確編譯以及執行。但是，下面這段程式就不行了。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">h x <span class="fu">=</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">    <span class="kw">let</span> f y <span class="fu">=</span> [x, y]</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="kw">in</span> (f <span class="dv">1</span>, f <span class="dt">False</span>)</a></code></pre></div>
+<p>不行的原因其實相當簡單。前面是因為 x 和 y 是放在 pair 裡面，所以兩者之間的 types 會是各自獨立的，因此沒有問題。但是這裡的 x 和 y 是放在同一個 list 裡面，所以 x 和 y 的 type 必須要是同一個。也就是說，在 inference 的階段我們會得到 <type> f :: t -&gt; [t]</type>。而這裡面出現的那個 t 會是 context 中已經有的，所以 t 不會被進一步 generalize (也就是說，對 f 而言 t 是沒有 forall 的)。那，t 的 forall 哪裡去了？事實上，它會是出現在 h 的 type signature 上面。這就表示，對整個 h 裡面來說，雖然我們可以任意選定一個 t 沒錯，但是在 h 的定義裡面的 t 都必須是同一個。這就好比說， cons 的 type 會是 <type> (:) :: forall a. a -&gt; [a] -&gt; [a] </type>，但是我們只能寫 <code>1 : [2]</code> 而不能寫 <code>'1' : [2]</code>。</p>
+<p>… TBC …</p>
+<h2 id="section">.</h2>
+<p>如果在 .hs 檔案中寫了</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">pie <span class="fu">=</span> sum <span class="fu">$</span> take <span class="dv">1000000</span> <span class="fu">$</span> zipWith (<span class="fu">/</span>) (iterate negate <span class="dv">4</span>) [<span class="dv">1</span>,<span class="dv">3</span><span class="fu">..</span>]</a></code></pre></div>
+<p>然後用 ghci 讀取進去以後詢問說 <code>:t pie</code> ，會發現說 <type>pie :: Double</type>，但是 <code>:t sum $ take 1000000 $ zipWith (/) (iterate negate 4) [1,3..]</code> 會得到 <type>(Enum a, Fractional a) =&gt; a</type>。</p>
+<p>Defaulting: preset a type for deciding a <code>class Num</code> involved ambiguous type variable.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">module</span> <span class="dt">GHC.Num</span> (<span class="kw">module</span> <span class="dt">GHC.Num</span>, <span class="kw">module</span> <span class="dt">GHC.Integer</span>) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">-- skipped</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">default ()              </a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">-- Double isn't available yet,</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">-- and we shouldn't be using defaults anyway</span></a></code></pre></div>
+<blockquote>
+<p>The monomorphism restriction states that a function with no explicit arguments, but with class constraints, must be given a type annotation.</p>
+</blockquote>
+<hr />
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">f1 x <span class="fu">=</span> show x</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">f2 <span class="fu">=</span> \x <span class="ot">-&gt;</span> show x</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">f4 <span class="fu">=</span> show</a></code></pre></div>
+<ul>
+<li>f1 OK: 這是 function binding =&gt; unrestricted (apply no MR)</li>
+<li>f2, f4 BAD: 都是 (simple?) pattern binding =&gt; 不保證用的時候不會有 side effect, 所以要限制一下</li>
+</ul>
+<p>MR, basically, it solves one practical problem (without the restriction, there would be some ambiguous types) and one semantic problem (without the restriction, there would be some repeated evaluation where a programmer might expect the evaluation to be shared).</p>
+<p>For semantic problem,</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ot">genericLength ::</span> <span class="dt">Num</span> a <span class="ot">=&gt;</span> [b] <span class="ot">-&gt;</span> a</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">f xs <span class="fu">=</span> (len,len)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">     <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">       len <span class="fu">=</span> genericLength xs</a></code></pre></div>
+<p><code>len</code> has type <type>Num a =&gt; a</type>, without MR, it will be computed twice in <code>(len,len)</code>.</p>
+<hr />
+<p>ambiguous type<br />
+=&gt;<br />
+defaulting (Num only)<br />
+=&gt;</p>
+<p>The monomorphism restriction depends on the binding syntax of a variable.</p>
+<p>Recall that a variable is bound by either a function binding; or, a pattern binding, and that a simple pattern binding is a pattern binding in which the pattern consists of only a single variable (Section 4.4.3).</p>
+<p>MR on in ghc, and, MR off in ghci</p>
+<h4 id="rule-1---a">Rule 1 - a</h4>
+<h4 id="rule-1---b">Rule 1 - b</h4>
+<h4 id="rule-2">Rule 2</h4>
+<p>Any monomorphic type variables (that remain when type inference for an entire module is complete) are considered ambiguous, and are resolved to particular types using the defaulting rules</p>
+<div class="block-notes">
+<h3 class="block-notes">
+<strong>ambiguous types</strong>
+</h3>
+<p>如果一個型別式當中包含有 universal constrained type variable 但是這個 type variable 根本沒有被使用， 則被視為「<strong>模糊型別 (ambiguous type)</strong>」。 模糊型別具有長相 <type>forall a. C a =&gt; t</type> 其中 <code>C</code> 是 typeclass 且 <type>t</type> 裡面沒有出現 <type>a</type>。 這樣的模糊型別在 haskell 中被視為不合法的，使用者必須避免這種情況。 <br /><br /></p>
+<p>模糊型別的出現通常是因為使用者連續使用了若干 type variable introducing functions， 而在過程中至少一個 type variable 被消掉了。 例如說，常見的</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1">show<span class="ot"> ::</span> forall a<span class="fu">.</span> <span class="dt">Show</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">read<span class="ot"> ::</span> forall a<span class="fu">.</span> <span class="dt">Read</span> a <span class="ot">=&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> a</a></code></pre></div>
+<p>都會引入新的 type variable。但是如果我們接連使用他們如</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">let</span> x <span class="fu">=</span> read <span class="st">&quot;...&quot;</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">in</span> show x</a></code></pre></div>
+<p>在沒有特別給定 <code>x</code> 型別的情況下， 則整個式子具有型別 <type>forall a. (Read a, Show a) =&gt; String</type>。 此時 haskell 會無法決定 <type>a</type> 是誰，進而認定這是模糊。</p>
+</div>
+<p><!-- class="block-notes" --></p>
+<div class="block-notes">
+<h3 class="block-notes">
+Skolemization
+</h3>
+<p>Skolemization 是一種移除 <span class="math inline">\(\exists\)</span> (existential quantifiers) 的方法。</p>
+<p>更明確一點地說，skolemization 是一個把 2nd order logic 中所有的 <span class="math inline">\(\exists\)</span>移到 1st order <span class="math inline">\(\forall\)</span> 之外的過程。 給定一個 2nd order logic formula</p>
+<p><span class="math display">\[\mathcal{A} \equiv \forall^1 \bar{x}\ .\ \exists^1 \bar{y}\ . \phi(\bar{x},\ \bar{y})\]</span></p>
+<p>skolemization 會將其轉換成</p>
+<p><span class="math display">\[ \exists^2 \bar{f}\ . \forall^1 \bar{x}\ . \phi(\bar{x},\ \bar{f}(\bar{y})) \]</span></p>
+<p>或者，有時候可以將 <span class="math inline">\(\bar{f}\)</span> 當做是 global function 而可以寫成</p>
+<p><span class="math display">\[ \forall^1 \bar{x}\ . \phi(\bar{x},\ \bar{f}(\bar{y})) \]</span></p>
+<p>這兩個式子就被稱為 <span class="math inline">\(\mathcal{A}\)</span> 的 <strong>Skolem normal form</strong> (aka SNF)，或是直接叫做 <strong>Skolem term</strong>。 而其中 functions <span class="math inline">\(\bar{f}\)</span> 被稱為 <strong>Skolem functions</strong>；如果是 constant 而非 function 則被稱為 <strong>Skolem constant</strong>。</p>
+<h4 class="block-notes">
+Skolem type
+</h4>
+<p>…</p>
+</div>
+<p><!-- class="block-notes" --></p>
+<div class="block-notes">
+<h3 class="block-notes">
+<strong>rigid type</strong> 和 <strong>wobbly type</strong>
+</h3>
+<p>簡單說就是：我們(身為 programmer)自己明確寫出來 type 就稱為 rigid type；反之，就都是 wobbly type。</p>
+<p>兩者在 <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/gadt-pldi.pdf">Simon Peyton Jones 的 Simple unification-based type inference for GADTs</a> 一文中都有明確解釋其定義：</p>
+<ul>
+<li>Instead of “user-specified type”, we use the briefer term <strong>rigid type</strong> to describe a type that is completely specified, in some direct fashion, by a programmer-supplied type annotation.</li>
+<li>A <strong>wobbly type</strong> is one that is not rigid. There is no such thing as a partly-rigid type; if a type is not rigid, it is wobbly</li>
+</ul>
+</div>
+<p><!-- class="block-notes" --></p>
+      </div>
+	<div class="post-footnote">
+	  <small>[Tags: <a href="../../tags/haskell.html">haskell</a>]</small>
+	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
+	  <div id="disqus_thread"></div>
+	</div>
+    </section>
+  </div>
+
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
+  </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-6830888-3', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </body>
+</html>

@@ -20,38 +20,37 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
-	    <div class="posts">
+	  
+
+<div class="posts">
       <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Give Stack a Shot</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 07 Jun 2016
-            <a href="../../content/posts/2016-06-07-GiveStackAShot.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (08:37)</small>
+        <small>Posted on 07 Jun 2016. Last modified on 07 Jun 2020 (12:28).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -85,7 +84,7 @@
 <h3 id="snapshots">Snapshots</h3>
 <p>Stack 的核心關鍵(之一)是 snapshot。一個 <strong>snapshot</strong> 是一組預選好(而且沒有版本打架)的 version-specific 套件組合。整個 stack 系統就是建立在一大群預設好的<a href="https://www.stackage.org/snapshots">snapshot</a> 之上。這些不同的 snapshot 就如同字面上的意思，提供了我們所有 packages 在某個時間點的某種快照。而我們未來可以使用和之前同樣的一組 packages 去編譯我們的 project。Stack 有兩種 snapshots 可以用：LTS (long term support) Haskell 和 Stackage Nightly。前者一段時間推出一次是穩定版本，後者是每天更新的稍微沒那麼穩定版。</p>
 <p>對某個 snapshot 來說，並不是所有其中敘述到的 packages 就都會被預先安裝到系統中。只有曾經被使用過的才會被安裝，這點就跟 cabal 還有其他任何套件管理程式差不多。目前已經被安裝過的 curated packages 會儲存在 <code>~/.stack/snapshots/</code> 下面。如果要查詢 packages 清單，</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> exec ghc-pkg list</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> exec ghc-pkg list</a></code></pre></div>
 <p>會根據目前 Stack 所能偵測到的 project 來列出所有當前可以存取的 packages。</p>
 <h3 id="build-plan-and-resolvers">Build-Plan and Resolvers</h3>
 <p>Stack 會為每一次 build 選擇一套 build plan，其中包括這次 build 所使用的編譯環境(包括 ghc 版本、ghc 參數、path等等)和一組 snapshot (裡面會定義可以被使用的 packages 有哪些)。這些 build plan 在 stack 裡面被稱為 <strong>resolver</strong> (因為我們會根據這裡面的資訊來做 dependency resolve)。所有 resolver 都會儲存在 <code>~/.stack/build-plan/</code> 裡面。</p>
@@ -93,12 +92,12 @@
 <p>Stack 和 git 一樣是非常 project-based 的東西，它的操作流程如下並不複雜，不過根據目前 project 的狀態可以分成下列幾種情境：</p>
 <h3 id="情境a-什麼-project-我根本什麼都沒有呀">[情境A] 什麼 project? 我根本什麼都沒有呀!</h3>
 <p>我們可以用老方法：寫點 code 然後 <code>cabal init</code>，這樣就有一個 hackage project (然後就可以跳到 [情境C] 那節)。 或者，我們可以直接用 stack 來產生一個新的 stackage project！</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> new <span class="op">&lt;</span>project-name<span class="op">&gt;</span></a></code></pre></div>
 <p>Stack 有內建一些 project template 來讓我們可以快速產生一個完整的 project dir，</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> <span class="kw">&lt;</span>template-name<span class="kw">&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> new <span class="op">&lt;</span>project-name<span class="op">&gt;</span> <span class="op">&lt;</span>template-name<span class="op">&gt;</span></a></code></pre></div>
 <div class="block-notes">
 <p>有被用過的 templates 都會下載並放在 <code>~/.stack/templates/</code>。可以用</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> templates</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> templates</a></code></pre></div>
 <p>來查詢所有可以用的 templates。另外，下列是個人覺得好用/常用的基本款 templates ：</p>
 <ul>
 <li>new-template</li>
@@ -110,41 +109,41 @@
 </ul>
 </div>
 <p>因為 <code>stack new</code> 會幫我們產生 <code>stack.yaml</code> 檔案，所以一些相關的參數也都可以用，例如說， 我們也可以在 new 的時候同時指定我們想要用的 resolver 版本；也可以強制跳過有問題 packages 等等</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> --resolver <span class="kw">&lt;</span>resolver name<span class="kw">&gt;</span>
-<span class="kw">&gt;</span> <span class="kw">stack</span> new <span class="kw">&lt;</span>project-name<span class="kw">&gt;</span> --omit-packages</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> new <span class="op">&lt;</span>project-name<span class="op">&gt;</span> --resolver <span class="op">&lt;</span>resolver name<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">stack</span> new <span class="op">&lt;</span>project-name<span class="op">&gt;</span> --omit-packages</a></code></pre></div>
 <h3 id="情境b-我有一個-project-沒-.cabal-檔">[情境B] 我有一個 project (沒 .cabal 檔)</h3>
 <p>寫你個好 .cabal 然後直接進入下一節。</p>
 <h3 id="情境c-我有一個-hackage-project-有-.cabal-檔">[情境C] 我有一個 hackage project (有 .cabal 檔)</h3>
 <p>如果已經有寫好 .cabal 檔，我們可以用</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> init</a></code></pre></div>
 <p>來根據那個 cabal 檔案來產生 <code>stack.yaml</code>。 Stack 預設會嘗試找出最佳 snapshot 來滿足 .cabal 上面描述的 build-depends。這其實有點煩人，因為這個找出最佳 snapshot 的動作其實蠻花時間的，所以如果我們就只是想用某個夠新或是慣用的 resolver ，我們也可以直接強制指定：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --resolver <span class="kw">&lt;</span>resolver name<span class="kw">&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> init --resolver <span class="op">&lt;</span>resolver name<span class="op">&gt;</span></a></code></pre></div>
 <p>雖然說 snapshot 應該包不少 packages 了，但是其實還是有機會我們會要用某些 hackage 上面有但是 snapshot 沒有的東西。 這種時候 <code>stack init</code> 會哭哭類似</p>
 <blockquote>
 <p>Resolver ‘lts-6.2’ does not have all the packages to match your requirements.</p>
 </blockquote>
 <p>這樣的話。這種時候我們可以要求 <code>stack init</code> 去 hackage 上面幫我們找看看有沒有那些缺少 packages 可以用：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --solver</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> init --solver</a></code></pre></div>
 <p>如果那些需要但是不在 snapshot 裡面的 packages 有在 hackage 裡面 (也就是說，他們是 extra-dep packages)，那 <code>stack init</code> 會自動把這些 packages 放在 <code>stack.yaml</code> 的 <code>extra-deps</code> 這個欄位之中。如果還是有 packages 找不到，那有兩種可能，一種是「你的 index 太舊了」這種時候我們就可以先試試看 <code>stack update</code> 看看能不能解決問題。如果還是不行，那八成就是因為你用了 local packages，這種時候我們就要先略過那些有問題的 packages 把 <code>stack.yaml</code> 生出來：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> init --solver --omit-packages</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> init --solver --omit-packages</a></code></pre></div>
 <p>然後再在 <code>stack.yaml</code> 裡面的 <code>packages</code> 欄位中告訴 Stack 要去哪裡找這些東西 (請參考<a href="http://docs.haskellstack.org/en/stable/yaml_configuration/#packages">這段文章</a>)。最後再叫 Stack 根據更改過的 <code>stack.yaml</code> 重新安裝並檢查編譯環境是不是都 ok 了：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> solver</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> solver</a></code></pre></div>
 <div class="block-notes">
 <p>有時候我們會需要在已經有 <code>stack.yaml</code> 時需要重新 init 一份，這種時候我們可以在 <code>stack init</code> 後面加上參數 <code>--force</code>。這樣就會讓目前 resolve 的結果強制蓋過之前的。</p>
 </div>
 <h3 id="情境d-我有一個-stackage-project-有-.cabal-和-stack.yaml-檔">[情境D] 我有一個 stackage project (有 .cabal 和 stack.yaml 檔)</h3>
 <p>不管是原本就有 stackage project 或是根據上面三種情境來生成 <code>stack.yaml</code> 檔，一旦準備好了以後我們就可以開心地根據那個 local yaml config 檔來 build 我們的 stackage：</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">cd</span> <span class="kw">&lt;</span>path to project<span class="kw">&gt;</span>
-<span class="kw">&gt;</span> <span class="kw">stack</span> setup
-<span class="kw">&gt;</span> <span class="kw">stack</span> build
-<span class="kw">&gt;</span> <span class="kw">stack</span> exec <span class="kw">&lt;</span>project exec<span class="kw">&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="op">&gt;</span> <span class="bu">cd</span> <span class="op">&lt;</span>path to project<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">stack</span> setup</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="op">&gt;</span> <span class="ex">stack</span> build</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="op">&gt;</span> <span class="ex">stack</span> exec <span class="op">&lt;</span>project exec<span class="op">&gt;</span></a></code></pre></div>
 <p>其中，因為 Stack 會順便幫你管一下包含 ghc 版本在內的編譯環境，而 <code>stack setup</code> 這的指令就是告訴 Stack 根據 local <code>stack.yaml</code> 去「幫我看一下這個 project 要用的 build-plan (i.e. resolver 的內容)是不是準備妥當了」。基本上就類似 <code>cabal configure</code> 這樣的指令。</p>
 <h2 id="關於-ghcs">關於 GHCs</h2>
 <p>因為不同 build plan 會用到不同版本的 ghc，所以 Stack 會順便幫我們安裝並且管理各種不同的 ghc。 不過要注意的是，Stack 並不會把 system path 設定到這些 ghc 身上， 所以除非我們另外用其他當是安裝 ghc 否則 console 裡面是沒有 ghc 可以用的。 但是我們可以透過</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&gt;</span> <span class="kw">stack</span> exec <span class="kw">&lt;</span>other commands<span class="kw">&gt;</span>
-<span class="kw">&gt;</span> <span class="kw">stack</span> ghc
-<span class="kw">&gt;</span> <span class="kw">stack</span> runghc
-<span class="kw">&gt;</span> <span class="kw">stack</span> ghci</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="op">&gt;</span> <span class="ex">stack</span> exec <span class="op">&lt;</span>other commands<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">stack</span> ghc</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="op">&gt;</span> <span class="ex">stack</span> runghc</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="op">&gt;</span> <span class="ex">stack</span> ghci</a></code></pre></div>
 <p>這些指令來使用。</p>
 <h2 id="問題與待續">問題與待續</h2>
 <ul>
@@ -161,11 +160,15 @@
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -173,23 +176,10 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

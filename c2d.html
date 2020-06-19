@@ -20,26 +20,25 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="./index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="./agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="./haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="./archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="./" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="./index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="./agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="./haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="./archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
 	  <div class="posts">
@@ -69,10 +68,10 @@
         
         <h1 id="緣起">緣起</h1>
 <p>「雲泥之間」是一系列關於 Haskell 的教學/筆記文章。</p>
-<p>最初的目的只是希望釐清幾個常見但是容易混淆的詞彙諸如 boxed 和 lifted 等等， 但是，隨著深入這些詞彙背後的情境，問題漸漸的形成了一個共同的問題： 「<strong>我們怎麼</strong>(在 Haskell 中)<strong>描述資訊</strong>(information<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>)<strong>？</strong>」。 為了進一步地理解這個問題，便產生了這個系列文章。 也許最終沒有辦法有個結論或是答案，但是至少這系列的文章可以留下一些線索， 讓我們可以朝著答案前進。</p>
+<p>最初的目的只是希望釐清幾個常見但是容易混淆的詞彙諸如 boxed 和 lifted 等等， 但是，隨著深入這些詞彙背後的情境，問題漸漸的形成了一個共同的問題： 「<strong>我們怎麼</strong>(在 Haskell 中)<strong>描述資訊</strong>(information<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>)<strong>？</strong>」。 為了進一步地理解這個問題，便產生了這個系列文章。 也許最終沒有辦法有個結論或是答案，但是至少這系列的文章可以留下一些線索， 讓我們可以朝著答案前進。</p>
 <h1 id="系列結構與列表">系列結構與列表</h1>
 <p>我們更進一步地把問題粗略地分成三個不同的層次：</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>要怎麼在計算世界裡面表示資訊？</li>
 <li>在 Haskell 的世界中資訊被怎麼表示？</li>
 <li>Haskell 怎麼表示資訊？</li>
@@ -176,12 +175,12 @@
 <li>Shmalko’s <a href="http://www.alexeyshmalko.com/2015/haskell-string-types/">Haskell String Types</a></li>
 <li>Haskell wiki <a href="https://wiki.haskell.org/Dealing_with_binary_data">Dealing with binary data</a></li>
 </ul>
-<div class="footnotes">
+<section class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>這裡所謂的資訊 (information) 是泛指包含廣泛的資料 (data) 或是資料結構 (data structure) 等等。<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>這裡所謂的資訊 (information) 是泛指包含廣泛的資料 (data) 或是資料結構 (data structure) 等等。<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
-</div>
+</section>
       </div>
       <div class="post-footnote">
   	  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img class="post-footnote-image" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" /></a>
@@ -190,11 +189,15 @@
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -202,23 +205,10 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

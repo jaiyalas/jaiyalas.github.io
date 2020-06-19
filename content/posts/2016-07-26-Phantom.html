@@ -20,38 +20,37 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
-	    <div class="posts">
+	  
+
+<div class="posts">
       <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Phantom of Haskell</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 26 Jul 2016
-            <a href="../../content/posts/2016-07-26-Phantom.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (08:37)</small>
+        <small>Posted on 26 Jul 2016. Last modified on 07 Jun 2020 (12:28).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -66,26 +65,26 @@
         </div>
         
     	<p>Phantom types 是指某個在 type constructor 上的 type parameter 而且沒有被任何該 type 的 data constructors 用到。 例如說：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T0</span> a n <span class="fu">=</span> <span class="dt">C00</span> a</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="dt">T0</span> a n <span class="fu">=</span> <span class="dt">C00</span> a</a></code></pre></div>
 <p>對 type (constructor) <code>T0</code> 來說，<code>a</code> 是個一般的 parameter；而 <code>n</code>，因為沒有被 <code>C0</code> 用到，所以就被叫做 <strong>phantom types</strong> (幻影型別? 貌似有點二.. XD)。</p>
 <!--more-->
 <h2 id="motivative-problem">Motivative Problem</h2>
 <p>為了建立初步的直覺，先讓我們把其他的 parameter 都先丟一邊。來看一個單純的情況：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T1</span> <span class="fu">=</span> <span class="dt">C10</span> <span class="dt">Int</span>
-   <span class="fu">|</span> <span class="dt">C11</span> <span class="dt">String</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="dt">T1</span> <span class="fu">=</span> <span class="dt">C10</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">   <span class="fu">|</span> <span class="dt">C11</span> <span class="dt">String</span></a></code></pre></div>
 <p><code>T1</code> 是一個用 <code>Int</code> 和 <code>String</code> 聯集而成的 type。但是我們在 type level 丟掉了「當初這個 <code>T1</code> 到底是用 <code>Int</code> 還是 <code>String</code> 做出來的」這個資訊。所以我們就可以做出一些奇怪的事情，例如說我們可以寫出一個 <code>T1</code> 的加法：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(+) ::</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">T1</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ot">(+) ::</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">T1</span> <span class="ot">-&gt;</span> <span class="dt">T1</span></a></code></pre></div>
 <p>如果今天我們的目的是「對任意的 <code>Int</code> 和 <code>String</code> 我都要能加起來」的話，那其實這個就可以運作的非常好。 事實上，這樣的彈性其實有時候還蠻有用的。不過，問題在於，當我們需要加以限制時就爆炸了。 例如說我只希望我的加法只有在吃到兩個“同一種東西”時才會以定義， 這樣的情況下，<code>T1</code> 那樣的定義方式其實就不適用了。</p>
 <p>這種情況我們就可以加上一個 phantom type 來當做某種 label 去補強那個遺失的資訊。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">T2</span> n <span class="fu">=</span> <span class="dt">C20</span> <span class="dt">Int</span>
-     <span class="fu">|</span> <span class="dt">C21</span> <span class="dt">String</span>
-
-<span class="ot">(+) ::</span> <span class="dt">T2</span> n <span class="ot">-&gt;</span> <span class="dt">T2</span> n <span class="ot">-&gt;</span> <span class="dt">T2</span> n</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="dt">T2</span> n <span class="fu">=</span> <span class="dt">C20</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">     <span class="fu">|</span> <span class="dt">C21</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="ot">(+) ::</span> <span class="dt">T2</span> n <span class="ot">-&gt;</span> <span class="dt">T2</span> n <span class="ot">-&gt;</span> <span class="dt">T2</span> n</a></code></pre></div>
 <p>現在，我們的 <code>(+)</code> 就不可能能把 <code>Int</code> 和 <code>String</code> 給相加起來了！</p>
 <div class="block-notes">
 <p>上述的例子當然可以 generalized 成 polymorphic 版。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Tp</span> a b <span class="fu">=</span> <span class="dt">Cp0</span> a
-       <span class="fu">|</span> <span class="dt">Cp1</span> b</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="dt">Tp</span> a b <span class="fu">=</span> <span class="dt">Cp0</span> a</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">       <span class="fu">|</span> <span class="dt">Cp1</span> b</a></code></pre></div>
 <p>這樣我們好像不會在 type level 丟掉關於 <code>a</code> 和 <code>b</code> 是誰的資訊， 但是其實問題還是一樣。 以上面那個例子來說，當我們拿到一個 <code>x :: Tp Int String</code> 的時候， 除非我們把 <code>x</code> 打開 (也就是對 <code>x</code> 做 patten matching)， 否則我們還是不知道這個 <code>x</code> 到底裡面裝的是什麼。</p>
 </div>
 <h2 id="digging-deeper">Digging Deeper</h2>
@@ -96,44 +95,44 @@
 </div>
 <p>但是，有時候 <code>T a b</code> 可能會太大以致於不夠符合我們的需求， 或者說，我們只想要“使用” <code>T a b</code> 當中的某一部分就好。 所以我們會想要有個方法去把 <code>T a b</code> 分成若干個 types 的聯集， 並且從其中挑出我們要的那一個小 type 就好了。 這個方法，就是在 type level 多加上某些「<strong>額外的資訊</strong>」 來讓我們指定說我們要的是 <code>T a b</code> 中的哪一部分。 有趣的地方是，因為我們加上的是額外的資訊， 所以其實這個資訊在真正建立資料的時候是不會用到的。</p>
 <p>舉例來說，我們可以定義向量如下：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Vector</span> a <span class="fu">=</span> <span class="dt">Vector</span> [a]</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Vector</span> a <span class="fu">=</span> <span class="dt">Vector</span> [a]</a></code></pre></div>
 <p>當 <code>a</code> 被決定時，我們就有一個 <code>Vector a</code> 用以描述內容值是 <code>a</code> 的向量資料結構。 不過不過，考慮到我們最常用的向量都是 2D 或 3D 向量， 如果我們可以明確的描述什麼是 2D 和 3D 向量就太好了！ 所以我們重新定義了下面這樣的東西：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> 2<span class="dt">D</span> <span class="fu">=</span> 3<span class="dt">D</span> ()
-<span class="kw">newtype</span> 3<span class="dt">D</span> <span class="fu">=</span> 3<span class="dt">D</span> ()
-
-<span class="kw">data</span> <span class="dt">Vector</span> a n <span class="fu">=</span> <span class="dt">Vector</span> [a]
-
-<span class="kw">type</span> 2<span class="dt">DVector</span> a <span class="fu">=</span> 2<span class="dt">DVector</span> a 2<span class="dt">D</span>
-<span class="kw">type</span> 3<span class="dt">DVector</span> a <span class="fu">=</span> 3<span class="dt">DVector</span> a 3<span class="dt">D</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">newtype</span> 2D <span class="fu">=</span> 3D ()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">newtype</span> 3D <span class="fu">=</span> 3D ()</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">data</span> <span class="dt">Vector</span> a n <span class="fu">=</span> <span class="dt">Vector</span> [a]</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">type</span> 2DVector a <span class="fu">=</span> 2DVector a 2D</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">type</span> 3DVector a <span class="fu">=</span> 3DVector a 3D</a></code></pre></div>
 <p>然後我們就可以寫出 2D 或 3D 限定的向量運算函數。例如說</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(+) ::</span> 3<span class="dt">DVector</span> a <span class="ot">-&gt;</span> 3<span class="dt">DVector</span> a <span class="ot">-&gt;</span> 3<span class="dt">DVector</span> a<span class="ot">`</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ot">(+) ::</span> 3DVector a <span class="ot">-&gt;</span> 3DVector a <span class="ot">-&gt;</span> 3DVector a<span class="ot">`</span></a></code></pre></div>
 <p>這裡的核心機制就是 <code>data Vector a n</code> 中的那個 <code>n</code>， 它代表了我們這個 Vector 的維度 (維度本身是 newtype 去定義的)。 而 <code>n</code> ，就是一個 <strong><em>phantom types</em></strong>。</p>
 <h2 id="小結">小結</h2>
 <p>phantom types 可以簡單地當做是一種 type level 上的 label，就像最一開始的例子一樣。 我們可以讓它的意義非常的複雜以滿足我們定義函數時的各種神奇需求。 甚至某個程度可以用來強制設定我們的資料結構被使用的方式，尤其是我們提供 lib 給別人用的時候。 例如說我們可以寫出一組資料結構和函數來專門處理各種非空字串相關的操作：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">NonEmptyString</span>
-    ( <span class="dt">NES</span> <span class="co">-- no constructor exported</span>
-    , genNES
-    , validate
-    , workWithNonEmptyString
-    ) <span class="kw">where</span>
-
-<span class="co">-- non-empty string</span>
-<span class="kw">data</span> <span class="dt">NES</span> s <span class="fu">=</span> <span class="dt">NES</span> <span class="dt">String</span>
-<span class="kw">data</span> <span class="dt">Good</span>
-<span class="kw">data</span> <span class="dt">Bad</span>
-
-<span class="ot">genNES ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">T</span> <span class="dt">Bad</span>
-genNES str <span class="fu">=</span> <span class="dt">NES</span> str
-
-<span class="ot">validate ::</span> <span class="dt">T</span> <span class="dt">Bad</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">T</span> <span class="dt">Good</span>)
-validate (<span class="dt">NES</span> <span class="st">&quot;&quot;</span>) <span class="fu">=</span> <span class="dt">Nothing</span>
-validate (<span class="dt">NES</span> str) <span class="fu">=</span> <span class="dt">Just</span> <span class="fu">$</span> <span class="dt">NES</span> str
-
-<span class="ot">workWithNonEmptyString ::</span> (<span class="dt">String</span> <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> <span class="dt">NES</span> <span class="dt">Good</span> <span class="ot">-&gt;</span> a
-workWithNonEmptyString f (<span class="dt">NES</span> str) <span class="fu">=</span> f str</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">module</span> <span class="dt">NonEmptyString</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    ( <span class="dt">NES</span> <span class="co">-- no constructor exported</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">    , genNES</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    , validate</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    , workWithNonEmptyString</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">    ) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">-- non-empty string</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw">data</span> <span class="dt">NES</span> s <span class="fu">=</span> <span class="dt">NES</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw">data</span> <span class="dt">Good</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">data</span> <span class="dt">Bad</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="ot">genNES ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">T</span> <span class="dt">Bad</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">genNES str <span class="fu">=</span> <span class="dt">NES</span> str</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="ot">validate ::</span> <span class="dt">T</span> <span class="dt">Bad</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">T</span> <span class="dt">Good</span>)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">validate (<span class="dt">NES</span> <span class="st">&quot;&quot;</span>) <span class="fu">=</span> <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">validate (<span class="dt">NES</span> str) <span class="fu">=</span> <span class="dt">Just</span> <span class="fu">$</span> <span class="dt">NES</span> str</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="ot">workWithNonEmptyString ::</span> (<span class="dt">String</span> <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> <span class="dt">NES</span> <span class="dt">Good</span> <span class="ot">-&gt;</span> a</a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">workWithNonEmptyString f (<span class="dt">NES</span> str) <span class="fu">=</span> f str</a></code></pre></div>
 <p>但是像 vector 這個例子中這樣的 phantom types， 其實相比之下又稍稍更複雜一點。 我們在 vector 的例子中的 2D 和 3D 是用 <code>newtype</code> 建立而成， 說穿了其實和上面的 <code>data Good</code> 和 <code>data Bad</code> 半斤八倆。 更好的作法是把自然數拉到 type level 上面， 然後用 type level natural number 去描述那個維度。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Zero</span> <span class="fu">=</span> <span class="dt">Zero</span>
-<span class="kw">data</span> <span class="dt">Succ</span> a <span class="fu">=</span> <span class="dt">Succ</span> a</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Zero</span> <span class="fu">=</span> <span class="dt">Zero</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">data</span> <span class="dt">Succ</span> a <span class="fu">=</span> <span class="dt">Succ</span> a</a></code></pre></div>
 <p>這樣我們的 <code>2DVector a</code> 就會寫成 <code>Vector a (Succ (Succ Zero))</code>。 就是我們一般說的 <strong>indexing</strong>。</p>
       </div>
 	<div class="post-footnote">
@@ -144,11 +143,15 @@ workWithNonEmptyString f (<span class="dt">NES</span> str) <span class="fu">=</s
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -156,23 +159,10 @@ workWithNonEmptyString f (<span class="dt">NES</span> str) <span class="fu">=</s
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

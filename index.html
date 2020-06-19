@@ -20,46 +20,43 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="./index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="./agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="./haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="./archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="./" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="./index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="./c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="./agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="./haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="./archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="./slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="./tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="./about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
 	  <div class="posts">
 
 <section class="post">
   <header class="post-header">
-	<h2 class="post-title">Profunctors and its relatives</h2>
+	<a href="./content/posts/2018-05-01-Mono.html" class="post-title-link"><h2 class="post-title">Monomorphism in Haskell</h2></a>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 16 Jun 2017
-            <a href="./content/posts/2017-06-16-Profunctor.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 15 Jun 2017 (23:54)</small>
+        <small>Posted on 01 May 2018. Last modified on 19 Jun 2020 (14:51).</small>
 	</p>
       </header>
       <div class="post-description">
   
-    <p>Functor 是 haskell 中很常見的基本型別操作，而實務上 functors 有幾個好用的特例。 這篇文章會介紹 (covariant) functors, contravariant functors, bifunctors 和 profunctors 這四種之間的定義與(個人整理之)使用的時間。</p>
+    <p>這篇文章簡單地介紹了 haskell 怎麼做型別推導 (type inference)， 以及討論這中間會產生的議題，與我們怎麼處理或使用這些議題。</p>
 
-    <p>... <a href="./content/posts/2017-06-16-Profunctor.html" id="title">read more</a></p>
+    <p>... <a href="./content/posts/2018-05-01-Mono.html" id="title">read more</a></p>
   
       </div>
 	<div class="post-footnote">
@@ -69,22 +66,20 @@
 
 <section class="post">
   <header class="post-header">
-	<h2 class="post-title">About record fields</h2>
+	<a href="./content/posts/2017-04-15-Record.html" class="post-title-link"><h2 class="post-title">About record fields</h2></a>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 15 Apr 2017
-            <a href="./content/posts/2017-04-15-Record.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 26 Apr 2017 (17:27)</small>
+        <small>Posted on 15 Apr 2017. Last modified on 19 Jun 2020 (14:51).</small>
 	</p>
       </header>
       <div class="post-description">
   
     <p>每日豆知識： Records</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE DisambiguateRecordFields #-}</span>
-<span class="ot">{-# LANGUAGE DuplicateRecordFields #-}</span>
-<span class="ot">{-# LANGUAGE NamedFieldPuns #-}</span>
-<span class="ot">{-# LANGUAGE RecordWildCards #-}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE DisambiguateRecordFields #-}</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE DuplicateRecordFields #-}</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE NamedFieldPuns #-}</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE RecordWildCards #-}</span></a></code></pre></div>
 
     <p>... <a href="./content/posts/2017-04-15-Record.html" id="title">read more</a></p>
   
@@ -96,13 +91,11 @@
 
 <section class="post">
   <header class="post-header">
-	<h2 class="post-title">Quick notes on Pandoc</h2>
+	<a href="./content/posts/2017-04-04-Pandoc.html" class="post-title-link"><h2 class="post-title">Quick notes on Pandoc</h2></a>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 04 Apr 2017
-            <a href="./content/posts/2017-04-04-Pandoc.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (15:56)</small>
+        <small>Posted on 04 Apr 2017. Last modified on 19 Jun 2020 (14:51).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -121,11 +114,15 @@
 
 </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -133,23 +130,10 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

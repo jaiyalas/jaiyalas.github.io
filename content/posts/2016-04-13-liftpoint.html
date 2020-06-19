@@ -20,38 +20,37 @@
       <div class="custom-menu-wrapper">
           <div class="pure-menu custom-menu pure-menu-horizontal">
               <ul class="pure-menu-list">
-              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">Jaiyalas</a>
-                  <ul class="pure-menu-children">
-                      <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">
-                          From Cloud to Dirt</a></li>
-                      <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">
-                          Agda Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">
-                          Haskell Notes</a></li>
-                      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">
-                          Slides</a></li>
-                      <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">
-                          Tags</a></li>
-                      <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">
-                          About</a></li>
-                  </ul>
-              </li>
-              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Archive</a></li>
+              <li class="pure-menu-item"><a href="../../" class="pure-menu-link">Home</a></li>
               </ul>
           </div>
+	  <div class="pure-menu custom-menu pure-menu-horizontal menu-right">
+	      <ul class="pure-menu-list">
+              <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                  <a href="../../index.html" class="pure-menu-link pure-menu-heading">More</a>
+                  <ul class="pure-menu-children">
+                  <li class="pure-menu-item"><a href="../../c2d.html" class="pure-menu-link">From Cloud to Dirt</a></li>
+                  <li class="pure-menu-item"><a href="../../agdaNotes.html" class="pure-menu-link">Agda Notes</a></li>
+                  <li class="pure-menu-item"><a href="../../haskellNotes.html" class="pure-menu-link">Haskell Notes</a></li>
+                  </ul>
+              </li>		
+              <li class="pure-menu-item"><a href="../../archive.html" class="pure-menu-link">Posts</a></li>
+	      <li class="pure-menu-item"><a href="../../slides.html" class="pure-menu-link">Slides</a></li>
+              <li class="pure-menu-item"><a href="../../tags.html" class="pure-menu-link">Tags</a></li>
+              <li class="pure-menu-item"><a href="../../about.html" class="pure-menu-link">About</a></li>
+              </ul>
+	  </div>
       </div>
 	<div class="content">
-	    <div class="posts">
+	  
+
+<div class="posts">
       <section class="post">
       <header class="post-header">
 	<h2 class="post-title">Pointed? Lifted!</h2>
 	<p class="post-meta">
 	  By <a href="https://github.com/jaiyalas" class="post-author">jaiyalas</a>
 	  
-        <small>Posted on 13 Apr 2016
-            <a href="../../content/posts/2016-04-13-liftpoint.html"><i class="fa fa-link fa-lg fa-fw"></i></a></small><br />
-        <small>Last modified on 04 Apr 2017 (08:37)</small>
+        <small>Posted on 13 Apr 2016. Last modified on 07 Jun 2020 (12:28).</small>
 	</p>
       </header>
       <div class="post-description">
@@ -77,8 +76,8 @@
 <p>首先，最直觀地，因為是「一群數值」，所以理所當然地我們可以先試著用 <strong>set</strong> 去當做 domain 的 formal definition。舉例來說，我們可以說：上面的程式 <code>even</code> 的 <em>set-theoretical</em> domain 就是</p>
 <p><span class="math display">\[\{True, False\}\]</span></p>
 <p>嗯～ 這樣的 domain 看起來豪棒棒！不過，很可惜地，set 雖然可以表示「一群數值」，但是只有這樣的表示力其實還不夠我們用來討論程式。如果我們想單純用一個 set 來表示一個程式的意義，那麼，recursive function 就變成一個有點讓人尷尬的狀況了。因為我們可以寫出像是：</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">foo x <span class="fu">=</span> (foo x) <span class="fu">+</span> <span class="dv">1</span>
-bar x <span class="fu">=</span> bar x</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1">foo x <span class="fu">=</span> (foo x) <span class="fu">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">bar x <span class="fu">=</span> bar x</a></code></pre></div>
 <p>這樣的 function，但是他們的 domain 顯然不會是一個簡單的 set 就可以表示的(因為他們根本不會停下來！)。除此之外，還有另一種尷尬的情況是：我們不是永遠都是在處理 total function。而對 partial function 而言，是有可能給在碰到某些 input 時會沒法計算 (因為 undefined 嘛)。</p>
 <div class="block-notes">
 <p>關於這個問題其實還有其他更多東西可以探討，但是這可能超過了這篇文章的主軸。我們這邊需要知道的就只是 set 不夠用來描述程式這件事情就好。如果對於完整的原因有興趣可以參考<a href="http://www.cs.nott.ac.uk/~pszgmh/domains.html">Domain Theory - G. Hutton</a>裡面的第一篇講義。</p>
@@ -145,11 +144,15 @@ bar x <span class="fu">=</span> bar x</code></pre></div>
     </section>
   </div>
 
-	  <div class="footer">Powered by
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a>,
-          <a href="http://purecss.io/">PureCSS</a>
-      </div>
-	</div>
+        </div>
+	<footer>
+	  <div class="footer-content">
+	    Powered by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+	    .
+            <a href="http://purecss.io/">PureCSS</a>
+	  </dic>
+	</footer>
   </div>
 
     <script>
@@ -157,23 +160,10 @@ bar x <span class="fu">=</span> bar x</code></pre></div>
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-6830888-3', 'auto');
       ga('send', 'pageview');
-
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'jaiyalasio';
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>
